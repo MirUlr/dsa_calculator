@@ -38,7 +38,8 @@ class Held():
         'Willenskraft': ('Mut', 'Intuition', 'Charisma'),
         'Fährtensuchen': ('Mut', 'Intuition', 'Gewandtheit'),
         'Fesseln': ('Klugheit', 'Fingerfertigkeit', 'Körperkraft'),
-        'Fischen & Angeln': ('Fingerfertigkeit', 'Gewandtheit', 'Konstitution'),
+        'Fischen & Angeln': ('Fingerfertigkeit', 'Gewandtheit',
+                             'Konstitution'),
         'Orientierung': ('Klugheit', 'Intuition', 'Intuition'),
         'Pflanzenkunde': ('Klugheit', 'Fingerfertigkeit', 'Konstitution'),
         'Tierkunde': ('Mut', 'Mut', 'Charisma'),
@@ -67,7 +68,8 @@ class Held():
         'Holzbearbeitung': ('Fingerfertigkeit', 'Gewandtheit', 'Körperkraft'),
         'Lebensmittelbearbeitung': ('Intuition', 'Fingerfertigkeit',
                                     'Fingerfertigkeit'),
-        'Lederbearbeitung': ('Fingerfertigkeit', 'Gewandtheit', 'Konstitution'),
+        'Lederbearbeitung': ('Fingerfertigkeit', 'Gewandtheit',
+                             'Konstitution'),
         'Malen & Zeichen': ('Intuition', 'Fingerfertigkeit',
                             'Fingerfertigkeit'),
         'Metallbearbeitung': ('Fingerfertigkeit', 'Konstitution',
@@ -138,12 +140,12 @@ class Held():
             print('Mit gültigem Pfad erneut versuchen.')
 
     def zeige_eigenschaften(self):
-        self.__show_pretty_dicts('{}\'s Eigenschaften:'.format(self.name),
-                                 self._eigenschaften)
+        self._show_pretty_dicts('{}\'s Eigenschaften:'.format(self.name),
+                                self._eigenschaften)
 
     def zeige_fertigkeiten(self):
-        self.__show_pretty_dicts('{}\'s Fertigkeiten:'.format(self.name),
-                                 self.__fertigkeiten)
+        self._show_pretty_dicts('{}\'s Fertigkeiten:'.format(self.name),
+                                self.__fertigkeiten)
 
     def absolviere(self, talent, modifikator=-0):
         try:
@@ -243,7 +245,7 @@ class Held():
         return values
 
     @staticmethod
-    def __show_pretty_dicts(title, dictionary, alphabetical_order=True):
+    def _show_pretty_dicts(title, dictionary, alphabetical_order=True):
         list_of_keys = list(dictionary.keys())
         if alphabetical_order:
             list_of_keys.sort()
