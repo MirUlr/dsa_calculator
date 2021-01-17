@@ -162,7 +162,8 @@ class Held():
         if any(zielwerte < 1):                  # unmögliche Proben detektieren
             print('Die Erschwernis von {} '
                   'macht diese Probe unmöglich.'.format(abs(modifikator)))
-            return
+            ret = 'Die Erschwernis von {} ''macht diese Probe unmöglich.'.format(abs(modifikator))
+            return ret
 
         _3w20 = np.random.randint(1, 21, 3)
 
@@ -223,6 +224,9 @@ class Held():
         print(zu_erzielen)
         print(zufallsereignis)
         print(resultat)
+
+        ret = probe.format(self.name, talent, self.__fertigkeiten[talent])+"\n\n"+zu_erzielen+"\n"+zufallsereignis+"\n"+resultat
+        return ret
 
     @staticmethod
     def __ask_for_values(dictionary, limits=(-float('inf'), float('inf'))):

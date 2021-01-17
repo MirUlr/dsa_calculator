@@ -22,7 +22,7 @@ def do(action, modi):
 
 # Würfelergebnis anzeigen
 def show(result):
-    win.label_result.setText("Ergebnis")
+    win.label_result.setText(result)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
