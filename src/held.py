@@ -13,19 +13,19 @@ import numpy as np
 
 class Held():
     FERTIGKEITSPROBEN = {
-        'Fliegen': ('Mut', 'Intuition', 'Gewandheit'),
+        'Fliegen': ('Mut', 'Intuition', 'Gewandtheit'),
         'Gaukeleien': ('Mut', 'Charisma', 'Fingerfertigkeit'),
-        'Klettern': ('Mut', 'Gewandheit', 'Körperkraft'),
-        'Körperbeherrschung': ('Gewandheit', 'Gewandheit', 'Konstitution'),
+        'Klettern': ('Mut', 'Gewandtheit', 'Körperkraft'),
+        'Körperbeherrschung': ('Gewandtheit', 'Gewandtheit', 'Konstitution'),
         'Kraftakt': ('Konstitution', 'Körperkraft', 'Körperkraft'),
-        'Reiten': ('Charisma', 'Gewandheit', 'Körperkraft'),
-        'Schwimmen': ('Gewandheit', 'Konstitution', 'Körperkraft'),
+        'Reiten': ('Charisma', 'Gewandtheit', 'Körperkraft'),
+        'Schwimmen': ('Gewandtheit', 'Konstitution', 'Körperkraft'),
         'Selbstbeherrschung': ('Mut', 'Mut', 'Konstitution'),
         'Singen': ('Klugheit', 'Charisma', 'Konstitution'),
         'Sinnesschärfe': ('Klugheit', 'Intuition', 'Intuition'),
-        'Tanzen': ('Klugheit', 'Charisma', 'Gewandheit'),
-        'Taschendiebstahl': ('Mut', 'Fingerfertigkeit', 'Gewandheit'),
-        'Verbergen': ('Mut', 'Intuition', 'Gewandheit'),
+        'Tanzen': ('Klugheit', 'Charisma', 'Gewandtheit'),
+        'Taschendiebstahl': ('Mut', 'Fingerfertigkeit', 'Gewandtheit'),
+        'Verbergen': ('Mut', 'Intuition', 'Gewandtheit'),
         'Zechen': ('Klugheit', 'Konstitution', 'Körperkraft'),
         'Bekehren & Überzeugen': ('Mut', 'Klugheit', 'Charisma'),
         'Betören': ('Mut', 'Charisma', 'Charisma'),
@@ -34,15 +34,15 @@ class Held():
         'Gassenwissen': ('Klugheit', 'Intuition', 'Charisma'),
         'Menschenkenntnis': ('Klugheit', 'Intuition', 'Charisma'),
         'Überreden': ('Mut', 'Intuition', 'Charisma'),
-        'Verkleiden': ('Intuition', 'Charisma', 'Gewandheit'),
+        'Verkleiden': ('Intuition', 'Charisma', 'Gewandtheit'),
         'Willenskraft': ('Mut', 'Intuition', 'Charisma'),
-        'Fährtensuchen': ('Mut', 'Intuition', 'Gewandheit'),
+        'Fährtensuchen': ('Mut', 'Intuition', 'Gewandtheit'),
         'Fesseln': ('Klugheit', 'Fingerfertigkeit', 'Körperkraft'),
-        'Fischen & Angeln': ('Fingerfertigkeit', 'Gewandheit', 'Konstitution'),
+        'Fischen & Angeln': ('Fingerfertigkeit', 'Gewandtheit', 'Konstitution'),
         'Orientierung': ('Klugheit', 'Intuition', 'Intuition'),
         'Pflanzenkunde': ('Klugheit', 'Fingerfertigkeit', 'Konstitution'),
         'Tierkunde': ('Mut', 'Mut', 'Charisma'),
-        'Wildnisleben': ('Mut', 'Gewandheit', 'Konstitution'),
+        'Wildnisleben': ('Mut', 'Gewandtheit', 'Konstitution'),
         'Brett- & Glücksspiel': ('Klugheit', 'Klugheit', 'Intuition'),
         'Geographie': ('Klugheit', 'Klugheit', 'Intuition'),
         'Geschichtswissen':  ('Klugheit', 'Klugheit', 'Intuition'),
@@ -56,7 +56,7 @@ class Held():
         'Sphärenkunde': ('Klugheit', 'Klugheit', 'Intuition'),
         'Sternkunde':  ('Klugheit', 'Klugheit', 'Intuition'),
         'Alchimie': ('Mut', 'Klugheit', 'Fingerfertigkeit'),
-        'Boote & Schiffe': ('Fingerfertigkeit', 'Gewandheit', 'Körperkraft'),
+        'Boote & Schiffe': ('Fingerfertigkeit', 'Gewandtheit', 'Körperkraft'),
         'Fahrzeuge':  ('Charisma', 'Fingerfertigkeit', 'Konstitution'),
         'Handel':  ('Klugheit', 'Intuition', 'Charisma'),
         'Heilkunde Gift': ('Mut', 'Klugheit', 'Intuition'),
@@ -64,10 +64,10 @@ class Held():
         'Heilkunde Seele': ('Intuition', 'Charisma', 'Konstitution'),
         'Heilkunde Wunden': ('Klugheit', 'Fingerfertigkeit',
                              'Fingerfertigkeit'),
-        'Holzbearbeitung': ('Fingerfertigkeit', 'Gewandheit', 'Körperkraft'),
+        'Holzbearbeitung': ('Fingerfertigkeit', 'Gewandtheit', 'Körperkraft'),
         'Lebensmittelbearbeitung': ('Intuition', 'Fingerfertigkeit',
                                     'Fingerfertigkeit'),
-        'Lederbearbeitung': ('Fingerfertigkeit', 'Gewandheit', 'Konstitution'),
+        'Lederbearbeitung': ('Fingerfertigkeit', 'Gewandtheit', 'Konstitution'),
         'Malen & Zeichen': ('Intuition', 'Fingerfertigkeit',
                             'Fingerfertigkeit'),
         'Metallbearbeitung': ('Fingerfertigkeit', 'Konstitution',
@@ -85,7 +85,7 @@ class Held():
         self.name = name
         self._eigenschaften = dict.fromkeys(
             ['Mut', 'Klugheit', 'Intuition', 'Charisma', 'Fingerfertigkeit',
-             'Gewandheit', 'Konstitution', 'Körperkraft'])
+             'Gewandtheit', 'Konstitution', 'Körperkraft'])
         self.__fertigkeiten = dict.fromkeys(
             list(self.FERTIGKEITSPROBEN.keys()))
 
