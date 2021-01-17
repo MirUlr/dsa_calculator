@@ -119,6 +119,29 @@ if __name__ == "__main__":
     func_btn_willenskraft = partial(do, "Willenskraft",win.mod_willenskraft.value)
     win.btn_willenskraft.clicked.connect(func_btn_willenskraft)
 
+    # ------------------------------------------------------------------------
+    # Naturtalente
+    func_btn_faehrtensuche = partial(do, "Fährtensuchen",win.mod_faehrtensuche.value)
+    win.btn_faehrtensuche.clicked.connect(func_btn_faehrtensuche)
+
+    func_btn_fesseln = partial(do, "Fesseln",win.mod_fesseln.value)
+    win.btn_fesseln.clicked.connect(func_btn_fesseln)
+
+    func_btn_angeln = partial(do, "Fischen & Angeln",win.mod_angeln.value)
+    win.btn_angeln.clicked.connect(func_btn_angeln)
+
+    func_btn_orientierung = partial(do, "Orientierung",win.mod_orientierung.value)
+    win.btn_orientierung.clicked.connect(func_btn_orientierung)
+
+    func_btn_pflanzenkunde = partial(do, "Pflanzenkunde",win.mod_pflanzenkunde.value)
+    win.btn_pflanzenkunde.clicked.connect(func_btn_pflanzenkunde)
+
+    func_btn_tierkunde = partial(do, "Tierkunde",win.mod_tierkunde.value)
+    win.btn_tierkunde.clicked.connect(func_btn_tierkunde)
+
+    func_btn_wildnisleben = partial(do, "Wildnisleben",win.mod_wildnisleben.value)
+    win.btn_wildnisleben.clicked.connect(func_btn_wildnisleben)
+
 
    # ========================================================================
 
