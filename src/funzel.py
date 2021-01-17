@@ -77,42 +77,42 @@ class Funzel(Held):
         else:
             return funzel_dict
 
-        def __funzel_stuff_term(self, singular: bool):
-            if self.rolle in ['Priesterin', 'Priester']:
-                if singular:
-                    term = 'Liturgie / Zeremonie'
-                else:
-                    term = 'Liturgien & Zeremonien'
-            elif self.rolle in ['Zauberin', 'Zauberer']:
-                if singular:
-                    term = 'Zauber / Ritual'
-                else:
-                    term = 'Zauber & Rituale'
-            elif self.rolle in ['Hexe', 'Hexer']:
-                if singular:
-                    term = 'Hexerei'
-                else:
-                    term = 'Hexereien'
+    def __funzel_stuff_term(self, singular: bool):
+        if self.rolle in ['Priesterin', 'Priester']:
+            if singular:
+                term = 'Liturgie/Zeremonie'
             else:
-                if singular:
-                    term = 'Funzelding'
-                else:
-                    term = 'Funzeldinge'
-            return term
+                term = 'Liturgien & Zeremonien'
+        elif self.rolle in ['Zauberin', 'Zauberer']:
+            if singular:
+                term = 'Zauber/Ritual'
+            else:
+                term = 'Zauber & Rituale'
+        elif self.rolle in ['Hexe', 'Hexer']:
+            if singular:
+                term = 'Hexerei'
+            else:
+                term = 'Hexereien'
+        else:
+            if singular:
+                term = 'Funzelding'
+            else:
+                term = 'Funzeldinge'
+        return term
 
-        def speichern(self):
-            pass
+    def speichern(self):
+        pass
 
-        @classmethod
-        def _from_json(cls, name, stats):
-            hero = cls(name,
-                       list(stats['Eigenschaften'].values()),
-                       list(stats['Fertigkeiten'].values()),
-                       stats['Funzelfertigkeiten'])
-            return hero
+    @classmethod
+    def _from_json(cls, name, stats):
+        hero = cls(name,
+                   list(stats['Eigenschaften'].values()),
+                   list(stats['Fertigkeiten'].values()),
+                   stats['Funzelfertigkeiten'])
+        return hero
 
-        def durchführen(self):
-            pass
+    def durchführen(self):
+        pass
 
 
 if __name__ == '__main__':
