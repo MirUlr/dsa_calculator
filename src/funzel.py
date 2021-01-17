@@ -2,7 +2,7 @@
 """
 Created on Sun Jan 17 17:26:37 2021
 
-@author: reMner
+@author: Mirko Ulrich
 """
 
 from held import Held
@@ -102,6 +102,10 @@ class Funzel(Held):
 
     def speichern(self):
         pass
+
+    def zeige_besondere_fertigkeiten(self):
+        title = '{}\'s {}:'.format(self.name, self.__funzel_stuff_term(False))
+        super()._show_pretty_dicts(title, self._funzelkram)
 
     @classmethod
     def _from_json(cls, name, stats):
