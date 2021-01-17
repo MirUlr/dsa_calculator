@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="label_2">
+   <widget class="QLabel" name="label_fertigkeiten_title">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -110,7 +110,7 @@
         </widget>
        </item>
        <item row="12" column="1">
-        <widget class="QSpinBox" name="spinBox_26">
+        <widget class="QSpinBox" name="mod_verbergen">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -127,7 +127,7 @@
         </widget>
        </item>
        <item row="13" column="1">
-        <widget class="QSpinBox" name="spinBox_27">
+        <widget class="QSpinBox" name="mod_zechen">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -147,7 +147,7 @@
         </widget>
        </item>
        <item row="5" column="1">
-        <widget class="QSpinBox" name="spinBox_19">
+        <widget class="QSpinBox" name="mod_reiten">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -164,7 +164,7 @@
         </widget>
        </item>
        <item row="6" column="1">
-        <widget class="QSpinBox" name="spinBox_20">
+        <widget class="QSpinBox" name="mod_schwimmen">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -210,7 +210,7 @@
         </widget>
        </item>
        <item row="7" column="1">
-        <widget class="QSpinBox" name="spinBox_21">
+        <widget class="QSpinBox" name="mod_selbstbeherrschung">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -231,7 +231,7 @@
         </widget>
        </item>
        <item row="9" column="1">
-        <widget class="QSpinBox" name="spinBox_23">
+        <widget class="QSpinBox" name="mod_sinnesschaerfe">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -255,7 +255,7 @@
         </widget>
        </item>
        <item row="5" column="2">
-        <widget class="QPushButton" name="pushButton_6">
+        <widget class="QPushButton" name="btn_reiten">
          <property name="text">
           <string/>
          </property>
@@ -266,7 +266,7 @@
         </widget>
        </item>
        <item row="10" column="1">
-        <widget class="QSpinBox" name="spinBox_24">
+        <widget class="QSpinBox" name="mod_tanzen">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -290,7 +290,7 @@
         </widget>
        </item>
        <item row="11" column="1">
-        <widget class="QSpinBox" name="spinBox_25">
+        <widget class="QSpinBox" name="mod_taschendiebstahl">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -331,7 +331,7 @@
         </widget>
        </item>
        <item row="8" column="1">
-        <widget class="QSpinBox" name="spinBox_22">
+        <widget class="QSpinBox" name="mod_singen">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -369,7 +369,7 @@
         </widget>
        </item>
        <item row="6" column="2">
-        <widget class="QPushButton" name="pushButton_7">
+        <widget class="QPushButton" name="btn_schwimmen">
          <property name="text">
           <string/>
          </property>
@@ -380,7 +380,7 @@
         </widget>
        </item>
        <item row="7" column="2">
-        <widget class="QPushButton" name="pushButton_61">
+        <widget class="QPushButton" name="btn_selbstbeherrschung">
          <property name="text">
           <string/>
          </property>
@@ -391,7 +391,7 @@
         </widget>
        </item>
        <item row="8" column="2">
-        <widget class="QPushButton" name="pushButton_62">
+        <widget class="QPushButton" name="btn_singen">
          <property name="text">
           <string/>
          </property>
@@ -402,7 +402,7 @@
         </widget>
        </item>
        <item row="9" column="2">
-        <widget class="QPushButton" name="pushButton_63">
+        <widget class="QPushButton" name="btn_sinnesschaerfe">
          <property name="text">
           <string/>
          </property>
@@ -413,7 +413,7 @@
         </widget>
        </item>
        <item row="10" column="2">
-        <widget class="QPushButton" name="pushButton_64">
+        <widget class="QPushButton" name="btn_tanzen">
          <property name="text">
           <string/>
          </property>
@@ -424,7 +424,7 @@
         </widget>
        </item>
        <item row="11" column="2">
-        <widget class="QPushButton" name="pushButton_66">
+        <widget class="QPushButton" name="btn_taschendiebstahl">
          <property name="text">
           <string/>
          </property>
@@ -435,7 +435,7 @@
         </widget>
        </item>
        <item row="12" column="2">
-        <widget class="QPushButton" name="pushButton_65">
+        <widget class="QPushButton" name="btn_verbergen">
          <property name="text">
           <string/>
          </property>
@@ -446,7 +446,7 @@
         </widget>
        </item>
        <item row="13" column="2">
-        <widget class="QPushButton" name="pushButton_67">
+        <widget class="QPushButton" name="btn_zechen">
          <property name="text">
           <string/>
          </property>
@@ -457,7 +457,7 @@
         </widget>
        </item>
        <item row="4" column="2">
-        <widget class="QPushButton" name="pushButton_43">
+        <widget class="QPushButton" name="btn_kraftakt">
          <property name="text">
           <string/>
          </property>
@@ -500,7 +500,7 @@
         <number>10</number>
        </property>
        <item row="8" column="1">
-        <widget class="QSpinBox" name="spinBox_35">
+        <widget class="QSpinBox" name="mod_willenskraft">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -510,7 +510,7 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QSpinBox" name="spinBox_29">
+        <widget class="QSpinBox" name="mod_bekehren">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -555,7 +555,7 @@
         </widget>
        </item>
        <item row="3" column="1">
-        <widget class="QSpinBox" name="spinBox_28">
+        <widget class="QSpinBox" name="mod_etikette">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -565,7 +565,7 @@
         </widget>
        </item>
        <item row="6" column="1">
-        <widget class="QSpinBox" name="spinBox_39">
+        <widget class="QSpinBox" name="mod_ueberreden">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -575,7 +575,7 @@
         </widget>
        </item>
        <item row="4" column="1">
-        <widget class="QSpinBox" name="spinBox_31">
+        <widget class="QSpinBox" name="mod_gassenwissen">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -585,7 +585,7 @@
         </widget>
        </item>
        <item row="2" column="1">
-        <widget class="QSpinBox" name="spinBox_33">
+        <widget class="QSpinBox" name="mod_einschuechtern">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -602,7 +602,7 @@
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QSpinBox" name="spinBox_34">
+        <widget class="QSpinBox" name="mod_betoeren">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -619,7 +619,7 @@
         </widget>
        </item>
        <item row="5" column="1">
-        <widget class="QSpinBox" name="spinBox_30">
+        <widget class="QSpinBox" name="mod_menschenkenntnis">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -629,7 +629,7 @@
         </widget>
        </item>
        <item row="7" column="1">
-        <widget class="QSpinBox" name="spinBox_40">
+        <widget class="QSpinBox" name="mod_verkleiden">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -653,7 +653,7 @@
         </widget>
        </item>
        <item row="0" column="2">
-        <widget class="QPushButton" name="pushButton_11">
+        <widget class="QPushButton" name="btn_bekehren">
          <property name="text">
           <string/>
          </property>
@@ -664,7 +664,7 @@
         </widget>
        </item>
        <item row="1" column="2">
-        <widget class="QPushButton" name="pushButton_10">
+        <widget class="QPushButton" name="btn_betoeren">
          <property name="text">
           <string/>
          </property>
@@ -675,7 +675,7 @@
         </widget>
        </item>
        <item row="2" column="2">
-        <widget class="QPushButton" name="pushButton_9">
+        <widget class="QPushButton" name="btn_einschuechtern">
          <property name="text">
           <string/>
          </property>
@@ -686,7 +686,7 @@
         </widget>
        </item>
        <item row="3" column="2">
-        <widget class="QPushButton" name="pushButton_8">
+        <widget class="QPushButton" name="btn_etikette">
          <property name="text">
           <string/>
          </property>
@@ -697,7 +697,7 @@
         </widget>
        </item>
        <item row="4" column="2">
-        <widget class="QPushButton" name="pushButton_17">
+        <widget class="QPushButton" name="btn_gassenwissen">
          <property name="text">
           <string/>
          </property>
@@ -708,7 +708,7 @@
         </widget>
        </item>
        <item row="5" column="2">
-        <widget class="QPushButton" name="pushButton_69">
+        <widget class="QPushButton" name="btn_menschenkenntnis">
          <property name="text">
           <string/>
          </property>
@@ -719,7 +719,7 @@
         </widget>
        </item>
        <item row="6" column="2">
-        <widget class="QPushButton" name="pushButton_68">
+        <widget class="QPushButton" name="btn_ueberreden">
          <property name="text">
           <string/>
          </property>
@@ -730,7 +730,7 @@
         </widget>
        </item>
        <item row="7" column="2">
-        <widget class="QPushButton" name="pushButton_14">
+        <widget class="QPushButton" name="btn_verkleiden">
          <property name="text">
           <string/>
          </property>
@@ -741,7 +741,7 @@
         </widget>
        </item>
        <item row="8" column="2">
-        <widget class="QPushButton" name="pushButton_13">
+        <widget class="QPushButton" name="btn_willenskraft">
          <property name="text">
           <string/>
          </property>
@@ -791,7 +791,7 @@
         </widget>
        </item>
        <item row="3" column="1">
-        <widget class="QSpinBox" name="spinBox_32">
+        <widget class="QSpinBox" name="mod_orientierung">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -808,7 +808,7 @@
         </widget>
        </item>
        <item row="2" column="1">
-        <widget class="QSpinBox" name="spinBox_42">
+        <widget class="QSpinBox" name="mod_angeln">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -818,7 +818,7 @@
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QSpinBox" name="spinBox_43">
+        <widget class="QSpinBox" name="mod_fesseln">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -856,7 +856,7 @@
         </widget>
        </item>
        <item row="5" column="1">
-        <widget class="QSpinBox" name="spinBox_37">
+        <widget class="QSpinBox" name="mod_tierkunde">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -873,7 +873,7 @@
         </widget>
        </item>
        <item row="4" column="1">
-        <widget class="QSpinBox" name="spinBox_38">
+        <widget class="QSpinBox" name="mod_pflanzenkunde">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -883,7 +883,7 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QSpinBox" name="spinBox_36">
+        <widget class="QSpinBox" name="mod_faehrtensuche">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -893,7 +893,7 @@
         </widget>
        </item>
        <item row="6" column="1">
-        <widget class="QSpinBox" name="spinBox_48">
+        <widget class="QSpinBox" name="mod_wildnisleben">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -903,7 +903,7 @@
         </widget>
        </item>
        <item row="0" column="2">
-        <widget class="QPushButton" name="pushButton_12">
+        <widget class="QPushButton" name="btn_faehrtensuche">
          <property name="text">
           <string/>
          </property>
@@ -914,7 +914,7 @@
         </widget>
        </item>
        <item row="1" column="2">
-        <widget class="QPushButton" name="pushButton_19">
+        <widget class="QPushButton" name="btn_fesseln">
          <property name="text">
           <string/>
          </property>
@@ -925,7 +925,7 @@
         </widget>
        </item>
        <item row="2" column="2">
-        <widget class="QPushButton" name="pushButton_21">
+        <widget class="QPushButton" name="btn_angeln">
          <property name="text">
           <string/>
          </property>
@@ -936,7 +936,7 @@
         </widget>
        </item>
        <item row="3" column="2">
-        <widget class="QPushButton" name="pushButton_18">
+        <widget class="QPushButton" name="btn_orientierung">
          <property name="text">
           <string/>
          </property>
@@ -947,7 +947,7 @@
         </widget>
        </item>
        <item row="4" column="2">
-        <widget class="QPushButton" name="pushButton_16">
+        <widget class="QPushButton" name="btn_pflanzenkunde">
          <property name="text">
           <string/>
          </property>
@@ -958,7 +958,7 @@
         </widget>
        </item>
        <item row="5" column="2">
-        <widget class="QPushButton" name="pushButton_15">
+        <widget class="QPushButton" name="btn_tierkunde">
          <property name="text">
           <string/>
          </property>
@@ -969,7 +969,7 @@
         </widget>
        </item>
        <item row="6" column="2">
-        <widget class="QPushButton" name="pushButton_20">
+        <widget class="QPushButton" name="btn_wildnisleben">
          <property name="text">
           <string/>
          </property>
@@ -1012,7 +1012,7 @@
         <number>10</number>
        </property>
        <item row="2" column="1">
-        <widget class="QSpinBox" name="spinBox_49">
+        <widget class="QSpinBox" name="mod_geschichtswissen">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -1036,7 +1036,7 @@
         </widget>
        </item>
        <item row="10" column="1">
-        <widget class="QSpinBox" name="spinBox_52">
+        <widget class="QSpinBox" name="mod_sphaerenkunde">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -1046,7 +1046,7 @@
         </widget>
        </item>
        <item row="5" column="1">
-        <widget class="QSpinBox" name="spinBox_45">
+        <widget class="QSpinBox" name="mod_magiekunde">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -1056,7 +1056,7 @@
         </widget>
        </item>
        <item row="6" column="1">
-        <widget class="QSpinBox" name="spinBox_55">
+        <widget class="QSpinBox" name="mod_mechanik">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -1073,7 +1073,7 @@
         </widget>
        </item>
        <item row="11" column="1">
-        <widget class="QSpinBox" name="spinBox_47">
+        <widget class="QSpinBox" name="mod_sternkunde">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -1085,12 +1085,12 @@
        <item row="0" column="0">
         <widget class="QLabel" name="label_38">
          <property name="text">
-          <string>Brett- &amp; Glücksspie         </string>
+          <string>Brett- &amp; Glücksspiel        </string>
          </property>
         </widget>
        </item>
        <item row="8" column="1">
-        <widget class="QSpinBox" name="spinBox_51">
+        <widget class="QSpinBox" name="mod_rechtskunde">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -1100,7 +1100,7 @@
         </widget>
        </item>
        <item row="3" column="1">
-        <widget class="QSpinBox" name="spinBox_41">
+        <widget class="QSpinBox" name="mod_kulte">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -1110,7 +1110,7 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QSpinBox" name="spinBox_44">
+        <widget class="QSpinBox" name="mod_brettspiel">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -1127,7 +1127,7 @@
         </widget>
        </item>
        <item row="4" column="1">
-        <widget class="QSpinBox" name="spinBox_46">
+        <widget class="QSpinBox" name="mod_kriegskunst">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -1144,7 +1144,7 @@
         </widget>
        </item>
        <item row="9" column="1">
-        <widget class="QSpinBox" name="spinBox_54">
+        <widget class="QSpinBox" name="mod_sagen">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -1175,7 +1175,7 @@
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QSpinBox" name="spinBox_50">
+        <widget class="QSpinBox" name="mod_geographie">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -1185,7 +1185,7 @@
         </widget>
        </item>
        <item row="7" column="1">
-        <widget class="QSpinBox" name="spinBox_56">
+        <widget class="QSpinBox" name="mod_rechnen">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -1216,7 +1216,7 @@
         </widget>
        </item>
        <item row="0" column="2">
-        <widget class="QPushButton" name="pushButton_22">
+        <widget class="QPushButton" name="btn_brettspiel">
          <property name="text">
           <string/>
          </property>
@@ -1227,7 +1227,7 @@
         </widget>
        </item>
        <item row="1" column="2">
-        <widget class="QPushButton" name="pushButton_23">
+        <widget class="QPushButton" name="btn_geographie">
          <property name="text">
           <string/>
          </property>
@@ -1238,7 +1238,7 @@
         </widget>
        </item>
        <item row="2" column="2">
-        <widget class="QPushButton" name="pushButton_28">
+        <widget class="QPushButton" name="btn_geschichtswissen">
          <property name="text">
           <string/>
          </property>
@@ -1249,7 +1249,7 @@
         </widget>
        </item>
        <item row="3" column="2">
-        <widget class="QPushButton" name="pushButton_26">
+        <widget class="QPushButton" name="btn_kulte">
          <property name="text">
           <string/>
          </property>
@@ -1260,7 +1260,7 @@
         </widget>
        </item>
        <item row="4" column="2">
-        <widget class="QPushButton" name="pushButton_25">
+        <widget class="QPushButton" name="btn_kriegskunst">
          <property name="text">
           <string/>
          </property>
@@ -1271,7 +1271,7 @@
         </widget>
        </item>
        <item row="5" column="2">
-        <widget class="QPushButton" name="pushButton_24">
+        <widget class="QPushButton" name="btn_magiekunde">
          <property name="text">
           <string/>
          </property>
@@ -1282,7 +1282,7 @@
         </widget>
        </item>
        <item row="6" column="2">
-        <widget class="QPushButton" name="pushButton_27">
+        <widget class="QPushButton" name="btn_mechanik">
          <property name="text">
           <string/>
          </property>
@@ -1293,7 +1293,7 @@
         </widget>
        </item>
        <item row="7" column="2">
-        <widget class="QPushButton" name="pushButton_29">
+        <widget class="QPushButton" name="btn_rechnen">
          <property name="text">
           <string/>
          </property>
@@ -1304,7 +1304,7 @@
         </widget>
        </item>
        <item row="8" column="2">
-        <widget class="QPushButton" name="pushButton_33">
+        <widget class="QPushButton" name="btn_rechtskunde">
          <property name="text">
           <string/>
          </property>
@@ -1315,7 +1315,7 @@
         </widget>
        </item>
        <item row="9" column="2">
-        <widget class="QPushButton" name="pushButton_71">
+        <widget class="QPushButton" name="btn_sagen">
          <property name="text">
           <string/>
          </property>
@@ -1326,7 +1326,7 @@
         </widget>
        </item>
        <item row="10" column="2">
-        <widget class="QPushButton" name="pushButton_70">
+        <widget class="QPushButton" name="btn_sphaerenkunde">
          <property name="text">
           <string/>
          </property>
@@ -1337,7 +1337,7 @@
         </widget>
        </item>
        <item row="11" column="2">
-        <widget class="QPushButton" name="pushButton_30">
+        <widget class="QPushButton" name="btn_sternkunde">
          <property name="text">
           <string/>
          </property>
@@ -1394,7 +1394,7 @@
         </widget>
        </item>
        <item row="2" column="1">
-        <widget class="QSpinBox" name="spinBox_61">
+        <widget class="QSpinBox" name="mod_fahrzeuge">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -1418,7 +1418,7 @@
         </widget>
        </item>
        <item row="7" column="1">
-        <widget class="QSpinBox" name="spinBox_68">
+        <widget class="QSpinBox" name="mod_heilenWunden">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -1442,7 +1442,7 @@
         </widget>
        </item>
        <item row="10" column="1">
-        <widget class="QSpinBox" name="spinBox_64">
+        <widget class="QSpinBox" name="mod_lederbearbeitung">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -1459,7 +1459,7 @@
         </widget>
        </item>
        <item row="15" column="1">
-        <widget class="QSpinBox" name="spinBox_71">
+        <widget class="QSpinBox" name="mod_steinbearbeitung">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -1469,7 +1469,7 @@
         </widget>
        </item>
        <item row="3" column="1">
-        <widget class="QSpinBox" name="spinBox_53">
+        <widget class="QSpinBox" name="mod_handel">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -1493,7 +1493,7 @@
         </widget>
        </item>
        <item row="9" column="1">
-        <widget class="QSpinBox" name="spinBox_66">
+        <widget class="QSpinBox" name="mod_lebensmittelbearbeitung">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -1510,7 +1510,7 @@
         </widget>
        </item>
        <item row="5" column="1">
-        <widget class="QSpinBox" name="spinBox_58">
+        <widget class="QSpinBox" name="mod_heilenKrankheit">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -1527,7 +1527,7 @@
         </widget>
        </item>
        <item row="13" column="1">
-        <widget class="QSpinBox" name="spinBox_69">
+        <widget class="QSpinBox" name="mod_musizieren">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -1544,7 +1544,7 @@
         </widget>
        </item>
        <item row="8" column="1">
-        <widget class="QSpinBox" name="spinBox_63">
+        <widget class="QSpinBox" name="mod_holzbearbeitung">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -1561,7 +1561,7 @@
         </widget>
        </item>
        <item row="14" column="1">
-        <widget class="QSpinBox" name="spinBox_70">
+        <widget class="QSpinBox" name="mod_schloesserknacken">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -1571,7 +1571,7 @@
         </widget>
        </item>
        <item row="16" column="1">
-        <widget class="QSpinBox" name="spinBox_72">
+        <widget class="QSpinBox" name="mod_stoffbearbeitung">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -1581,7 +1581,7 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QSpinBox" name="spinBox_57">
+        <widget class="QSpinBox" name="mod_alchemie">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -1591,7 +1591,7 @@
         </widget>
        </item>
        <item row="4" column="1">
-        <widget class="QSpinBox" name="spinBox_59">
+        <widget class="QSpinBox" name="mod_heilenGift">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -1608,7 +1608,7 @@
         </widget>
        </item>
        <item row="6" column="1">
-        <widget class="QSpinBox" name="spinBox_67">
+        <widget class="QSpinBox" name="mod_heilenSeele">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -1632,7 +1632,7 @@
         </widget>
        </item>
        <item row="11" column="1">
-        <widget class="QSpinBox" name="spinBox_60">
+        <widget class="QSpinBox" name="mod_malen">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -1642,7 +1642,7 @@
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QSpinBox" name="spinBox_62">
+        <widget class="QSpinBox" name="mod_boote">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -1659,7 +1659,7 @@
         </widget>
        </item>
        <item row="12" column="1">
-        <widget class="QSpinBox" name="spinBox_65">
+        <widget class="QSpinBox" name="mod_metallbearbeitung">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -1669,7 +1669,7 @@
         </widget>
        </item>
        <item row="0" column="2">
-        <widget class="QPushButton" name="pushButton_74">
+        <widget class="QPushButton" name="btn_alchemie">
          <property name="text">
           <string/>
          </property>
@@ -1680,7 +1680,7 @@
         </widget>
        </item>
        <item row="1" column="2">
-        <widget class="QPushButton" name="pushButton_77">
+        <widget class="QPushButton" name="btn_boote">
          <property name="text">
           <string/>
          </property>
@@ -1691,7 +1691,7 @@
         </widget>
        </item>
        <item row="2" column="2">
-        <widget class="QPushButton" name="pushButton_75">
+        <widget class="QPushButton" name="btn_fahrzeuge">
          <property name="text">
           <string/>
          </property>
@@ -1702,7 +1702,7 @@
         </widget>
        </item>
        <item row="3" column="2">
-        <widget class="QPushButton" name="pushButton_73">
+        <widget class="QPushButton" name="btn_handel">
          <property name="text">
           <string/>
          </property>
@@ -1713,7 +1713,7 @@
         </widget>
        </item>
        <item row="4" column="2">
-        <widget class="QPushButton" name="pushButton_72">
+        <widget class="QPushButton" name="btn_heilenGift">
          <property name="text">
           <string/>
          </property>
@@ -1724,7 +1724,7 @@
         </widget>
        </item>
        <item row="5" column="2">
-        <widget class="QPushButton" name="pushButton_76">
+        <widget class="QPushButton" name="btn_heilenKrankheit">
          <property name="text">
           <string/>
          </property>
@@ -1735,7 +1735,7 @@
         </widget>
        </item>
        <item row="6" column="2">
-        <widget class="QPushButton" name="pushButton_41">
+        <widget class="QPushButton" name="btn_heilenSeele">
          <property name="text">
           <string/>
          </property>
@@ -1746,7 +1746,7 @@
         </widget>
        </item>
        <item row="7" column="2">
-        <widget class="QPushButton" name="pushButton_38">
+        <widget class="QPushButton" name="btn_heilenWunden">
          <property name="text">
           <string/>
          </property>
@@ -1757,7 +1757,7 @@
         </widget>
        </item>
        <item row="8" column="2">
-        <widget class="QPushButton" name="pushButton_37">
+        <widget class="QPushButton" name="btn_holzbearbeitung">
          <property name="text">
           <string/>
          </property>
@@ -1768,7 +1768,7 @@
         </widget>
        </item>
        <item row="9" column="2">
-        <widget class="QPushButton" name="pushButton_36">
+        <widget class="QPushButton" name="btn_lebensmittelbearbeitung">
          <property name="text">
           <string/>
          </property>
@@ -1779,7 +1779,7 @@
         </widget>
        </item>
        <item row="10" column="2">
-        <widget class="QPushButton" name="pushButton_35">
+        <widget class="QPushButton" name="btn_lederbearbeitung">
          <property name="text">
           <string/>
          </property>
@@ -1790,7 +1790,7 @@
         </widget>
        </item>
        <item row="11" column="2">
-        <widget class="QPushButton" name="pushButton_34">
+        <widget class="QPushButton" name="btn_malen">
          <property name="text">
           <string/>
          </property>
@@ -1801,7 +1801,7 @@
         </widget>
        </item>
        <item row="12" column="2">
-        <widget class="QPushButton" name="pushButton_32">
+        <widget class="QPushButton" name="btn_metallbearbeitung">
          <property name="text">
           <string/>
          </property>
@@ -1812,7 +1812,7 @@
         </widget>
        </item>
        <item row="13" column="2">
-        <widget class="QPushButton" name="pushButton_31">
+        <widget class="QPushButton" name="btn_musizieren">
          <property name="text">
           <string/>
          </property>
@@ -1823,7 +1823,7 @@
         </widget>
        </item>
        <item row="14" column="2">
-        <widget class="QPushButton" name="pushButton_39">
+        <widget class="QPushButton" name="btn_schloesserknacken">
          <property name="text">
           <string/>
          </property>
@@ -1834,7 +1834,7 @@
         </widget>
        </item>
        <item row="15" column="2">
-        <widget class="QPushButton" name="pushButton_40">
+        <widget class="QPushButton" name="btn_steinbearbeitung">
          <property name="text">
           <string/>
          </property>
@@ -1845,7 +1845,7 @@
         </widget>
        </item>
        <item row="16" column="2">
-        <widget class="QPushButton" name="pushButton_42">
+        <widget class="QPushButton" name="btn_stoffbearbeitung">
          <property name="text">
           <string/>
          </property>
@@ -1859,7 +1859,7 @@
      </widget>
     </widget>
    </widget>
-   <widget class="QLabel" name="label_63">
+   <widget class="QLabel" name="label_result_title">
     <property name="geometry">
      <rect>
       <x>540</x>
@@ -1888,12 +1888,12 @@
       <height>25</height>
      </rect>
     </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <layout class="QHBoxLayout" name="layout_heldLaden">
      <item>
-      <widget class="QLineEdit" name="lineEdit"/>
+      <widget class="QLineEdit" name="txt_heldLaden"/>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_57">
+      <widget class="QPushButton" name="btn_heldLaden">
        <property name="text">
         <string>Held laden</string>
        </property>
@@ -1910,9 +1910,9 @@
       <height>78</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
+    <layout class="QVBoxLayout" name="layout_attribute">
      <item>
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="label_attribute_title">
        <property name="font">
         <font>
          <pointsize>12</pointsize>
@@ -1926,7 +1926,7 @@
       </widget>
      </item>
      <item>
-      <layout class="QGridLayout" name="gridLayout_6">
+      <layout class="QGridLayout" name="grid_attribute">
        <item row="0" column="5" colspan="2">
         <widget class="QPushButton" name="btn_intelligenz">
          <property name="toolTip">
@@ -1938,7 +1938,7 @@
         </widget>
        </item>
        <item row="1" column="12">
-        <widget class="QSpinBox" name="spinBox_74">
+        <widget class="QSpinBox" name="mod_gewandtheit">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -1948,7 +1948,7 @@
         </widget>
        </item>
        <item row="1" column="10">
-        <widget class="QSpinBox" name="spinBox_73">
+        <widget class="QSpinBox" name="mod_fingerfertigkeit">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -1958,7 +1958,7 @@
         </widget>
        </item>
        <item row="1" column="2">
-        <widget class="QSpinBox" name="spinBox_78">
+        <widget class="QSpinBox" name="mod_mut">
          <property name="buttonSymbols">
           <enum>QAbstractSpinBox::UpDownArrows</enum>
          </property>
@@ -1991,9 +1991,9 @@
         </widget>
        </item>
        <item row="0" column="11" colspan="2">
-        <widget class="QPushButton" name="btn_geschick">
+        <widget class="QPushButton" name="btn_gewandtheit">
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Geschick&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Gewandtheit&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="text">
           <string>GE</string>
@@ -2011,7 +2011,7 @@
         </widget>
        </item>
        <item row="1" column="6">
-        <widget class="QSpinBox" name="spinBox_76">
+        <widget class="QSpinBox" name="mod_intuition">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -2031,7 +2031,7 @@
         </widget>
        </item>
        <item row="1" column="4">
-        <widget class="QSpinBox" name="spinBox_77">
+        <widget class="QSpinBox" name="mod_klugheit">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -2051,7 +2051,7 @@
         </widget>
        </item>
        <item row="1" column="16">
-        <widget class="QSpinBox" name="spinBox_80">
+        <widget class="QSpinBox" name="mod_koerperkraft">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -2061,7 +2061,7 @@
         </widget>
        </item>
        <item row="1" column="14">
-        <widget class="QSpinBox" name="spinBox_79">
+        <widget class="QSpinBox" name="mod_konstitution">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -2071,7 +2071,7 @@
         </widget>
        </item>
        <item row="1" column="8">
-        <widget class="QSpinBox" name="spinBox_75">
+        <widget class="QSpinBox" name="mod_charisma">
          <property name="minimum">
           <number>-50</number>
          </property>
@@ -2080,15 +2080,8 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="15">
-        <widget class="QLabel" name="label_3">
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
        <item row="0" column="15" colspan="2">
-        <widget class="QPushButton" name="btn_Koerperkraft">
+        <widget class="QPushButton" name="btn_koerperkraft">
          <property name="toolTip">
           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Körperkraft&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
