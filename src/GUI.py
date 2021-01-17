@@ -10,6 +10,11 @@ import sys
 import held
 from functools import partial
 
+# Held laden
+def load(name):
+    global Held
+    Held = held.Held.laden(name(),r'D:\Voovo\Documents\RPG\DSA')
+
 # Fertigkeiten Funktion
 def do(action, modi):
     result = Held.absolviere(action, modi())
@@ -31,11 +36,25 @@ if __name__ == "__main__":
 
     # Button-Logik
     # ========================================================================
+    # Held laden
+    func_btn_heldLaden = partial(load, win.txt_heldLaden.text)
+    win.btn_heldLaden.clicked.connect(func_btn_heldLaden)
+
+    # ========================================================================
     # Fertigkeiten
     # ------------------------------------------------------------------------
+    # Körperfertigkeiten
     func_btn_fliegen = partial(do, "Fliegen",win.mod_fliegen.value)
     win.btn_fliegen.clicked.connect(func_btn_fliegen)
 
+    func_btn_gaukeleien = partial(do, "Gaukeleien",win.mod_gaukeleien.value)
+    win.btn_gaukeleien.clicked.connect(func_btn_gaukeleien)
+
+    func_btn_klettern = partial(do, "Klettern",win.mod_klettern.value)
+    win.btn_klettern.clicked.connect(func_btn_klettern)
+
+    func_btn_koerperbeherrschung = partial(do, "Körperbeherrschung",win.mod_koerperbeherrschung.value)
+    win.btn_koerperbeherrschung.clicked.connect(func_btn_koerperbeherrschung)
 
    # ========================================================================
 
