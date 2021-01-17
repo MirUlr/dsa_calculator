@@ -18,7 +18,7 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>170</y>
+      <y>180</y>
       <width>100</width>
       <height>19</height>
      </rect>
@@ -34,11 +34,14 @@
      <string>Fertigkeiten</string>
     </property>
    </widget>
-   <widget class="QTabWidget" name="tabWidget">
+   <widget class="QTabWidget" name="tab_fertigkeiten">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>200</y>
+      <y>210</y>
       <width>511</width>
       <height>651</height>
      </rect>
@@ -1862,7 +1865,7 @@
    <widget class="QLabel" name="label_result_title">
     <property name="geometry">
      <rect>
-      <x>540</x>
+      <x>550</x>
       <y>250</y>
       <width>161</width>
       <height>19</height>
@@ -1901,203 +1904,10 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>70</y>
-      <width>699</width>
-      <height>78</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="layout_attribute">
-     <item>
-      <widget class="QLabel" name="label_attribute_title">
-       <property name="font">
-        <font>
-         <pointsize>12</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Attribute</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <layout class="QGridLayout" name="grid_attribute">
-       <item row="0" column="5" colspan="2">
-        <widget class="QPushButton" name="btn_intelligenz">
-         <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Intuition&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="text">
-          <string>IN</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="12">
-        <widget class="QSpinBox" name="mod_gewandtheit">
-         <property name="minimum">
-          <number>-50</number>
-         </property>
-         <property name="maximum">
-          <number>50</number>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="10">
-        <widget class="QSpinBox" name="mod_fingerfertigkeit">
-         <property name="minimum">
-          <number>-50</number>
-         </property>
-         <property name="maximum">
-          <number>50</number>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="2">
-        <widget class="QSpinBox" name="mod_mut">
-         <property name="buttonSymbols">
-          <enum>QAbstractSpinBox::UpDownArrows</enum>
-         </property>
-         <property name="minimum">
-          <number>-50</number>
-         </property>
-         <property name="maximum">
-          <number>50</number>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="13" colspan="2">
-        <widget class="QPushButton" name="btn_konstitution">
-         <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Konstitution&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="text">
-          <string>KO</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="9" colspan="2">
-        <widget class="QPushButton" name="btn_fingerfertigkeit">
-         <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fingerfertigkeit&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="text">
-          <string>FF</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="11" colspan="2">
-        <widget class="QPushButton" name="btn_gewandtheit">
-         <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Gewandtheit&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="text">
-          <string>GE</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="7" colspan="2">
-        <widget class="QPushButton" name="btn_charisma">
-         <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Charisma&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="text">
-          <string>CH</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="6">
-        <widget class="QSpinBox" name="mod_intuition">
-         <property name="minimum">
-          <number>-50</number>
-         </property>
-         <property name="maximum">
-          <number>50</number>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1" colspan="2">
-        <widget class="QPushButton" name="btn_mut">
-         <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Mut&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="text">
-          <string>MU</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="4">
-        <widget class="QSpinBox" name="mod_klugheit">
-         <property name="minimum">
-          <number>-50</number>
-         </property>
-         <property name="maximum">
-          <number>50</number>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="3" colspan="2">
-        <widget class="QPushButton" name="btn_klugheit">
-         <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Klugheit&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="text">
-          <string>KL</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="16">
-        <widget class="QSpinBox" name="mod_koerperkraft">
-         <property name="minimum">
-          <number>-50</number>
-         </property>
-         <property name="maximum">
-          <number>50</number>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="14">
-        <widget class="QSpinBox" name="mod_konstitution">
-         <property name="minimum">
-          <number>-50</number>
-         </property>
-         <property name="maximum">
-          <number>50</number>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="8">
-        <widget class="QSpinBox" name="mod_charisma">
-         <property name="minimum">
-          <number>-50</number>
-         </property>
-         <property name="maximum">
-          <number>50</number>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="15" colspan="2">
-        <widget class="QPushButton" name="btn_koerperkraft">
-         <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Körperkraft&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="text">
-          <string>KK</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-    </layout>
-   </widget>
    <widget class="QLabel" name="label_result">
     <property name="geometry">
      <rect>
-      <x>540</x>
+      <x>550</x>
       <y>280</y>
       <width>231</width>
       <height>261</height>
@@ -2111,6 +1921,237 @@
     </property>
     <property name="wordWrap">
      <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QGroupBox" name="box_attribute">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>70</y>
+      <width>721</width>
+      <height>91</height>
+     </rect>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::LeftToRight</enum>
+    </property>
+    <property name="title">
+     <string/>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+    <property name="flat">
+     <bool>false</bool>
+    </property>
+    <widget class="QWidget" name="layoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>10</y>
+       <width>699</width>
+       <height>78</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="layout_attribute">
+      <item>
+       <layout class="QGridLayout" name="grid_attribute">
+        <item row="0" column="7" colspan="2">
+         <widget class="QPushButton" name="btn_charisma">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Charisma&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string>CH</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="6">
+         <widget class="QSpinBox" name="mod_intuition">
+          <property name="minimum">
+           <number>-50</number>
+          </property>
+          <property name="maximum">
+           <number>50</number>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="13" colspan="2">
+         <widget class="QPushButton" name="btn_konstitution">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Konstitution&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string>KO</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="8">
+         <widget class="QSpinBox" name="mod_charisma">
+          <property name="minimum">
+           <number>-50</number>
+          </property>
+          <property name="maximum">
+           <number>50</number>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="3" colspan="2">
+         <widget class="QPushButton" name="btn_klugheit">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Klugheit&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string>KL</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QSpinBox" name="mod_mut">
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::UpDownArrows</enum>
+          </property>
+          <property name="minimum">
+           <number>-50</number>
+          </property>
+          <property name="maximum">
+           <number>50</number>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="14">
+         <widget class="QSpinBox" name="mod_konstitution">
+          <property name="minimum">
+           <number>-50</number>
+          </property>
+          <property name="maximum">
+           <number>50</number>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="5" colspan="2">
+         <widget class="QPushButton" name="btn_intelligenz">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Intuition&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string>IN</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="9" colspan="2">
+         <widget class="QPushButton" name="btn_fingerfertigkeit">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fingerfertigkeit&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string>FF</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="11" colspan="2">
+         <widget class="QPushButton" name="btn_gewandtheit">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Gewandtheit&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string>GE</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="15" colspan="2">
+         <widget class="QPushButton" name="btn_koerperkraft">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Körperkraft&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string>KK</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1" colspan="2">
+         <widget class="QPushButton" name="btn_mut">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Mut&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string>MU</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="4">
+         <widget class="QSpinBox" name="mod_klugheit">
+          <property name="minimum">
+           <number>-50</number>
+          </property>
+          <property name="maximum">
+           <number>50</number>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="16">
+         <widget class="QSpinBox" name="mod_koerperkraft">
+          <property name="minimum">
+           <number>-50</number>
+          </property>
+          <property name="maximum">
+           <number>50</number>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="12">
+         <widget class="QSpinBox" name="mod_gewandtheit">
+          <property name="minimum">
+           <number>-50</number>
+          </property>
+          <property name="maximum">
+           <number>50</number>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="10">
+         <widget class="QSpinBox" name="mod_fingerfertigkeit">
+          <property name="minimum">
+           <number>-50</number>
+          </property>
+          <property name="maximum">
+           <number>50</number>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QLabel" name="label_attribute_title">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>60</y>
+      <width>697</width>
+      <height>19</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Attribute</string>
     </property>
    </widget>
   </widget>

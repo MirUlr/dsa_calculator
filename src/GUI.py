@@ -15,6 +15,10 @@ def load(name):
     global Held
     Held = held.Held.laden(name(),r'D:\Voovo\Documents\RPG\DSA')
 
+    if(type(Held) == held.Held):
+        win.tab_fertigkeiten.setEnabled(True)
+        win.box_attribute.setEnabled(True)
+
 # Fertigkeiten Funktion
 def do(action, modi):
     result = Held.absolviere(action, modi())
@@ -55,6 +59,36 @@ if __name__ == "__main__":
 
     func_btn_koerperbeherrschung = partial(do, "Körperbeherrschung",win.mod_koerperbeherrschung.value)
     win.btn_koerperbeherrschung.clicked.connect(func_btn_koerperbeherrschung)
+
+    func_btn_kraftakt = partial(do, "Kraftakt",win.mod_kraftakt.value)
+    win.btn_kraftakt.clicked.connect(func_btn_kraftakt)
+
+    func_btn_reiten = partial(do, "Reiten",win.mod_reiten.value)
+    win.btn_reiten.clicked.connect(func_btn_reiten)
+
+    func_btn_schwimmen = partial(do, "Schwimmen",win.mod_schwimmen.value)
+    win.btn_schwimmen.clicked.connect(func_btn_schwimmen)
+
+    func_btn_selbstbeherrschung = partial(do, "Selbstbeherrschung",win.mod_selbstbeherrschung.value)
+    win.btn_selbstbeherrschung.clicked.connect(func_btn_selbstbeherrschung)
+
+    func_btn_singen = partial(do, "Singen",win.mod_singen.value)
+    win.btn_singen.clicked.connect(func_btn_singen)
+
+    func_btn_sinnesschaerfe = partial(do, "Sinnesschärfe",win.mod_sinnesschaerfe.value)
+    win.btn_sinnesschaerfe.clicked.connect(func_btn_sinnesschaerfe)
+
+    func_btn_tanzen = partial(do, "Tanzen",win.mod_tanzen.value)
+    win.btn_tanzen.clicked.connect(func_btn_tanzen)
+
+    func_btn_taschendiebstahl = partial(do, "Taschendiebstahl",win.mod_taschendiebstahl.value)
+    win.btn_taschendiebstahl.clicked.connect(func_btn_taschendiebstahl)
+
+    func_btn_verbergen = partial(do, "Verbergen",win.mod_verbergen.value)
+    win.btn_verbergen.clicked.connect(func_btn_verbergen)
+
+    func_btn_zechen = partial(do, "Zechen",win.mod_zechen.value)
+    win.btn_zechen.clicked.connect(func_btn_zechen)
 
    # ========================================================================
 
