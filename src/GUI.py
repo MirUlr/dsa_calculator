@@ -47,7 +47,7 @@ if __name__ == "__main__":
     # ========================================================================
     # Fertigkeiten
     # ------------------------------------------------------------------------
-    # Körperfertigkeiten
+    # Körpertalente
     func_btn_fliegen = partial(do, "Fliegen",win.mod_fliegen.value)
     win.btn_fliegen.clicked.connect(func_btn_fliegen)
 
@@ -89,6 +89,36 @@ if __name__ == "__main__":
 
     func_btn_zechen = partial(do, "Zechen",win.mod_zechen.value)
     win.btn_zechen.clicked.connect(func_btn_zechen)
+
+    # ------------------------------------------------------------------------
+    # Gesellschaftstalente
+    func_btn_bekehren = partial(do, "Bekehren & Überzeugen",win.mod_bekehren.value)
+    win.btn_bekehren.clicked.connect(func_btn_bekehren)
+
+    func_btn_betoeren = partial(do, "Betören",win.mod_betoeren.value)
+    win.btn_betoeren.clicked.connect(func_btn_betoeren)
+
+    func_btn_einschuechtern = partial(do, "Einschüchtern",win.mod_einschuechtern.value)
+    win.btn_einschuechtern.clicked.connect(func_btn_einschuechtern)
+
+    func_btn_etikette = partial(do, "Etikette",win.mod_etikette.value)
+    win.btn_etikette.clicked.connect(func_btn_etikette)
+
+    func_btn_gassenwissen = partial(do, "Gassenwissen",win.mod_gassenwissen.value)
+    win.btn_gassenwissen.clicked.connect(func_btn_gassenwissen)
+
+    func_btn_menschenkenntnis = partial(do, "Menschenkenntnis",win.mod_menschenkenntnis.value)
+    win.btn_menschenkenntnis.clicked.connect(func_btn_menschenkenntnis)
+
+    func_btn_ueberreden = partial(do, "Überreden",win.mod_ueberreden.value)
+    win.btn_ueberreden.clicked.connect(func_btn_ueberreden)
+
+    func_btn_verkleiden = partial(do, "Verkleiden",win.mod_verkleiden.value)
+    win.btn_verkleiden.clicked.connect(func_btn_verkleiden)
+
+    func_btn_willenskraft = partial(do, "Willenskraft",win.mod_willenskraft.value)
+    win.btn_willenskraft.clicked.connect(func_btn_willenskraft)
+
 
    # ========================================================================
 
