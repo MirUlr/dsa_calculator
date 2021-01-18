@@ -160,73 +160,97 @@ class Held():
             print('{} ist keine gültige Fertigkeit.'.format(talent))
 
         if any(zielwerte < 1):                  # unmögliche Proben detektieren
-            print('Die Erschwernis von {} '
-                  'macht diese Probe unmöglich.'.format(abs(modifikator)))
-            ret = 'Die Erschwernis von {} ''macht diese Probe unmöglich.'.format(abs(modifikator))
-            return ret
+            msg = ('Die Erschwernis von {} '
+                   'macht diese Probe unmöglich.'.format(abs(modifikator)))
+            return msg
 
         _3w20 = np.random.randint(1, 21, 3)
 
-        ausgleich = _3w20 - zielwerte
-        ausgleich[ausgleich < 0] = 0                # kein discount auf Erfolge
-        übrig = self.__fertigkeiten[talent] - sum(ausgleich)
+        # Zufallsereignis auswerten
+        gelungen, krit, qualitätsstufen = self._perform_test(
+            aim=zielwerte, random_event=_3w20,
+            skill_level=self.__fertigkeiten[talent])
 
-        # Bestimmen von Patzer und krit. Erfol
-        würfel_p = _3w20.copy()
-        würfel_p[würfel_p != 20] = 0
-        patzer = sum(würfel_p) > 20       # <=> mehr als eine zwanzig gewürfelt
+        # Ausgabe bestimmen
+        out = self._format_outcome(
+            skill=talent,
+            goals=zielwerte,
+            random_event=_3w20,
+            talent_level=self.__fertigkeiten,
+            talent_composition=self.FERTIGKEITSPROBEN,
+            success=gelungen,
+            crit=krit,
+            quality_level=qualitätsstufen,
+            modification=modifikator)
+        return out
 
-        würfel_k = _3w20.copy()
-        würfel_k[würfel_k != 1] = 0
-        krit = sum(würfel_k) > 1             # <=> mehr als eine eins gewürfelt
-
-        if (übrig >= 0 and not patzer) or krit:
-            gelungen = True
-            qualitätsstufen = self.__determine_quality_level(übrig)
-            if krit:
-                qualitätsstufen *= 2
+    def _format_outcome(self, skill: str, goals, random_event,
+                        talent_level: dict,
+                        talent_composition: dict,
+                        success: bool, crit: bool, quality_level: int,
+                        kind_of_test='absolviert eine Probe auf',
+                        modification=0):
+        out = ''
+        if modification == 0:
+            test = '{} {} {} (Fertigkeitswert {}).'
         else:
-            gelungen = False
-
-        # Teile die Ergebnisse der Welt mit!
-        trenner = '='*75
-
-        if modifikator == 0:
-            probe = '{} absolviert eine Probe auf {}, Fertigkeitswert {}.'
-        else:
-            if modifikator < 0:
-                probe = '{} absolviert eine um ' +\
-                    str(abs(modifikator)) +\
-                    ' erschwerte Probe auf {}, Fertigkeitswert {}.'
+            if modification < 0:
+                test = '{} {} {} (Fertigkeitwert {}), um ' +\
+                    str(abs(modification)) + ' erschwert.'
             else:
-                probe = '{} absolviert eine um ' +\
-                    str(abs(modifikator)) +\
-                    ' erleichterte Probe auf {}, Fertigkeitswert {}.'
+                test = '{} {} {} (Fertigkeitwert {}), um ' +\
+                    str(abs(modification)) + ' erleichtert.'
+        out += test.format(self.name, kind_of_test, skill,
+                           talent_level[skill])
 
-        zu_erzielen = 'Eigenschaften:\n\t{} {} {}\nZielwerte:\n\t{}'.format(
-            *self.FERTIGKEITSPROBEN[talent], zielwerte)
-        zufallsereignis = 'Würfelergebnis:\n\t{}\n'.format(_3w20)
+        goal_to_aim = 'Eigenschaften:\n\t{} {} {}\nZielwerte:\n\t{}'.format(
+            *talent_composition[skill], goals)
+        out += '\n' + goal_to_aim
 
-        if gelungen:
-            resultat = 'Ergebnis:\tErfolg mit {} Qualitätsstufe(n).'.format(
-                qualitätsstufen)
-            if krit:
-                resultat += '\t=D'
-        else:
-            if patzer:
-                resultat = 'Ergebnis:\tPatzer'
+        outcome_rng = 'Würfelergebnis:\n\t{}\n'.format(random_event)
+        out += '\n' + outcome_rng
+
+        if success:
+            if crit:
+                final_result = ('Ergebnis:\tKritischer Erfolg mit {} '
+                                'Qualitätsstufen.\t:-D'.format(quality_level))
             else:
-                resultat = 'Ergebnis:\tFehlschlag'
+                final_result = ('Ergebnis:\tErfolg mit '
+                                '{} Qualitätsstufen.'.format(quality_level))
+        else:
+            if crit:
+                final_result = 'Ergebnis:\tPatzer\t>:-|'
+            else:
+                final_result = 'Ergebnis:\tFehlschlag'
+        out += '\n' + final_result
 
-        # Ausgabe
-        print(trenner)
-        print(probe.format(self.name, talent, self.__fertigkeiten[talent]))
-        print(zu_erzielen)
-        print(zufallsereignis)
-        print(resultat)
+        return out
 
-        ret = probe.format(self.name, talent, self.__fertigkeiten[talent])+"\n\n"+zu_erzielen+"\n"+zufallsereignis+"\n"+resultat
-        return ret
+    def _perform_test(self, aim, random_event, skill_level):
+        compensation = random_event - aim
+        compensation[compensation < 0] = 0
+        spare = skill_level - sum(compensation)
+
+        fail_copy = random_event.copy()
+        fail_copy[fail_copy != 20] = 0
+        crit_fail = sum(fail_copy) > 20
+
+        win_copy = random_event.copy()
+        win_copy[win_copy != 1] = 0
+        crit_win = sum(win_copy) > 1
+
+        success = ((spare >= 0) or crit_win) and not crit_fail
+
+        critical = crit_win or crit_fail
+
+        if crit_win:
+            spare = max(spare, 0)
+            quality_level = self.__determine_quality_level(spare)
+            quality_level *= 2
+        else:
+            quality_level = self.__determine_quality_level(spare)
+
+        return success, critical, quality_level
 
     @staticmethod
     def __ask_for_values(dictionary, limits=(-float('inf'), float('inf'))):
@@ -248,16 +272,28 @@ class Held():
             values.append(val)
         return values
 
-    @staticmethod
-    def _show_pretty_dicts(title, dictionary, alphabetical_order=True):
+    def _show_pretty_dicts(self, title, dictionary, alphabetical_order=True,
+                           depth=1):
         list_of_keys = list(dictionary.keys())
         if alphabetical_order:
             list_of_keys.sort()
-
-        underline = '\n' + '=' * len(title)
+        if depth == 1:
+            underline = '\n' + '=' * len(title)
+        elif depth == 2:
+            underline = '\n' + '-' * len(title)
+        else:
+            underline = ''
         print('\n' + title + underline)
         for key in list_of_keys:
-            print(key + ':\n\t' + str(dictionary[key]))
+            if isinstance(dictionary[key], dict):
+                value = str(self._show_pretty_dicts(
+                    title=key,
+                    dictionary=dictionary[key],
+                    depth=depth+1))
+            else:
+                value = str(dictionary[key])
+            if value != 'None':
+                print(key + ':\n' + '\t'*depth + value)
 
     @staticmethod
     def __determine_quality_level(spare_points):

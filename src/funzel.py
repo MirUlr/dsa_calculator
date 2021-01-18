@@ -4,6 +4,7 @@ Created on Sun Jan 17 17:26:37 2021
 
 @author: Mirko Ulrich
 """
+import numpy as np
 
 from held import Held
 
@@ -25,7 +26,9 @@ class Funzel(Held):
         else:
             self._funzelkram = funzel_fertigkeiten
 
-    def __ask_for_funzel_stuff(self, funzel_dict={}):
+    def __ask_for_funzel_stuff(self,
+                               funzel_dict={'Proben': {},
+                                            'Fertigkeitswerte': {}}):
         clean_read = False
         while not clean_read:
             response = input('Sollen weitere {}'
@@ -69,8 +72,8 @@ class Funzel(Held):
                 if response in ['j', 'n']:
                     clean_read = True
             if response == 'j':
-                funzel_dict[bezeichner] = {'Fertigkeitswert': fertigkeitswert,
-                                           'Proben': tuple(eig)}
+                funzel_dict['Proben'][bezeichner] = tuple(eig)
+                funzel_dict['Fertigkeitswerte'][bezeichner] = fertigkeitswert
 
             # rekursiv nach weitern Zaubern fragen
             return self.__ask_for_funzel_stuff(funzel_dict)
@@ -103,7 +106,7 @@ class Funzel(Held):
     def speichern(self):
         pass
 
-    def zeige_besondere_fertigkeiten(self):
+    def zeige_besondere_fähigkeiten(self):
         title = '{}\'s {}:'.format(self.name, self.__funzel_stuff_term(False))
         super()._show_pretty_dicts(title, self._funzelkram)
 
@@ -115,9 +118,41 @@ class Funzel(Held):
                    stats['Funzelfertigkeiten'])
         return hero
 
-    def durchführen(self):
-        pass
+    def durchführen(self, fähigkeit: str, modifikator=0):
+        try:
+            zielwerte = np.array(
+                [self._eigenschaften[eig]
+                 for eig in self._funzelkram['Proben'][fähigkeit]])
+            add_cap_19 = np.vectorize(
+                lambda x: min(19, x + modifikator)
+                )
+            zielwerte = add_cap_19(zielwerte)
+        except KeyError:
+            raise KeyError('{} ist kein(e) gültige(r) {}.'.format(
+                fähigkeit, self.__funzel_stuff_term(singular=True)))
 
+        if any(zielwerte < 1):                  # unmögliche Proben detektieren
+            msg = ('Die Erschwernis von {} '
+                   'macht diese Probe unmöglich.'.format(abs(modifikator)))
+            return msg
 
-if __name__ == '__main__':
-    jorah = Funzel('Jorah Honorald', 'Priester', [10]*8, [5]*59)
+        _3w20 = np.random.randint(1, 21, 3)
+
+        # Zufallsereignis auswerten
+        gelungen, krit, qualitätsstufen = self._perform_test(
+            aim=zielwerte, random_event=_3w20,
+            skill_level=self._funzelkram['Fertigkeitswerte'][fähigkeit])
+
+        # Ausgabe bestimmen
+        out = self._format_outcome(
+            skill=fähigkeit,
+            goals=zielwerte,
+            random_event=_3w20,
+            talent_level=self._funzelkram['Fertigkeitswerte'],
+            talent_composition=self._funzelkram['Proben'],
+            success=gelungen,
+            crit=krit,
+            quality_level=qualitätsstufen,
+            kind_of_test='vollführt',
+            modification=modifikator)
+        return out
