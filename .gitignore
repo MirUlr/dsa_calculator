@@ -1,2 +1,2 @@
-
+# ignore cached pyhton artifacts
 *.pyc
