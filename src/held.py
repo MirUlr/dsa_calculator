@@ -180,7 +180,8 @@ class Held():
             talent_composition=self.FERTIGKEITSPROBEN,
             success=gelungen,
             crit=krit,
-            quality_level=qualitätsstufen)
+            quality_level=qualitätsstufen,
+            modification=modifikator)
         return out
 
     def _format_outcome(self, skill: str, goals, random_event,
@@ -271,16 +272,28 @@ class Held():
             values.append(val)
         return values
 
-    @staticmethod
-    def _show_pretty_dicts(title, dictionary, alphabetical_order=True):
+    def _show_pretty_dicts(self, title, dictionary, alphabetical_order=True,
+                           depth=1):
         list_of_keys = list(dictionary.keys())
         if alphabetical_order:
             list_of_keys.sort()
-
-        underline = '\n' + '=' * len(title)
+        if depth == 1:
+            underline = '\n' + '=' * len(title)
+        elif depth == 2:
+            underline = '\n' + '-' * len(title)
+        else:
+            underline = ''
         print('\n' + title + underline)
         for key in list_of_keys:
-            print(key + ':\n\t' + str(dictionary[key]))
+            if isinstance(dictionary[key], dict):
+                value = str(self._show_pretty_dicts(
+                    title=key,
+                    dictionary=dictionary[key],
+                    depth=depth+1))
+            else:
+                value = str(dictionary[key])
+            if value != 'None':
+                print(key + ':\n' + '\t'*depth + value)
 
     @staticmethod
     def __determine_quality_level(spare_points):
