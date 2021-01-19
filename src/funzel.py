@@ -4,6 +4,10 @@ Created on Sun Jan 17 17:26:37 2021
 
 @author: Mirko Ulrich
 """
+
+import json
+import pathlib
+
 import numpy as np
 
 from held import Held
@@ -14,9 +18,9 @@ class Funzel(Held):
     def __init__(self, name, funzeligkeit,
                  eigenschaftswerte=[], fertigkeitenwerte=[],
                  funzel_fertigkeiten={}):
-        assert funzeligkeit in ['Priester', 'Priesterin',
+        assert funzeligkeit in ['Geweihter', 'Geweihte',
                                 'Hexer', 'Hexe', 'Zauberer', 'Zauberin'],\
-            '{} ist keine unterstützte Rolle.'
+            '{} ist keine unterstützte Rolle.'.format(funzeligkeit)
         super().__init__(name, eigenschaftswerte, fertigkeitenwerte)
         self.rolle = funzeligkeit
 
@@ -80,7 +84,7 @@ class Funzel(Held):
             return funzel_dict
 
     def __funzel_stuff_term(self, singular: bool):
-        if self.rolle in ['Priesterin', 'Priester']:
+        if self.rolle in ['Geweihte', 'Geweihter']:
             if singular:
                 term = 'Liturgie/Zeremonie'
             else:
@@ -102,8 +106,20 @@ class Funzel(Held):
                 term = 'Funzeldinge'
         return term
 
-    def speichern(self):
-        pass
+    def speichern(self, dateipfad='C:/Users/reMner/Desktop/PnP/DSA'):
+        dateipfad = pathlib.Path(dateipfad)
+        if dateipfad.exists() and dateipfad.is_dir():
+            file = '{}.json'.format(self.name.replace(' ', '_'))
+            data_to_dump = {'Profession': self.rolle,
+                            'Eigenschaften': self._eigenschaften,
+                            'Fertigkeiten': self._fertigkeiten,
+                            'Funzelfertigkeiten': self._funzelkram}
+            with open(pathlib.Path(dateipfad, file),
+                      'w') as file:
+                json.dump(data_to_dump, file)
+        else:
+            raise OSError('Mit gültigem Pfad erneut versuchen.'
+                          ' Eventuell Schreibrechte überprüfen.')
 
     def zeige_besondere_fähigkeiten(self):
         title = '{}\'s {}:'.format(self.name, self.__funzel_stuff_term(False))
@@ -112,6 +128,7 @@ class Funzel(Held):
     @classmethod
     def _from_json(cls, name, stats):
         hero = cls(name,
+                   stats['Profession'],
                    list(stats['Eigenschaften'].values()),
                    list(stats['Fertigkeiten'].values()),
                    stats['Funzelfertigkeiten'])

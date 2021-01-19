@@ -88,7 +88,7 @@ class Held():
         self._eigenschaften = dict.fromkeys(
             ['Mut', 'Klugheit', 'Intuition', 'Charisma', 'Fingerfertigkeit',
              'Gewandtheit', 'Konstitution', 'Körperkraft'])
-        self.__fertigkeiten = dict.fromkeys(
+        self._fertigkeiten = dict.fromkeys(
             list(self.FERTIGKEITSPROBEN.keys()))
 
         if len(eigenschaftswerte) != len(self._eigenschaften):
@@ -99,12 +99,12 @@ class Held():
             list(self._eigenschaften.keys())[i]: eigenschaftswerte[i]
             for i in range(len(eigenschaftswerte))}
 
-        if len(fertigkeitenwerte) != len(self.__fertigkeiten):
+        if len(fertigkeitenwerte) != len(self._fertigkeiten):
             print('==->  Nun Fertigkeiten eingeben  <-==')
-            fertigkeitenwerte = self.__ask_for_values(self.__fertigkeiten,
+            fertigkeitenwerte = self.__ask_for_values(self._fertigkeiten,
                                                       (0, 25))
-        self.__fertigkeiten = {
-            list(self.__fertigkeiten.keys())[i]: fertigkeitenwerte[i]
+        self._fertigkeiten = {
+            list(self._fertigkeiten.keys())[i]: fertigkeitenwerte[i]
             for i in range(len(fertigkeitenwerte))}
 
     @classmethod
@@ -132,12 +132,13 @@ class Held():
         if dateipfad.exists() and dateipfad.is_dir():
             file = '{}.json'.format(self.name.replace(' ', '_'))
             data_to_dump = {'Eigenschaften': self._eigenschaften,
-                            'Fertigkeiten': self.__fertigkeiten}
+                            'Fertigkeiten': self._fertigkeiten}
             with open(pathlib.Path(dateipfad, file),
                       'w') as file:
                 json.dump(data_to_dump, file)
         else:
-            print('Mit gültigem Pfad erneut versuchen.')
+            raise OSError('Mit gültigem Pfad erneut versuchen.'
+                          ' Eventuell Schreibrechte überprüfen.')
 
     def zeige_eigenschaften(self):
         self._show_pretty_dicts('{}\'s Eigenschaften:'.format(self.name),
@@ -145,7 +146,7 @@ class Held():
 
     def zeige_fertigkeiten(self):
         self._show_pretty_dicts('{}\'s Fertigkeiten:'.format(self.name),
-                                self.__fertigkeiten)
+                                self._fertigkeiten)
 
     def absolviere(self, talent, modifikator=-0):
         try:
@@ -169,14 +170,14 @@ class Held():
         # Zufallsereignis auswerten
         gelungen, krit, qualitätsstufen = self._perform_test(
             aim=zielwerte, random_event=_3w20,
-            skill_level=self.__fertigkeiten[talent])
+            skill_level=self._fertigkeiten[talent])
 
         # Ausgabe bestimmen
         out = self._format_outcome(
             skill=talent,
             goals=zielwerte,
             random_event=_3w20,
-            talent_level=self.__fertigkeiten,
+            talent_level=self._fertigkeiten,
             talent_composition=self.FERTIGKEITSPROBEN,
             success=gelungen,
             crit=krit,
