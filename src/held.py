@@ -141,12 +141,12 @@ class Held():
                           ' Eventuell Schreibrechte überprüfen.')
 
     def zeige_eigenschaften(self):
-        self._show_pretty_dicts('{}\'s Eigenschaften:'.format(self.name),
-                                self._eigenschaften)
+        return self._show_pretty_dicts(
+            '{}\'s Eigenschaften:'.format(self.name), self._eigenschaften)
 
     def zeige_fertigkeiten(self):
-        self._show_pretty_dicts('{}\'s Fertigkeiten:'.format(self.name),
-                                self._fertigkeiten)
+        return self._show_pretty_dicts(
+            '{}\'s Fertigkeiten:'.format(self.name), self._fertigkeiten)
 
     def absolviere(self, talent, modifikator=-0):
         try:
@@ -274,6 +274,7 @@ class Held():
 
     def _show_pretty_dicts(self, title, dictionary, alphabetical_order=True,
                            depth=1):
+        msg = ''
         list_of_keys = list(dictionary.keys())
         if alphabetical_order:
             list_of_keys.sort()
@@ -283,17 +284,18 @@ class Held():
             underline = '\n' + '-' * len(title)
         else:
             underline = ''
-        print('\n' + title + underline)
+        msg += ('\n' + title + underline)
         for key in list_of_keys:
             if isinstance(dictionary[key], dict):
                 value = str(self._show_pretty_dicts(
                     title=key,
                     dictionary=dictionary[key],
                     depth=depth+1))
+                msg += ('\t'*depth + value)
             else:
                 value = str(dictionary[key])
-            if value != 'None':
-                print(key + ':\n' + '\t'*depth + value)
+                msg += ('\n' + key + ':\n' + '\t'*depth + value)
+        return msg
 
     @staticmethod
     def __determine_quality_level(spare_points):

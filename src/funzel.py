@@ -123,7 +123,7 @@ class Funzel(Held):
 
     def zeige_besondere_fähigkeiten(self):
         title = '{}\'s {}:'.format(self.name, self.__funzel_stuff_term(False))
-        super()._show_pretty_dicts(title, self._funzelkram)
+        return super()._show_pretty_dicts(title, self._funzelkram)
 
     @classmethod
     def _from_json(cls, name, stats):
