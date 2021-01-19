@@ -88,23 +88,23 @@ class Held():
         self._eigenschaften = dict.fromkeys(
             ['Mut', 'Klugheit', 'Intuition', 'Charisma', 'Fingerfertigkeit',
              'Gewandtheit', 'Konstitution', 'Körperkraft'])
-        self.__fertigkeiten = dict.fromkeys(
+        self._fertigkeiten = dict.fromkeys(
             list(self.FERTIGKEITSPROBEN.keys()))
 
         if len(eigenschaftswerte) != len(self._eigenschaften):
-            print('###  Nun Eigenschaften eingeben  ###')
+            print('==->  Nun Eigenschaften eingeben  <-==')
             eigenschaftswerte = self.__ask_for_values(self._eigenschaften,
                                                       (1, 19))
         self._eigenschaften = {
             list(self._eigenschaften.keys())[i]: eigenschaftswerte[i]
             for i in range(len(eigenschaftswerte))}
 
-        if len(fertigkeitenwerte) != len(self.__fertigkeiten):
-            print('###  Nun Eigenschaften eingeben  ###')
-            fertigkeitenwerte = self.__ask_for_values(self.__fertigkeiten,
+        if len(fertigkeitenwerte) != len(self._fertigkeiten):
+            print('==->  Nun Fertigkeiten eingeben  <-==')
+            fertigkeitenwerte = self.__ask_for_values(self._fertigkeiten,
                                                       (0, 25))
-        self.__fertigkeiten = {
-            list(self.__fertigkeiten.keys())[i]: fertigkeitenwerte[i]
+        self._fertigkeiten = {
+            list(self._fertigkeiten.keys())[i]: fertigkeitenwerte[i]
             for i in range(len(fertigkeitenwerte))}
 
     @classmethod
@@ -132,20 +132,21 @@ class Held():
         if dateipfad.exists() and dateipfad.is_dir():
             file = '{}.json'.format(self.name.replace(' ', '_'))
             data_to_dump = {'Eigenschaften': self._eigenschaften,
-                            'Fertigkeiten': self.__fertigkeiten}
+                            'Fertigkeiten': self._fertigkeiten}
             with open(pathlib.Path(dateipfad, file),
                       'w') as file:
                 json.dump(data_to_dump, file)
         else:
-            print('Mit gültigem Pfad erneut versuchen.')
+            raise OSError('Mit gültigem Pfad erneut versuchen.'
+                          ' Eventuell Schreibrechte überprüfen.')
 
     def zeige_eigenschaften(self):
-        self._show_pretty_dicts('{}\'s Eigenschaften:'.format(self.name),
-                                self._eigenschaften)
+        return self._show_pretty_dicts(
+            '{}\'s Eigenschaften:'.format(self.name), self._eigenschaften)
 
     def zeige_fertigkeiten(self):
-        self._show_pretty_dicts('{}\'s Fertigkeiten:'.format(self.name),
-                                self.__fertigkeiten)
+        return self._show_pretty_dicts(
+            '{}\'s Fertigkeiten:'.format(self.name), self._fertigkeiten)
 
     def absolviere(self, talent, modifikator=-0):
         try:
@@ -160,73 +161,124 @@ class Held():
             print('{} ist keine gültige Fertigkeit.'.format(talent))
 
         if any(zielwerte < 1):                  # unmögliche Proben detektieren
-            print('Die Erschwernis von {} '
-                  'macht diese Probe unmöglich.'.format(abs(modifikator)))
-            ret = 'Die Erschwernis von {} ''macht diese Probe unmöglich.'.format(abs(modifikator))
-            return ret
+            msg = ('Die Erschwernis von {} '
+                   'macht diese Probe unmöglich.'.format(abs(modifikator)))
+            return msg
 
         _3w20 = np.random.randint(1, 21, 3)
 
-        ausgleich = _3w20 - zielwerte
-        ausgleich[ausgleich < 0] = 0                # kein discount auf Erfolge
-        übrig = self.__fertigkeiten[talent] - sum(ausgleich)
+        # Zufallsereignis auswerten
+        gelungen, krit, qualitätsstufen = self._perform_test(
+            aim=zielwerte, random_event=_3w20,
+            skill_level=self._fertigkeiten[talent])
 
-        # Bestimmen von Patzer und krit. Erfol
-        würfel_p = _3w20.copy()
-        würfel_p[würfel_p != 20] = 0
-        patzer = sum(würfel_p) > 20       # <=> mehr als eine zwanzig gewürfelt
+        # Ausgabe bestimmen
+        out = self._format_outcome(
+            skill=talent,
+            goals=zielwerte,
+            random_event=_3w20,
+            talent_level=self._fertigkeiten,
+            talent_composition=self.FERTIGKEITSPROBEN,
+            success=gelungen,
+            crit=krit,
+            quality_level=qualitätsstufen,
+            modification=modifikator)
+        return out
 
-        würfel_k = _3w20.copy()
-        würfel_k[würfel_k != 1] = 0
-        krit = sum(würfel_k) > 1             # <=> mehr als eine eins gewürfelt
-
-        if (übrig >= 0 and not patzer) or krit:
-            gelungen = True
-            qualitätsstufen = self.__determine_quality_level(übrig)
-            if krit:
-                qualitätsstufen *= 2
+    def _format_outcome(self, skill: str, goals, random_event,
+                        talent_level: dict,
+                        talent_composition: dict,
+                        success: bool, crit: bool, quality_level: int,
+                        kind_of_test='absolviert eine Probe auf',
+                        modification=0):
+        out = ''
+        if modification == 0:
+            test = '{} {} {} (Fertigkeitswert {}).'
         else:
-            gelungen = False
+            if modification < 0:
+                test = '{} {} {} (Fertigkeitwert {}), um ' +\
+                    str(abs(modification)) + ' erschwert.'
+            else:
+                test = '{} {} {} (Fertigkeitwert {}), um ' +\
+                    str(abs(modification)) + ' erleichtert.'
+        out += test.format(self.name, kind_of_test, skill,
+                           talent_level[skill])
 
-        # Teile die Ergebnisse der Welt mit!
-        trenner = '='*75
+        goal_to_aim = 'Eigenschaften:\n\t{} {} {}\nZielwerte:\n\t{}'.format(
+            *talent_composition[skill], goals)
+        out += '\n' + goal_to_aim
 
+        outcome_rng = 'Würfelergebnis:\n\t{}\n'.format(random_event)
+        out += '\n' + outcome_rng
+
+        if success:
+            if crit:
+                final_result = ('Ergebnis:\tKritischer Erfolg mit {} '
+                                'Qualitätsstufen.\t:-D'.format(quality_level))
+            else:
+                final_result = ('Ergebnis:\tErfolg mit '
+                                '{} Qualitätsstufen.'.format(quality_level))
+        else:
+            if crit:
+                final_result = 'Ergebnis:\tPatzer\t>:-|'
+            else:
+                final_result = 'Ergebnis:\tFehlschlag'
+        out += '\n' + final_result
+
+        return out
+
+    def teste(self, eigenschaft, modifikator=0):
+        assert eigenschaft in self._eigenschaften.keys(),\
+            '{} ist keine gültige Eigenschaft.'.format(eigenschaft)
+        eigenschaftswert_mod = min(
+            self._eigenschaften[eigenschaft] + modifikator, 19)
+        _1w20 = np.random.randint(1, 21, 1)
+
+        erfolg, kritisch, _ = self._perform_test(
+            aim=np.array(eigenschaftswert_mod),
+            random_event=_1w20)
+
+        msg = '{} testet sein(e)/ihr(e) {} ({})'.format(
+                self.name, eigenschaft, self._eigenschaften[eigenschaft])
         if modifikator == 0:
-            probe = '{} absolviert eine Probe auf {}, Fertigkeitswert {}.'
+            msg += ':\n'
+        elif modifikator > 0:
+            msg += ', erleichtert um {}:\n'.format(str(abs(modifikator)))
+        elif modifikator < 0:
+            msg += ', erschwert um {}:\n'.format(str(abs(modifikator)))
+
+        if erfolg:
+            msg += '\nGeschafft mit einem Wurf von {}.'.format(*_1w20)
         else:
-            if modifikator < 0:
-                probe = '{} absolviert eine um ' +\
-                    str(abs(modifikator)) +\
-                    ' erschwerte Probe auf {}, Fertigkeitswert {}.'
-            else:
-                probe = '{} absolviert eine um ' +\
-                    str(abs(modifikator)) +\
-                    ' erleichterte Probe auf {}, Fertigkeitswert {}.'
+            msg += '\nNitcht geschafft mit einem Wurf von {}.'.format(*_1w20)
 
-        zu_erzielen = 'Eigenschaften:\n\t{} {} {}\nZielwerte:\n\t{}'.format(
-            *self.FERTIGKEITSPROBEN[talent], zielwerte)
-        zufallsereignis = 'Würfelergebnis:\n\t{}\n'.format(_3w20)
+        return msg
 
-        if gelungen:
-            resultat = 'Ergebnis:\tErfolg mit {} Qualitätsstufe(n).'.format(
-                qualitätsstufen)
-            if krit:
-                resultat += '\t=D'
+    def _perform_test(self, aim, random_event, skill_level=0):
+        compensation = random_event - aim
+        compensation[compensation < 0] = 0
+        spare = skill_level - sum(compensation)
+
+        fail_copy = random_event.copy()
+        fail_copy[fail_copy != 20] = 0
+        crit_fail = sum(fail_copy) > 20
+
+        win_copy = random_event.copy()
+        win_copy[win_copy != 1] = 0
+        crit_win = sum(win_copy) > 1
+
+        success = ((spare >= 0) or crit_win) and not crit_fail
+
+        critical = crit_win or crit_fail
+
+        if crit_win:
+            spare = max(spare, 0)
+            quality_level = self.__determine_quality_level(spare)
+            quality_level *= 2
         else:
-            if patzer:
-                resultat = 'Ergebnis:\tPatzer'
-            else:
-                resultat = 'Ergebnis:\tFehlschlag'
+            quality_level = self.__determine_quality_level(spare)
 
-        # Ausgabe
-        print(trenner)
-        print(probe.format(self.name, talent, self.__fertigkeiten[talent]))
-        print(zu_erzielen)
-        print(zufallsereignis)
-        print(resultat)
-
-        ret = probe.format(self.name, talent, self.__fertigkeiten[talent])+"\n\n"+zu_erzielen+"\n"+zufallsereignis+"\n"+resultat
-        return ret
+        return success, critical, quality_level
 
     @staticmethod
     def __ask_for_values(dictionary, limits=(-float('inf'), float('inf'))):
@@ -238,26 +290,39 @@ class Held():
                     val = int(input('Wert für {} eingeben:\t'.format(key)))
                     if val < limits[0] or limits[1] < val:
                         print(
-                            'Wert muss sich in Bereich '
-                            'von {} bis {} bewegen'.format(*limits),
-                            end='\t')
+                            'Achtung:\tWert muss sich in Bereich '
+                            'von {} bis {} bewegen'.format(*limits))
                     else:
                         clean_read = True
                 except ValueError:
-                    print('Wert muss als Integer lesbar sein.', end='\t')
+                    print('Achtung:\tWert muss als Integer lesbar sein.')
             values.append(val)
         return values
 
-    @staticmethod
-    def _show_pretty_dicts(title, dictionary, alphabetical_order=True):
+    def _show_pretty_dicts(self, title, dictionary, alphabetical_order=True,
+                           depth=1):
+        msg = ''
         list_of_keys = list(dictionary.keys())
         if alphabetical_order:
             list_of_keys.sort()
-
-        underline = '\n' + '=' * len(title)
-        print('\n' + title + underline)
+        if depth == 1:
+            underline = '\n' + '=' * len(title)
+        elif depth == 2:
+            underline = '\n' + '-' * len(title)
+        else:
+            underline = ''
+        msg += ('\n' + title + underline)
         for key in list_of_keys:
-            print(key + ':\n\t' + str(dictionary[key]))
+            if isinstance(dictionary[key], dict):
+                value = str(self._show_pretty_dicts(
+                    title=key,
+                    dictionary=dictionary[key],
+                    depth=depth+1))
+                msg += ('\t'*depth + value)
+            else:
+                value = str(dictionary[key])
+                msg += ('\n' + key + ':\n' + '\t'*depth + value)
+        return msg
 
     @staticmethod
     def __determine_quality_level(spare_points):

@@ -5,6 +5,11 @@ Created on Sun Jan 17 17:26:37 2021
 @author: Mirko Ulrich
 """
 
+import json
+import pathlib
+
+import numpy as np
+
 from held import Held
 
 
@@ -13,11 +18,10 @@ class Funzel(Held):
     def __init__(self, name, funzeligkeit,
                  eigenschaftswerte=[], fertigkeitenwerte=[],
                  funzel_fertigkeiten={}):
-        super().__init__(name, eigenschaftswerte, fertigkeitenwerte)
-
-        assert funzeligkeit in ['Priester', 'Pristerin',
+        assert funzeligkeit in ['Geweihter', 'Geweihte',
                                 'Hexer', 'Hexe', 'Zauberer', 'Zauberin'],\
-            '{} ist keine unterstützte Rolle.'
+            '{} ist keine unterstützte Rolle.'.format(funzeligkeit)
+        super().__init__(name, eigenschaftswerte, fertigkeitenwerte)
         self.rolle = funzeligkeit
 
         if len(funzel_fertigkeiten.keys()) == 0:
@@ -25,7 +29,9 @@ class Funzel(Held):
         else:
             self._funzelkram = funzel_fertigkeiten
 
-    def __ask_for_funzel_stuff(self, funzel_dict={}):
+    def __ask_for_funzel_stuff(self,
+                               funzel_dict={'Proben': {},
+                                            'Fertigkeitswerte': {}}):
         clean_read = False
         while not clean_read:
             response = input('Sollen weitere {}'
@@ -69,8 +75,8 @@ class Funzel(Held):
                 if response in ['j', 'n']:
                     clean_read = True
             if response == 'j':
-                funzel_dict[bezeichner] = {'Fertigkeitswert': fertigkeitswert,
-                                           'Proben': tuple(eig)}
+                funzel_dict['Proben'][bezeichner] = tuple(eig)
+                funzel_dict['Fertigkeitswerte'][bezeichner] = fertigkeitswert
 
             # rekursiv nach weitern Zaubern fragen
             return self.__ask_for_funzel_stuff(funzel_dict)
@@ -78,7 +84,7 @@ class Funzel(Held):
             return funzel_dict
 
     def __funzel_stuff_term(self, singular: bool):
-        if self.rolle in ['Priesterin', 'Priester']:
+        if self.rolle in ['Geweihte', 'Geweihter']:
             if singular:
                 term = 'Liturgie/Zeremonie'
             else:
@@ -100,24 +106,69 @@ class Funzel(Held):
                 term = 'Funzeldinge'
         return term
 
-    def speichern(self):
-        pass
+    def speichern(self, dateipfad='C:/Users/reMner/Desktop/PnP/DSA'):
+        dateipfad = pathlib.Path(dateipfad)
+        if dateipfad.exists() and dateipfad.is_dir():
+            file = '{}.json'.format(self.name.replace(' ', '_'))
+            data_to_dump = {'Profession': self.rolle,
+                            'Eigenschaften': self._eigenschaften,
+                            'Fertigkeiten': self._fertigkeiten,
+                            'Funzelfertigkeiten': self._funzelkram}
+            with open(pathlib.Path(dateipfad, file),
+                      'w') as file:
+                json.dump(data_to_dump, file)
+        else:
+            raise OSError('Mit gültigem Pfad erneut versuchen.'
+                          ' Eventuell Schreibrechte überprüfen.')
 
-    def zeige_besondere_fertigkeiten(self):
+    def zeige_besondere_fähigkeiten(self):
         title = '{}\'s {}:'.format(self.name, self.__funzel_stuff_term(False))
-        super()._show_pretty_dicts(title, self._funzelkram)
+        return super()._show_pretty_dicts(title, self._funzelkram)
 
     @classmethod
     def _from_json(cls, name, stats):
         hero = cls(name,
+                   stats['Profession'],
                    list(stats['Eigenschaften'].values()),
                    list(stats['Fertigkeiten'].values()),
                    stats['Funzelfertigkeiten'])
         return hero
 
-    def durchführen(self):
-        pass
+    def durchführen(self, fähigkeit: str, modifikator=0):
+        try:
+            zielwerte = np.array(
+                [self._eigenschaften[eig]
+                 for eig in self._funzelkram['Proben'][fähigkeit]])
+            add_cap_19 = np.vectorize(
+                lambda x: min(19, x + modifikator)
+                )
+            zielwerte = add_cap_19(zielwerte)
+        except KeyError:
+            raise KeyError('{} ist kein(e) gültige(r) {}.'.format(
+                fähigkeit, self.__funzel_stuff_term(singular=True)))
 
+        if any(zielwerte < 1):                  # unmögliche Proben detektieren
+            msg = ('Die Erschwernis von {} '
+                   'macht diese Probe unmöglich.'.format(abs(modifikator)))
+            return msg
 
-if __name__ == '__main__':
-    jorah = Funzel('Jorah Honorald', 'Priester', [10]*8, [5]*59)
+        _3w20 = np.random.randint(1, 21, 3)
+
+        # Zufallsereignis auswerten
+        gelungen, krit, qualitätsstufen = self._perform_test(
+            aim=zielwerte, random_event=_3w20,
+            skill_level=self._funzelkram['Fertigkeitswerte'][fähigkeit])
+
+        # Ausgabe bestimmen
+        out = self._format_outcome(
+            skill=fähigkeit,
+            goals=zielwerte,
+            random_event=_3w20,
+            talent_level=self._funzelkram['Fertigkeitswerte'],
+            talent_composition=self._funzelkram['Proben'],
+            success=gelungen,
+            crit=krit,
+            quality_level=qualitätsstufen,
+            kind_of_test='vollführt',
+            modification=modifikator)
+        return out
