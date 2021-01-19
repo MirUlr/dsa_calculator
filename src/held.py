@@ -227,7 +227,34 @@ class Held():
 
         return out
 
-    def _perform_test(self, aim, random_event, skill_level):
+    def teste(self, eigenschaft, modifikator=0):
+        assert eigenschaft in self._eigenschaften.keys(),\
+            '{} ist keine gültige Eigenschaft.'.format(eigenschaft)
+        eigenschaftswert_mod = min(
+            self._eigenschaften[eigenschaft] + modifikator, 19)
+        _1w20 = np.random.randint(1, 21, 1)
+
+        erfolg, kritisch, _ = self._perform_test(
+            aim=np.array(eigenschaftswert_mod),
+            random_event=_1w20)
+
+        msg = '{} testet sein(e)/ihr(e) {} ({})'.format(
+                self.name, eigenschaft, self._eigenschaften[eigenschaft])
+        if modifikator == 0:
+            msg += ':\n'
+        elif modifikator > 0:
+            msg += ', erleichtert um {}:\n'.format(str(abs(modifikator)))
+        elif modifikator < 0:
+            msg += ', erschwert um {}:\n'.format(str(abs(modifikator)))
+
+        if erfolg:
+            msg += '\nGeschafft mit einem Wurf von {}.'.format(*_1w20)
+        else:
+            msg += '\nNitcht geschafft mit einem Wurf von {}.'.format(*_1w20)
+
+        return msg
+
+    def _perform_test(self, aim, random_event, skill_level=0):
         compensation = random_event - aim
         compensation[compensation < 0] = 0
         spare = skill_level - sum(compensation)
