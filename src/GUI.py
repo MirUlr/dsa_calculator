@@ -142,6 +142,32 @@ if __name__ == "__main__":
     func_btn_wildnisleben = partial(do, "Wildnisleben",win.mod_wildnisleben.value)
     win.btn_wildnisleben.clicked.connect(func_btn_wildnisleben)
 
+    # ------------------------------------------------------------------------
+    # Wissenstalente
+    func_btn_brettspiel = partial(do, "Brett- & Glücksspiel",win.mod_brettspiel.value)
+    win.btn_brettspiel.clicked.connect(func_btn_brettspiel)
+
+    func_btn_geographie = partial(do, "Geographie",win.mod_geographie.value)
+    win.btn_geographie.clicked.connect(func_btn_geographie)
+
+    func_btn_geschichtswissen = partial(do, "Geschichtswissen",win.mod_geschichtswissen.value)
+    win.btn_geschichtswissen.clicked.connect(func_btn_geschichtswissen)
+
+    func_btn_kulte = partial(do, "Götter & Kulte",win.mod_kulte.value)
+    win.btn_kulte.clicked.connect(func_btn_kulte)
+
+    func_btn_kriegskunst = partial(do, "Kriegskunst",win.mod_kriegskunst.value)
+    win.btn_kriegskunst.clicked.connect(func_btn_kriegskunst)
+
+    func_btn_magiekunde = partial(do, "Magiekunde",win.mod_magiekunde.value)
+    win.btn_magiekunde.clicked.connect(func_btn_magiekunde)
+
+    func_btn_mechanik = partial(do, "Mechanik",win.mod_mechanik.value)
+    win.btn_mechanik.clicked.connect(func_btn_mechanik)
+
+    func_btn_rechnen = partial(do, "Rechnen",win.mod_rechnen.value)
+    win.btn_rechnen.clicked.connect(func_btn_rechnen)
+
 
    # ========================================================================
 
