@@ -14,11 +14,10 @@ class Funzel(Held):
     def __init__(self, name, funzeligkeit,
                  eigenschaftswerte=[], fertigkeitenwerte=[],
                  funzel_fertigkeiten={}):
-        super().__init__(name, eigenschaftswerte, fertigkeitenwerte)
-
-        assert funzeligkeit in ['Priester', 'Pristerin',
+        assert funzeligkeit in ['Priester', 'Priesterin',
                                 'Hexer', 'Hexe', 'Zauberer', 'Zauberin'],\
             '{} ist keine unterstützte Rolle.'
+        super().__init__(name, eigenschaftswerte, fertigkeitenwerte)
         self.rolle = funzeligkeit
 
         if len(funzel_fertigkeiten.keys()) == 0:

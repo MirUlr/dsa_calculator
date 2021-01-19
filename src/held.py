@@ -92,7 +92,7 @@ class Held():
             list(self.FERTIGKEITSPROBEN.keys()))
 
         if len(eigenschaftswerte) != len(self._eigenschaften):
-            print('###  Nun Eigenschaften eingeben  ###')
+            print('==->  Nun Eigenschaften eingeben  <-==')
             eigenschaftswerte = self.__ask_for_values(self._eigenschaften,
                                                       (1, 19))
         self._eigenschaften = {
@@ -100,7 +100,7 @@ class Held():
             for i in range(len(eigenschaftswerte))}
 
         if len(fertigkeitenwerte) != len(self.__fertigkeiten):
-            print('###  Nun Eigenschaften eingeben  ###')
+            print('==->  Nun Fertigkeiten eingeben  <-==')
             fertigkeitenwerte = self.__ask_for_values(self.__fertigkeiten,
                                                       (0, 25))
         self.__fertigkeiten = {
@@ -262,13 +262,12 @@ class Held():
                     val = int(input('Wert für {} eingeben:\t'.format(key)))
                     if val < limits[0] or limits[1] < val:
                         print(
-                            'Wert muss sich in Bereich '
-                            'von {} bis {} bewegen'.format(*limits),
-                            end='\t')
+                            'Achtung:\tWert muss sich in Bereich '
+                            'von {} bis {} bewegen'.format(*limits))
                     else:
                         clean_read = True
                 except ValueError:
-                    print('Wert muss als Integer lesbar sein.', end='\t')
+                    print('Achtung:\tWert muss als Integer lesbar sein.')
             values.append(val)
         return values
 
