@@ -196,10 +196,10 @@ class Held():
             test = '{} {} {} (Fertigkeitswert {}).'
         else:
             if modification < 0:
-                test = '{} {} {} (Fertigkeitwert {}), um ' +\
+                test = '{} {} {} (Fertigkeitswert {}), um ' +\
                     str(abs(modification)) + ' erschwert.'
             else:
-                test = '{} {} {} (Fertigkeitwert {}), um ' +\
+                test = '{} {} {} (Fertigkeitswert {}), um ' +\
                     str(abs(modification)) + ' erleichtert.'
         out += test.format(self.name, kind_of_test, skill,
                            talent_level[skill])
