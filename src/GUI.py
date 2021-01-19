@@ -40,8 +40,8 @@ if __name__ == "__main__":
     # Fenster aus Designer laden
     win = uic.loadUi("MainWindow.ui")
 
-    # Held initialisieren
-    Held = held.Held.laden("Tore_Bjornson",r'D:\Voovo\Documents\RPG\DSA')
+    # Held initialisieren, zum Testen
+    # Held = held.Held.laden("Tore_Bjornson",r'D:\Voovo\Documents\RPG\DSA')
 
     # Button-Logik
     # ========================================================================
@@ -68,6 +68,12 @@ if __name__ == "__main__":
 
     func_btn_gewandtheit = partial(test, "Gewandtheit",win.mod_gewandtheit.value)
     win.btn_gewandtheit.clicked.connect(func_btn_gewandtheit)
+
+    func_btn_konstitution = partial(test, "Konstitution",win.mod_konstitution.value)
+    win.btn_konstitution.clicked.connect(func_btn_konstitution)
+
+    func_btn_koerperkraft = partial(test, "Körperkraft",win.mod_koerperkraft.value)
+    win.btn_koerperkraft.clicked.connect(func_btn_koerperkraft)
 
     # ========================================================================
     # Fertigkeiten
