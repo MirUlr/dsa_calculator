@@ -13,7 +13,7 @@ from functools import partial
 # Held laden
 def load(name):
     global Held
-    Held = held.Held.laden(name(),r'D:\Voovo\Documents\RPG\DSA')
+    Held = held.Held.laden(name(),r'.\\')
 
     if(type(Held) == held.Held):
         win.tab_fertigkeiten.setEnabled(True)
