@@ -168,7 +168,7 @@
              </widget>
             </item>
             <item row="0" column="5" colspan="2">
-             <widget class="QPushButton" name="btn_intelligenz">
+             <widget class="QPushButton" name="btn_intuition">
               <property name="toolTip">
                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Intuition&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
@@ -288,7 +288,7 @@
          </size>
         </property>
         <property name="currentIndex">
-         <number>3</number>
+         <number>4</number>
         </property>
         <widget class="QWidget" name="tab">
          <attribute name="title">
@@ -1681,7 +1681,7 @@
            <item row="0" column="0">
             <widget class="QLabel" name="label_51">
              <property name="text">
-              <string>Alchemie</string>
+              <string>Alchimie</string>
              </property>
             </widget>
            </item>
@@ -2120,7 +2120,7 @@
          </font>
         </property>
         <property name="text">
-         <string>Attribute</string>
+         <string>Eigenschaften</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_fertigkeiten_title">

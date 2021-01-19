@@ -204,7 +204,7 @@ class Held():
         out += test.format(self.name, kind_of_test, skill,
                            talent_level[skill])
 
-        goal_to_aim = 'Eigenschaften:\n\t{} {} {}\nZielwerte:\n\t{}'.format(
+        goal_to_aim = '\nEigenschaften:\n\t{} - {} - {}\nZielwerte:\n\t{}'.format(
             *talent_composition[skill], goals)
         out += '\n' + goal_to_aim
 
@@ -238,7 +238,7 @@ class Held():
             aim=np.array(eigenschaftswert_mod),
             random_event=_1w20)
 
-        msg = '{} testet sein(e)/ihr(e) {} ({})'.format(
+        msg = '{} testet {} ({})'.format(
                 self.name, eigenschaft, self._eigenschaften[eigenschaft])
         if modifikator == 0:
             msg += ':\n'

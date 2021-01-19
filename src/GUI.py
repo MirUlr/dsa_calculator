@@ -24,6 +24,11 @@ def do(action, modi):
     result = Held.absolviere(action, modi())
     show(result)
 
+# Eigenschaften Funktion
+def test(action, modi):
+    result = Held.teste(action, modi())
+    show(result)
+
 # Würfelergebnis anzeigen
 def show(result):
     win.label_result.setText(result)
@@ -43,6 +48,26 @@ if __name__ == "__main__":
     # Held laden
     func_btn_heldLaden = partial(load, win.txt_heldLaden.text)
     win.btn_heldLaden.clicked.connect(func_btn_heldLaden)
+
+    # ========================================================================
+    # Eigenschaften
+    func_btn_mut = partial(test, "Mut",win.mod_mut.value)
+    win.btn_mut.clicked.connect(func_btn_mut)
+
+    func_btn_klugheit = partial(test, "Klugheit",win.mod_klugheit.value)
+    win.btn_klugheit.clicked.connect(func_btn_klugheit)
+
+    func_btn_intuition = partial(test, "Intuition",win.mod_intuition.value)
+    win.btn_intuition.clicked.connect(func_btn_intuition)
+
+    func_btn_charisma = partial(test, "Charisma",win.mod_charisma.value)
+    win.btn_charisma.clicked.connect(func_btn_charisma)
+
+    func_btn_fingerfertigkeit = partial(test, "Fingerfertigkeit",win.mod_fingerfertigkeit.value)
+    win.btn_fingerfertigkeit.clicked.connect(func_btn_fingerfertigkeit)
+
+    func_btn_gewandtheit = partial(test, "Gewandtheit",win.mod_gewandtheit.value)
+    win.btn_gewandtheit.clicked.connect(func_btn_gewandtheit)
 
     # ========================================================================
     # Fertigkeiten
@@ -167,6 +192,71 @@ if __name__ == "__main__":
 
     func_btn_rechnen = partial(do, "Rechnen",win.mod_rechnen.value)
     win.btn_rechnen.clicked.connect(func_btn_rechnen)
+
+    func_btn_rechtskunde = partial(do, "Rechtskunde",win.mod_rechtskunde.value)
+    win.btn_rechtskunde.clicked.connect(func_btn_rechtskunde)
+
+    func_btn_sagen = partial(do, "Sagen & Legenden",win.mod_sagen.value)
+    win.btn_sagen.clicked.connect(func_btn_sagen)
+
+    func_btn_sphaerenkunde = partial(do, "Sphärenkunde",win.mod_sphaerenkunde.value)
+    win.btn_sphaerenkunde.clicked.connect(func_btn_sphaerenkunde)
+
+    func_btn_sternkunde = partial(do, "Sternkunde",win.mod_sternkunde.value)
+    win.btn_sternkunde.clicked.connect(func_btn_sternkunde)
+
+    # ------------------------------------------------------------------------
+    # Handwerkstalente
+    func_btn_alchemie = partial(do, "Alchimie",win.mod_alchemie.value)
+    win.btn_alchemie.clicked.connect(func_btn_alchemie)
+
+    func_btn_boote = partial(do, "Boote & Schiffe",win.mod_boote.value)
+    win.btn_boote.clicked.connect(func_btn_boote)
+
+    func_btn_fahrzeuge = partial(do, "Fahrzeuge",win.mod_fahrzeuge.value)
+    win.btn_fahrzeuge.clicked.connect(func_btn_fahrzeuge)
+
+    func_btn_handel = partial(do, "Handel",win.mod_handel.value)
+    win.btn_handel.clicked.connect(func_btn_handel)
+
+    func_btn_heilenGift = partial(do, "Heilkunde Gift",win.mod_heilenGift.value)
+    win.btn_heilenGift.clicked.connect(func_btn_heilenGift)
+
+    func_btn_heilenKrankheit = partial(do, "Heilkunde Krankheiten",win.mod_heilenKrankheit.value)
+    win.btn_heilenKrankheit.clicked.connect(func_btn_heilenKrankheit)
+
+    func_btn_heilenSeele = partial(do, "Heilkunde Seele",win.mod_heilenSeele.value)
+    win.btn_heilenSeele.clicked.connect(func_btn_heilenSeele)
+
+    func_btn_heilenWunden = partial(do, "Heilkunde Wunden",win.mod_heilenWunden.value)
+    win.btn_heilenWunden.clicked.connect(func_btn_heilenWunden)
+
+    func_btn_holzbearbeitung = partial(do, "Holzbearbeitung",win.mod_holzbearbeitung.value)
+    win.btn_holzbearbeitung.clicked.connect(func_btn_holzbearbeitung)
+
+    func_btn_lebensmittelbearbeitung = partial(do, "Lebensmittelbearbeitung",win.mod_lebensmittelbearbeitung.value)
+    win.btn_lebensmittelbearbeitung.clicked.connect(func_btn_lebensmittelbearbeitung)
+
+    func_btn_lederbearbeitung = partial(do, "Lederbearbeitung",win.mod_lederbearbeitung.value)
+    win.btn_lederbearbeitung.clicked.connect(func_btn_lederbearbeitung)
+
+    func_btn_malen = partial(do, "Malen & Zeichen",win.mod_malen.value)
+    win.btn_malen.clicked.connect(func_btn_malen)
+
+    func_btn_metallbearbeitung = partial(do, "Metallbearbeitung",win.mod_metallbearbeitung.value)
+    win.btn_metallbearbeitung.clicked.connect(func_btn_metallbearbeitung)
+
+    func_btn_musizieren = partial(do, "Musizieren",win.mod_musizieren.value)
+    win.btn_musizieren.clicked.connect(func_btn_musizieren)
+
+    func_btn_schloesserknacken = partial(do, "Schlösserknacken",win.mod_schloesserknacken.value)
+    win.btn_schloesserknacken.clicked.connect(func_btn_schloesserknacken)
+
+    func_btn_steinbearbeitung = partial(do, "Steinbearbeitung",win.mod_steinbearbeitung.value)
+    win.btn_steinbearbeitung.clicked.connect(func_btn_steinbearbeitung)
+
+    func_btn_stoffbearbeitung = partial(do, "Stoffbearbeitung",win.mod_stoffbearbeitung.value)
+    win.btn_stoffbearbeitung.clicked.connect(func_btn_stoffbearbeitung)
 
 
    # ========================================================================
