@@ -125,7 +125,7 @@ class Held():
             return cls._from_json(name=charakter.replace('_', ' '),
                                   stats=data)
         else:
-            print('Keine gültigen Daten gefunden.')
+            return('Keine gültigen Daten gefunden.')
 
     def speichern(self, dateipfad='C:/Users/reMner/Desktop/PnP/DSA'):
         dateipfad = pathlib.Path(dateipfad)
