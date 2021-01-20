@@ -1,2 +1,5 @@
 # ignore cached pyhton artifacts
 *.pyc
+src\dist\
+src\build\
+

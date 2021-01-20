@@ -13,11 +13,21 @@ from functools import partial
 # Held laden
 def load(name):
     global Held
-    Held = held.Held.laden(name(),r'D:\Voovo\Documents\RPG\DSA')
+    ret = held.Held.laden(name(),r'D:\Voovo\Documents\RPG\DSA')
 
-    if(type(Held) == held.Held):
+    if(type(ret) == held.Held):
+        Held = ret
         win.tab_fertigkeiten.setEnabled(True)
         win.box_attribute.setEnabled(True)
+        msg = QMessageBox()
+        msg.setWindowTitle("Erfolg")
+        msg.setText("Held erfolgreich geladen.\nAuf ins Abenteuer!")
+        msg.exec_()
+    else:
+        msg = QMessageBox()
+        msg.setWindowTitle("Error")
+        msg.setText("Dieser Held ist hier nicht bekannt.")
+        msg.exec_()
 
 # Fertigkeiten Funktion
 def do(action, modi):
