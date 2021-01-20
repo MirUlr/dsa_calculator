@@ -96,7 +96,12 @@ def saveHero():
 
     myHero = held.Held(name, e, f)
 
-    myHero.speichern(r'.\\')
+    if(type(myHero) == held.Held):
+        myHero.speichern(r'.\\')
+        msg = QMessageBox()
+        msg.setWindowTitle("Erfolg")
+        msg.setText("Held erfolgreich gespeichert!")
+        msg.exec_()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
