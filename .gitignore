@@ -2,3 +2,6 @@
 *.pyc
 src/build/
 src/dist/
+
+*.json
+!src/Mary_Sue.json
