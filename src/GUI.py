@@ -13,7 +13,7 @@ from functools import partial
 # Held laden
 def load(name):
     global Held
-    ret = held.Held.laden(name(),r'D:\Voovo\Documents\RPG\DSA')
+    ret = held.Held.laden(name(),r'.\\')
 
     if(type(ret) == held.Held):
         Held = ret
