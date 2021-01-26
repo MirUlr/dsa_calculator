@@ -32,13 +32,10 @@ class Funzel(Held):
     def __ask_for_funzel_stuff(self,
                                funzel_dict={'Proben': {},
                                             'Fertigkeitswerte': {}}):
-        clean_read = False
-        while not clean_read:
-            response = input('Sollen weitere {}'
-                             ' aufgenommen werden?\n(j/n) '.format(
-                                 self.__funzel_stuff_term(False)))
-            if response in ['j', 'n']:
-                clean_read = True
+        response = super()._clean_read(
+            text='Sollen weitere {} aufgenommen werden?\n(j/n) '.format(
+                self.__funzel_stuff_term(False)),
+            legal_response=['j', 'n'])
 
         if response == 'j':                         # record more funzel stuff
             # Name des Zaubers oder Wirkung
