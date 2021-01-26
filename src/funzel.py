@@ -39,6 +39,7 @@ class Funzel(Held):
                                  self.__funzel_stuff_term(False)))
             if response in ['j', 'n']:
                 clean_read = True
+
         if response == 'j':                         # record more funzel stuff
             # Name des Zaubers oder Wirkung
             bezeichner = input('Name des/der {}: '.format(
@@ -121,7 +122,7 @@ class Funzel(Held):
             raise OSError('Mit gültigem Pfad erneut versuchen.'
                           ' Eventuell Schreibrechte überprüfen.')
 
-    def zeige_besondere_fähigkeiten(self):
+    def zeige_übernatürliche_fähigkeiten(self):
         title = '{}\'s {}:'.format(self.name, self.__funzel_stuff_term(False))
         return super()._show_pretty_dicts(title, self._funzelkram)
 

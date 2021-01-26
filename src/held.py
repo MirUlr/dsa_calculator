@@ -83,7 +83,8 @@ class Held():
                              'Fingerfertigkeit')
         }
 
-    def __init__(self, name, eigenschaftswerte=[], fertigkeitenwerte=[]):
+    def __init__(self, name, eigenschaftswerte=[], fertigkeitenwerte=[],
+                 unfähigkeiten=None, begabungen=None):
         self.name = name
         self._eigenschaften = dict.fromkeys(
             ['Mut', 'Klugheit', 'Intuition', 'Charisma', 'Fingerfertigkeit',
@@ -107,6 +108,27 @@ class Held():
             list(self._fertigkeiten.keys())[i]: fertigkeitenwerte[i]
             for i in range(len(fertigkeitenwerte))}
 
+        if unfähigkeiten is None:
+            self._unfähigkeiten = set()
+        else:
+            if isinstance(begabungen, set):
+                pass
+            elif isinstance(begabungen, list):
+                pass
+            else:
+                raise TypeError('`unfähigkeiten` wird als '
+                                'set oder list erwartet')
+
+        if begabungen is None:
+            self._begabungen = set()
+        else:
+            if isinstance(begabungen, set):
+                pass
+            elif isinstance(begabungen, list):
+                pass
+            else:
+                raise TypeError('`begabungen` wird als set oder list erwartet')
+
     @classmethod
     def _from_json(cls, name, stats):
         hero = cls(name,
@@ -126,6 +148,90 @@ class Held():
                                   stats=data)
         else:
             return('Keine gültigen Daten gefunden.')
+
+    def aktualisiere_besondere_befähigungen(self,
+                                            weiterhin_zulässig=[]):
+        # Whether gifts shall be updated
+        val = self._clean_read(text='Begabungen aktualisieren?\n(j/n) ',
+                               legal_response=['j', 'n'])
+        if val == 'j':
+            temp = self._show_and_update_set(
+                '{}\'s Begabungen:'.format(self.name),
+                self._begabungen)
+            if len(temp) > 3:
+                raise ValueError('Nicht mehr als 3 Begabungen erlaubt.')
+            for t in temp:
+                in_skills = t in self.FERTIGKEITSPROBEN.keys()
+                in_further_skills = t in weiterhin_zulässig
+                if not in_skills and not in_further_skills:
+                    raise ValueError('{} ist keine zulässige'
+                                     ' Fertigkeit.'.format(t))
+            self._begabungen = temp
+
+        # whether inability shall be updated
+        val = self._clean_read(text='Unfähigkeiten aktualisieren?\n(j/n) ',
+                               legal_response=['j', 'n'])
+        if val == 'j':
+            temp = self._show_and_update_set(
+                '{}\'s Unfaähigkeiten:'.format(self.name),
+                self._unfähigkeiten)
+            if len(temp > 2):
+                raise ValueError('Nicht mehr als 2 Unfähigkeiten erlaubt.')
+            for t in temp:
+                if t not in self.FERTIGKEITSPROBEN.keys():
+                    raise ValueError('{} ist keine'
+                                     ' zulässige Fertigkeit.'.format(t))
+            self._unfähigkeiten = temp
+
+        val = self._clean_read(
+            text='Weitere Aktualisierungen vornehmen?\n(j/n) ',
+            legal_response=['j', 'n'])
+
+        # whether more updates shall be happen
+        if val == 'j':
+            self.aktualisiere_besondere_befähigungen(
+                weiterhin_zulässig=weiterhin_zulässig)
+
+    def _show_and_update_set(self, title, group):
+        group = group.copy()
+        print('{}\n{}'.format(title, '='*len(title)))
+        print(group)
+        val = input('Aktualisiere um Element: ')
+        if val in group:
+            confirm = self._clean_read('{} entfernen?\n(j/n) '.format(val),
+                                       ['j', 'n'])
+            if confirm:
+                group.discard(val)
+        else:
+            confirm = self._clean_read('{} hinzufügen?\n(j/n) '.format(val),
+                                       ['j', 'n'])
+            if confirm:
+                group.add(val)
+        return group
+
+    @staticmethod
+    def _clean_read(text, legal_response):
+        clean_read = False
+        while not clean_read:
+            val = input(text)
+            if val in legal_response:
+                clean_read = True
+        return val
+
+    def zeige_besondere_befähigungen(self):
+        msg_1 = '{}\'s Begabungen:'.format(self.name)
+        line = '='*len(msg_1)
+        msg_1 += '\n{}\n\t'.format(line)
+        for t in self._begabungen:
+            msg_1 += '{} '.format(t)
+
+        msg_2 = '{}\'s Unfähigkeiten:'.format(self.name)
+        line = '='*len(msg_2)
+        msg_2 += '\n{}\n\t'.format(line)
+        for u in self._unfähigkeiten:
+            msg_2 += '{} '.format(u)
+
+        return msg_1 + '\n' + msg_2
 
     def speichern(self, dateipfad='C:/Users/reMner/Desktop/PnP/DSA'):
         dateipfad = pathlib.Path(dateipfad)
@@ -204,7 +310,8 @@ class Held():
         out += test.format(self.name, kind_of_test, skill,
                            talent_level[skill])
 
-        goal_to_aim = '\nEigenschaften:\n\t{} - {} - {}\nZielwerte:\n\t{}'.format(
+        goal_to_aim = ('\nEigenschaften:\n\t{} - {} -'
+                       ' {}\nZielwerte:\n\t{}').format(
             *talent_composition[skill], goals)
         out += '\n' + goal_to_aim
 
@@ -250,7 +357,7 @@ class Held():
         if erfolg:
             msg += '\nGeschafft mit einem Wurf von {}.'.format(*_1w20)
         else:
-            msg += '\nNitcht geschafft mit einem Wurf von {}.'.format(*_1w20)
+            msg += '\nNicht geschafft mit einem Wurf von {}.'.format(*_1w20)
 
         return msg
 
@@ -280,25 +387,6 @@ class Held():
 
         return success, critical, quality_level
 
-    @staticmethod
-    def __ask_for_values(dictionary, limits=(-float('inf'), float('inf'))):
-        values = []
-        for key in dictionary.keys():
-            clean_read = False
-            while not clean_read:
-                try:
-                    val = int(input('Wert für {} eingeben:\t'.format(key)))
-                    if val < limits[0] or limits[1] < val:
-                        print(
-                            'Achtung:\tWert muss sich in Bereich '
-                            'von {} bis {} bewegen'.format(*limits))
-                    else:
-                        clean_read = True
-                except ValueError:
-                    print('Achtung:\tWert muss als Integer lesbar sein.')
-            values.append(val)
-        return values
-
     def _show_pretty_dicts(self, title, dictionary, alphabetical_order=True,
                            depth=1):
         msg = ''
@@ -325,6 +413,25 @@ class Held():
         return msg
 
     @staticmethod
+    def __ask_for_values(dictionary, limits=(-float('inf'), float('inf'))):
+        values = []
+        for key in dictionary.keys():
+            clean_read = False
+            while not clean_read:
+                try:
+                    val = int(input('Wert für {} eingeben:\t'.format(key)))
+                    if val < limits[0] or limits[1] < val:
+                        print(
+                            'Achtung:\tWert muss sich in Bereich '
+                            'von {} bis {} bewegen'.format(*limits))
+                    else:
+                        clean_read = True
+                except ValueError:
+                    print('Achtung:\tWert muss als Integer lesbar sein.')
+            values.append(val)
+        return values
+
+    @staticmethod
     def __determine_quality_level(spare_points):
         if 0 <= spare_points <= 3:
             quality_level = 1
@@ -341,3 +448,7 @@ class Held():
         else:
             quality_level = -1
         return quality_level
+
+
+if __name__ == '__main__':
+    bob = Held('Bob Bobbler', [11]*8, [3]*59)
