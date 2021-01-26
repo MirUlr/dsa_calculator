@@ -111,10 +111,10 @@ class Held():
         if unfähigkeiten is None:
             self._unfähigkeiten = set()
         else:
-            if isinstance(begabungen, set):
-                pass
-            elif isinstance(begabungen, list):
-                pass
+            if isinstance(unfähigkeiten, set):
+                self._unfähigkeiten = unfähigkeiten
+            elif isinstance(unfähigkeiten, list):
+                self._unfähigkeiten = set(unfähigkeiten)
             else:
                 raise TypeError('`unfähigkeiten` wird als '
                                 'set oder list erwartet')
@@ -123,17 +123,29 @@ class Held():
             self._begabungen = set()
         else:
             if isinstance(begabungen, set):
-                pass
+                self._begabungen = begabungen()
             elif isinstance(begabungen, list):
-                pass
+                self._begabungen = set(begabungen)
             else:
                 raise TypeError('`begabungen` wird als set oder list erwartet')
 
     @classmethod
     def _from_json(cls, name, stats):
+        try:
+            incompetences = stats['Unfähigkeiten']
+        except KeyError:
+            incompetences = None
+
+        try:
+            gifted_talents = stats['Begabungen']
+        except KeyError:
+            gifted_talents = None
+
         hero = cls(name,
                    list(stats['Eigenschaften'].values()),
-                   list(stats['Fertigkeiten'].values()))
+                   list(stats['Fertigkeiten'].values()),
+                   incompetences,
+                   gifted_talents)
         return hero
 
     @classmethod
@@ -148,6 +160,21 @@ class Held():
                                   stats=data)
         else:
             return('Keine gültigen Daten gefunden.')
+
+    def speichern(self, dateipfad='C:/Users/reMner/Desktop/PnP/DSA'):
+        dateipfad = pathlib.Path(dateipfad)
+        if dateipfad.exists() and dateipfad.is_dir():
+            file = '{}.json'.format(self.name.replace(' ', '_'))
+            data_to_dump = {'Eigenschaften': self._eigenschaften,
+                            'Fertigkeiten': self._fertigkeiten,
+                            'Begabungen': list(self._begabungen),
+                            'Unfähigkeiten': list(self._unfähigkeiten)}
+            with open(pathlib.Path(dateipfad, file),
+                      'w') as file:
+                json.dump(data_to_dump, file)
+        else:
+            raise OSError('Mit gültigem Pfad erneut versuchen.'
+                          ' Eventuell Schreibrechte überprüfen.')
 
     def aktualisiere_besondere_befähigungen(self,
                                             weiterhin_zulässig=[]):
@@ -166,22 +193,30 @@ class Held():
                 if not in_skills and not in_further_skills:
                     raise ValueError('{} ist keine zulässige'
                                      ' Fertigkeit.'.format(t))
-            self._begabungen = temp
+            if temp.isdisjoint(self._unfähigkeiten):
+                self._begabungen = temp
+            else:
+                raise ValueError('Begabungen und Unfähigkeiten'
+                                 ' dürfen sich nicht überlappen.')
 
         # whether inability shall be updated
         val = self._clean_read(text='Unfähigkeiten aktualisieren?\n(j/n) ',
                                legal_response=['j', 'n'])
         if val == 'j':
             temp = self._show_and_update_set(
-                '{}\'s Unfaähigkeiten:'.format(self.name),
+                '{}\'s Unfähigkeiten:'.format(self.name),
                 self._unfähigkeiten)
-            if len(temp > 2):
+            if len(temp) > 2:
                 raise ValueError('Nicht mehr als 2 Unfähigkeiten erlaubt.')
             for t in temp:
                 if t not in self.FERTIGKEITSPROBEN.keys():
                     raise ValueError('{} ist keine'
                                      ' zulässige Fertigkeit.'.format(t))
-            self._unfähigkeiten = temp
+            if temp.isdisjoint(self._begabungen):
+                self._unfähigkeiten = temp
+            else:
+                raise ValueError('Begabungen und Unfähigkeiten'
+                                 ' dürfen sich nicht überlappen.')
 
         val = self._clean_read(
             text='Weitere Aktualisierungen vornehmen?\n(j/n) ',
@@ -200,12 +235,12 @@ class Held():
         if val in group:
             confirm = self._clean_read('{} entfernen?\n(j/n) '.format(val),
                                        ['j', 'n'])
-            if confirm:
+            if confirm == 'j':
                 group.discard(val)
         else:
             confirm = self._clean_read('{} hinzufügen?\n(j/n) '.format(val),
                                        ['j', 'n'])
-            if confirm:
+            if confirm == 'j':
                 group.add(val)
         return group
 
@@ -232,19 +267,6 @@ class Held():
             msg_2 += '{} '.format(u)
 
         return msg_1 + '\n' + msg_2
-
-    def speichern(self, dateipfad='C:/Users/reMner/Desktop/PnP/DSA'):
-        dateipfad = pathlib.Path(dateipfad)
-        if dateipfad.exists() and dateipfad.is_dir():
-            file = '{}.json'.format(self.name.replace(' ', '_'))
-            data_to_dump = {'Eigenschaften': self._eigenschaften,
-                            'Fertigkeiten': self._fertigkeiten}
-            with open(pathlib.Path(dateipfad, file),
-                      'w') as file:
-                json.dump(data_to_dump, file)
-        else:
-            raise OSError('Mit gültigem Pfad erneut versuchen.'
-                          ' Eventuell Schreibrechte überprüfen.')
 
     def zeige_eigenschaften(self):
         return self._show_pretty_dicts(
@@ -276,7 +298,9 @@ class Held():
         # Zufallsereignis auswerten
         gelungen, krit, qualitätsstufen = self._perform_test(
             aim=zielwerte, random_event=_3w20,
-            skill_level=self._fertigkeiten[talent])
+            skill_level=self._fertigkeiten[talent],
+            gifted=(talent in self._begabungen),
+            incompetent=(talent in self._unfähigkeiten))
 
         # Ausgabe bestimmen
         out = self._format_outcome(
@@ -361,7 +385,26 @@ class Held():
 
         return msg
 
-    def _perform_test(self, aim, random_event, skill_level=0):
+    def _perform_test(self, aim, random_event, skill_level=0,
+                      gifted=False, incompetent=False):
+        if gifted and incompetent:
+            raise ValueError('A test can not be taken on a talent, which'
+                             ' is considered gifted an incompetent at the'
+                             ' same time.')
+
+        print('3D20:\t{}'.format(random_event))
+        if incompetent:
+            print('test with incompetence!')
+            idx = np.argmin(random_event)
+            random_event[idx] = np.random.randint(1, 21)
+
+        if gifted:
+            print('test on gifted skill!')
+            idx = np.argmax(random_event)
+            maximum = np.max(random_event)
+            random_event[idx] = min(maximum, np.random.randint(1, 21))
+        print('3D20:\t{}'.format(random_event))
+
         compensation = random_event - aim
         compensation[compensation < 0] = 0
         spare = skill_level - sum(compensation)
