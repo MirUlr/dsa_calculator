@@ -17,11 +17,13 @@ class Funzel(Held):
 
     def __init__(self, name, funzeligkeit,
                  eigenschaftswerte=[], fertigkeitenwerte=[],
+                 unfähigkeiten=None, begabungen=None,
                  funzel_fertigkeiten={}):
         assert funzeligkeit in ['Geweihter', 'Geweihte',
                                 'Hexer', 'Hexe', 'Zauberer', 'Zauberin'],\
             '{} ist keine unterstützte Rolle.'.format(funzeligkeit)
-        super().__init__(name, eigenschaftswerte, fertigkeitenwerte)
+        super().__init__(name, eigenschaftswerte, fertigkeitenwerte,
+                         unfähigkeiten, begabungen)
         self.rolle = funzeligkeit
 
         if len(funzel_fertigkeiten.keys()) == 0:
@@ -32,13 +34,11 @@ class Funzel(Held):
     def __ask_for_funzel_stuff(self,
                                funzel_dict={'Proben': {},
                                             'Fertigkeitswerte': {}}):
-        clean_read = False
-        while not clean_read:
-            response = input('Sollen weitere {}'
-                             ' aufgenommen werden?\n(j/n) '.format(
-                                 self.__funzel_stuff_term(False)))
-            if response in ['j', 'n']:
-                clean_read = True
+        response = super()._clean_read(
+            text='Sollen weitere {} aufgenommen werden?\n(j/n) '.format(
+                self.__funzel_stuff_term(False)),
+            legal_response=['j', 'n'])
+
         if response == 'j':                         # record more funzel stuff
             # Name des Zaubers oder Wirkung
             bezeichner = input('Name des/der {}: '.format(
@@ -113,7 +113,9 @@ class Funzel(Held):
             data_to_dump = {'Profession': self.rolle,
                             'Eigenschaften': self._eigenschaften,
                             'Fertigkeiten': self._fertigkeiten,
-                            'Funzelfertigkeiten': self._funzelkram}
+                            'Funzelfertigkeiten': self._funzelkram,
+                            'Begabungen': list(self._begabungen),
+                            'Unfähigkeiten': list(self._unfähigkeiten)}
             with open(pathlib.Path(dateipfad, file),
                       'w') as file:
                 json.dump(data_to_dump, file)
@@ -121,18 +123,35 @@ class Funzel(Held):
             raise OSError('Mit gültigem Pfad erneut versuchen.'
                           ' Eventuell Schreibrechte überprüfen.')
 
-    def zeige_besondere_fähigkeiten(self):
+    def zeige_übernatürliche_fähigkeiten(self):
         title = '{}\'s {}:'.format(self.name, self.__funzel_stuff_term(False))
         return super()._show_pretty_dicts(title, self._funzelkram)
 
     @classmethod
     def _from_json(cls, name, stats):
+        try:
+            incompetences = stats['Unfähigkeiten']
+        except KeyError:
+            incompetences = None
+
+        try:
+            gifted_talents = stats['Begabungen']
+        except KeyError:
+            gifted_talents = None
+
         hero = cls(name,
                    stats['Profession'],
                    list(stats['Eigenschaften'].values()),
                    list(stats['Fertigkeiten'].values()),
+                   incompetences,
+                   gifted_talents,
                    stats['Funzelfertigkeiten'])
         return hero
+
+    def aktualisiere_besondere_befähigungen(self,
+                                            weiterhin_zulässig=[]):
+        super().aktualisiere_besondere_befähigungen(
+            weiterhin_zulässig=list(self._funzelkram['Proben'].keys()))
 
     def durchführen(self, fähigkeit: str, modifikator=0):
         try:
@@ -157,7 +176,8 @@ class Funzel(Held):
         # Zufallsereignis auswerten
         gelungen, krit, qualitätsstufen = self._perform_test(
             aim=zielwerte, random_event=_3w20,
-            skill_level=self._funzelkram['Fertigkeitswerte'][fähigkeit])
+            skill_level=self._funzelkram['Fertigkeitswerte'][fähigkeit],
+            gifted=(fähigkeit in self._begabungen))
 
         # Ausgabe bestimmen
         out = self._format_outcome(
