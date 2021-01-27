@@ -123,7 +123,7 @@ class Held():
             self._begabungen = set()
         else:
             if isinstance(begabungen, set):
-                self._begabungen = begabungen()
+                self._begabungen = begabungen
             elif isinstance(begabungen, list):
                 self._begabungen = set(begabungen)
             else:
@@ -286,7 +286,8 @@ class Held():
                 )
             zielwerte = add_cap_19(zielwerte)
         except KeyError:
-            print('{} ist keine gültige Fertigkeit.'.format(talent))
+            raise ValueError('{} ist keine'
+                             ' gültige Fertigkeit.'.format(talent))
 
         if any(zielwerte < 1):                  # unmögliche Proben detektieren
             msg = ('Die Erschwernis von {} '
@@ -342,18 +343,29 @@ class Held():
         outcome_rng = 'Würfelergebnis:\n\t{}\n'.format(random_event)
         out += '\n' + outcome_rng
 
+        if skill in self._begabungen:
+            kind_of_result = 'Ergebnis der Begabung'
+        elif skill in self._unfähigkeiten:
+            kind_of_result = 'Ergebnis der Unfähigkeit'
+        else:
+            kind_of_result = 'Ergebnis'
+
         if success:
             if crit:
-                final_result = ('Ergebnis:\tKritischer Erfolg mit {} '
-                                'Qualitätsstufen.\t:-D'.format(quality_level))
+                final_result = ('{}:\tKritischer Erfolg mit {} '
+                                'Qualitätsstufen.\t:-D'.format(
+                                    kind_of_result,
+                                    quality_level))
             else:
-                final_result = ('Ergebnis:\tErfolg mit '
-                                '{} Qualitätsstufen.'.format(quality_level))
+                final_result = ('{}:\tErfolg mit '
+                                '{} Qualitätsstufen.'.format(
+                                    kind_of_result,
+                                    quality_level))
         else:
             if crit:
-                final_result = 'Ergebnis:\tPatzer\t>:-|'
+                final_result = '{}:\tPatzer\t>:-|'.format(kind_of_result)
             else:
-                final_result = 'Ergebnis:\tFehlschlag'
+                final_result = '{}:\tFehlschlag'.format(kind_of_result)
         out += '\n' + final_result
 
         return out
@@ -392,18 +404,14 @@ class Held():
                              ' is considered gifted an incompetent at the'
                              ' same time.')
 
-        print('3D20:\t{}'.format(random_event))
         if incompetent:
-            print('test with incompetence!')
             idx = np.argmin(random_event)
             random_event[idx] = np.random.randint(1, 21)
 
         if gifted:
-            print('test on gifted skill!')
             idx = np.argmax(random_event)
             maximum = np.max(random_event)
             random_event[idx] = min(maximum, np.random.randint(1, 21))
-        print('3D20:\t{}'.format(random_event))
 
         compensation = random_event - aim
         compensation[compensation < 0] = 0
@@ -432,6 +440,8 @@ class Held():
 
     def _show_pretty_dicts(self, title, dictionary, alphabetical_order=True,
                            depth=1):
+        gifted = ' (+)'
+        incomp = ' (-)'
         msg = ''
         list_of_keys = list(dictionary.keys())
         if alphabetical_order:
@@ -452,7 +462,12 @@ class Held():
                 msg += ('\t'*depth + value)
             else:
                 value = str(dictionary[key])
-                msg += ('\n' + key + ':\n' + '\t'*depth + value)
+                if key in self._unfähigkeiten:
+                    msg += ('\n' + key + incomp + ':\n' + '\t'*depth + value)
+                elif key in self._begabungen:
+                    msg += ('\n' + key + gifted + ':\n' + '\t'*depth + value)
+                else:
+                    msg += ('\n' + key + ':\n' + '\t'*depth + value)
         return msg
 
     @staticmethod
@@ -494,4 +509,4 @@ class Held():
 
 
 if __name__ == '__main__':
-    bob = Held('Bob Bobbler', [11]*8, [3]*59)
+    bob = Held('Bob Bobbler', [11]*8, [3]*59, ['Zechen'], set(['Überreden']))
