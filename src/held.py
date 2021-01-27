@@ -161,6 +161,43 @@ class Held():
         else:
             return('Keine gültigen Daten gefunden.')
 
+    def get_gifted_skills_gui(self):
+        gifted_skills = []
+        for begabung in self._begabungen:
+            gifted_skills.append(self._tamper_designation(begabung))
+        return gifted_skills
+
+    def get_incompetent_skills_gui(self):
+        incompetent_skills = []
+        for unfähigkeit in self._unfähigkeiten:
+            incompetent_skills.append(self._tamper_designation(unfähigkeit))
+        return incompetent_skills
+
+    @staticmethod
+    def _tamper_designation(skill):
+        special_cases = {'Bekehren & Überzeugen': 'bekehren',
+                         'Fischen & Angeln': 'angeln',
+                         'Brett- & Glücksspiel': 'brettspiel',
+                         'Götter & Kulte': 'kulte',
+                         'Sagen & Legenden': 'sagen',
+                         'Boote & Schiffe': 'boote',
+                         'Heilkunde Gift': 'heilenGift',
+                         'Heilkunde Krankheiten': 'heilenKrankhei',
+                         'Heilkunde Seele': 'heilenSeele',
+                         'Heilkunde Wunden': 'heilenWunden',
+                         'Malen & Zeichen': 'malen'}
+        if skill in special_cases.keys():
+            out = special_cases[skill]
+            return out
+
+        umlaute = {'ä': 'ae', 'ö': 'oe', 'ü': 'ue'}
+        out = skill.lower()
+
+        for u in umlaute:
+            out = out.replace(u, umlaute[u])
+
+        return out
+
     def speichern(self, dateipfad='C:/Users/reMner/Desktop/PnP/DSA'):
         dateipfad = pathlib.Path(dateipfad)
         if dateipfad.exists() and dateipfad.is_dir():
