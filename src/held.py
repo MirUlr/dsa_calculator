@@ -709,17 +709,23 @@ class Held():
                              ' is considered gifted an incompetent at the'
                              ' same time.')
 
-        if incompetent:
+        if incompetent:           # estimate and execute reroll of imcompetence
             idx = np.argmin(random_event)
             random_event[idx] = np.random.randint(1, 21)
 
-        if gifted:
-            idx = np.argmax(random_event)
-            maximum = np.max(random_event)
-            random_event[idx] = min(maximum, np.random.randint(1, 21))
-
         compensation = random_event - aim
         compensation[compensation < 0] = 0
+
+        if gifted:                          # estimate reroll for gifted skills
+            idx = np.argmax(compensation)
+            reroll = np.random.randint(1, 21)
+            better_roll = min(random_event[idx], reroll)
+            random_event[idx] = better_roll
+            # recursive call with updated rand toggled gifted flag
+            return self._perform_test(aim=aim, random_event=random_event,
+                                      skill_level=skill_level,
+                                      gifted=False)
+
         spare = skill_level - sum(compensation)
 
         fail_copy = random_event.copy()
