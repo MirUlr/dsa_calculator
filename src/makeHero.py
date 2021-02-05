@@ -6,10 +6,12 @@ Created on Tue Jan 19 21:51:11 2021
 """
 from PyQt5 import uic
 from PyQt5.QtWidgets import *
-import sys
+import sys, os
 import held
 from functools import partial
 import numpy as np
+from PyQt5 import QtCore
+
 
 
 def saveHero():
@@ -104,7 +106,9 @@ def saveHero():
         msg.exec_()
 
 if __name__ == "__main__":
+    os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
     app = QApplication(sys.argv)
+    app.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
     app.setStyle("Fusion")
 
     # Fenster aus Designer laden
