@@ -5,8 +5,9 @@ Created on Sat Jan 16 22:06:41 2021
 @author: Voovo
 """
 from PyQt5 import uic
+from PyQt5 import QtCore
 from PyQt5.QtWidgets import *
-import sys
+import sys, os
 import held
 from functools import partial
 
@@ -44,7 +45,9 @@ def show(result):
     win.label_result.setText(result)
 
 if __name__ == "__main__":
+    os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
     app = QApplication(sys.argv)
+    app.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
     app.setStyle("Fusion")
 
     # Fenster aus Designer laden
