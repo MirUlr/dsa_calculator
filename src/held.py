@@ -7,6 +7,7 @@ Created on Sat Jan 16 09:27:20 2021
 
 import json
 import pathlib
+from itertools import product
 
 import numpy as np
 
@@ -327,6 +328,26 @@ class Held():
             quality_level=qualitätsstufen,
             modification=modifikator)
         return out
+
+    def bestimme_erfolgswahrscheinlichkeit(self, talent):
+        first, second, third = self.FERTIGKEITSPROBEN[talent]
+        objective = np.array([self._eigenschaften[first],
+                              self._eigenschaften[second],
+                              self._eigenschaften[third]
+                              ])
+        prob_space = product(range(1, 21), range(1, 21), range(1, 21))
+        cardinality = 8000          # =20 ** 3
+        hit = 0
+        for event in prob_space:
+            rand = np.array(event)
+            success, no, use = self._perform_test(
+                aim=objective,
+                random_event=rand,
+                skill_level=self._fertigkeiten[talent])
+            if success:
+                hit += 1
+        win_rate = hit / cardinality
+        return win_rate
 
     def aktualisiere_besondere_befähigungen(self,
                                             weiterhin_zulässig=[]):
