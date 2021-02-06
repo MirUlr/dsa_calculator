@@ -27,9 +27,16 @@ def load(name):
             msg.exec_()
         else: # es ist ein Held!
             Charakter = ret
-            # entsprechende GUI-Teile aktivieren
+            # entsprechende GUI-Teile aktivieren/deaktivieren
             win.tab_fertigkeiten.setEnabled(True)
             win.box_attribute.setEnabled(True)
+            win.label_funzel.setEnabled(False)
+            win.comboBox_funzel.setEnabled(False)
+            win.btn_funzel.setEnabled(False)
+            win.mod_funzel.setEnabled(False)
+            # clear ComboBox funzel
+            win.comboBox_funzel.clear()
+
     except ValueError: # unbekannter Dateiname
             msg = QMessageBox()
             msg.setWindowTitle("Error")
@@ -37,12 +44,16 @@ def load(name):
             msg.exec_()
     else: # es ist eine Funzel!
         Charakter = ret
+        # clear ComboBox funzel
+        win.comboBox_funzel.clear()
         # entsprechende GUI-Teile aktivieren
         win.tab_fertigkeiten.setEnabled(True)
         win.box_attribute.setEnabled(True)
         win.label_funzel.setEnabled(True)
         win.comboBox_funzel.setEnabled(True)
         win.btn_funzel.setEnabled(True)
+        win.mod_funzel.setEnabled(True)
+
         # Dropdown-Menue der Funzel füllen
         for key in Charakter._funzelkram["Proben"]:
             win.comboBox_funzel.addItem(key)
@@ -72,6 +83,11 @@ def load(name):
 # Fertigkeiten Funktion
 def do(action, modi):
     result = Charakter.absolviere(action, modi())
+    show(result)
+
+# Fertigkeiten Funktion
+def do_funzel(action, modi):
+    result = Charakter.durchführen(action(), modi())
     show(result)
 
 # Eigenschaften Funktion
@@ -315,6 +331,11 @@ if __name__ == "__main__":
 
     func_btn_stoffbearbeitung = partial(do, "Stoffbearbeitung",win.mod_stoffbearbeitung.value)
     win.btn_stoffbearbeitung.clicked.connect(func_btn_stoffbearbeitung)
+
+    # ------------------------------------------------------------------------
+    # Funzelkram
+    func_btn_funzel = partial(do_funzel, win.comboBox_funzel.currentText,win.mod_funzel.value)
+    win.btn_funzel.clicked.connect(func_btn_funzel)
 
 
    # ========================================================================

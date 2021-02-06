@@ -37,344 +37,6 @@
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_6">
-        <item row="2" column="0" colspan="3">
-         <widget class="QGroupBox" name="box_attribute">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>721</width>
-            <height>91</height>
-           </size>
-          </property>
-          <property name="layoutDirection">
-           <enum>Qt::LeftToRight</enum>
-          </property>
-          <property name="title">
-           <string/>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-          <property name="flat">
-           <bool>false</bool>
-          </property>
-          <widget class="QWidget" name="layoutWidget">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>10</y>
-             <width>699</width>
-             <height>78</height>
-            </rect>
-           </property>
-           <layout class="QVBoxLayout" name="layout_attribute">
-            <item>
-             <layout class="QGridLayout" name="grid_attribute">
-              <item row="0" column="7" colspan="2">
-               <widget class="QPushButton" name="btn_charisma">
-                <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Charisma&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
-                <property name="text">
-                 <string>CH</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="6">
-               <widget class="QSpinBox" name="mod_intuition">
-                <property name="minimum">
-                 <number>-50</number>
-                </property>
-                <property name="maximum">
-                 <number>50</number>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="13" colspan="2">
-               <widget class="QPushButton" name="btn_konstitution">
-                <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Konstitution&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
-                <property name="text">
-                 <string>KO</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="8">
-               <widget class="QSpinBox" name="mod_charisma">
-                <property name="minimum">
-                 <number>-50</number>
-                </property>
-                <property name="maximum">
-                 <number>50</number>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="3" colspan="2">
-               <widget class="QPushButton" name="btn_klugheit">
-                <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Klugheit&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
-                <property name="text">
-                 <string>KL</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="2">
-               <widget class="QSpinBox" name="mod_mut">
-                <property name="buttonSymbols">
-                 <enum>QAbstractSpinBox::UpDownArrows</enum>
-                </property>
-                <property name="minimum">
-                 <number>-50</number>
-                </property>
-                <property name="maximum">
-                 <number>50</number>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="14">
-               <widget class="QSpinBox" name="mod_konstitution">
-                <property name="minimum">
-                 <number>-50</number>
-                </property>
-                <property name="maximum">
-                 <number>50</number>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="5" colspan="2">
-               <widget class="QPushButton" name="btn_intuition">
-                <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Intuition&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
-                <property name="text">
-                 <string>IN</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="9" colspan="2">
-               <widget class="QPushButton" name="btn_fingerfertigkeit">
-                <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fingerfertigkeit&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
-                <property name="text">
-                 <string>FF</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="11" colspan="2">
-               <widget class="QPushButton" name="btn_gewandtheit">
-                <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Gewandtheit&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
-                <property name="text">
-                 <string>GE</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="15" colspan="2">
-               <widget class="QPushButton" name="btn_koerperkraft">
-                <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Körperkraft&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
-                <property name="text">
-                 <string>KK</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1" colspan="2">
-               <widget class="QPushButton" name="btn_mut">
-                <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Mut&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
-                <property name="text">
-                 <string>MU</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="4">
-               <widget class="QSpinBox" name="mod_klugheit">
-                <property name="minimum">
-                 <number>-50</number>
-                </property>
-                <property name="maximum">
-                 <number>50</number>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="16">
-               <widget class="QSpinBox" name="mod_koerperkraft">
-                <property name="minimum">
-                 <number>-50</number>
-                </property>
-                <property name="maximum">
-                 <number>50</number>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="12">
-               <widget class="QSpinBox" name="mod_gewandtheit">
-                <property name="minimum">
-                 <number>-50</number>
-                </property>
-                <property name="maximum">
-                 <number>50</number>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="10">
-               <widget class="QSpinBox" name="mod_fingerfertigkeit">
-                <property name="minimum">
-                 <number>-50</number>
-                </property>
-                <property name="maximum">
-                 <number>50</number>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="0">
-               <widget class="QLabel" name="label">
-                <property name="text">
-                 <string/>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="1">
-               <widget class="QLabel" name="e0">
-                <property name="text">
-                 <string/>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="3">
-               <widget class="QLabel" name="e1">
-                <property name="text">
-                 <string/>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="5">
-               <widget class="QLabel" name="e2">
-                <property name="text">
-                 <string/>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="7">
-               <widget class="QLabel" name="e3">
-                <property name="text">
-                 <string/>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="9">
-               <widget class="QLabel" name="e4">
-                <property name="text">
-                 <string/>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="11">
-               <widget class="QLabel" name="e5">
-                <property name="text">
-                 <string/>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="13">
-               <widget class="QLabel" name="e6">
-                <property name="text">
-                 <string/>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="15">
-               <widget class="QLabel" name="e7">
-                <property name="text">
-                 <string/>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-           </layout>
-          </widget>
-         </widget>
-        </item>
-        <item row="7" column="2">
-         <widget class="QLabel" name="label_result_title">
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>12</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Würfelergebnis</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="label_fertigkeiten_title">
-          <property name="font">
-           <font>
-            <pointsize>12</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Fertigkeiten</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="2">
-         <widget class="QPushButton" name="btn_funzel">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="icon">
-           <iconset>
-            <normaloff>dice.png</normaloff>dice.png</iconset>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="2">
-         <widget class="QLabel" name="label_funzel">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>12</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Zauber und Lithurgien</string>
-          </property>
-         </widget>
-        </item>
         <item row="4" column="0" rowspan="6">
          <widget class="QTabWidget" name="tab_fertigkeiten">
           <property name="enabled">
@@ -2622,6 +2284,381 @@
           </widget>
          </widget>
         </item>
+        <item row="7" column="2">
+         <widget class="QLabel" name="label_result_title">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Würfelergebnis</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0" colspan="3">
+         <widget class="QGroupBox" name="box_attribute">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>721</width>
+            <height>91</height>
+           </size>
+          </property>
+          <property name="layoutDirection">
+           <enum>Qt::LeftToRight</enum>
+          </property>
+          <property name="title">
+           <string/>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <property name="flat">
+           <bool>false</bool>
+          </property>
+          <widget class="QWidget" name="layoutWidget">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>10</y>
+             <width>699</width>
+             <height>78</height>
+            </rect>
+           </property>
+           <layout class="QVBoxLayout" name="layout_attribute">
+            <item>
+             <layout class="QGridLayout" name="grid_attribute">
+              <item row="0" column="7" colspan="2">
+               <widget class="QPushButton" name="btn_charisma">
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Charisma&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+                <property name="text">
+                 <string>CH</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="6">
+               <widget class="QSpinBox" name="mod_intuition">
+                <property name="minimum">
+                 <number>-50</number>
+                </property>
+                <property name="maximum">
+                 <number>50</number>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="13" colspan="2">
+               <widget class="QPushButton" name="btn_konstitution">
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Konstitution&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+                <property name="text">
+                 <string>KO</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="8">
+               <widget class="QSpinBox" name="mod_charisma">
+                <property name="minimum">
+                 <number>-50</number>
+                </property>
+                <property name="maximum">
+                 <number>50</number>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="3" colspan="2">
+               <widget class="QPushButton" name="btn_klugheit">
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Klugheit&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+                <property name="text">
+                 <string>KL</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="2">
+               <widget class="QSpinBox" name="mod_mut">
+                <property name="buttonSymbols">
+                 <enum>QAbstractSpinBox::UpDownArrows</enum>
+                </property>
+                <property name="minimum">
+                 <number>-50</number>
+                </property>
+                <property name="maximum">
+                 <number>50</number>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="14">
+               <widget class="QSpinBox" name="mod_konstitution">
+                <property name="minimum">
+                 <number>-50</number>
+                </property>
+                <property name="maximum">
+                 <number>50</number>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="5" colspan="2">
+               <widget class="QPushButton" name="btn_intuition">
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Intuition&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+                <property name="text">
+                 <string>IN</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="9" colspan="2">
+               <widget class="QPushButton" name="btn_fingerfertigkeit">
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fingerfertigkeit&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+                <property name="text">
+                 <string>FF</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="11" colspan="2">
+               <widget class="QPushButton" name="btn_gewandtheit">
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Gewandtheit&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+                <property name="text">
+                 <string>GE</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="15" colspan="2">
+               <widget class="QPushButton" name="btn_koerperkraft">
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Körperkraft&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+                <property name="text">
+                 <string>KK</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1" colspan="2">
+               <widget class="QPushButton" name="btn_mut">
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Mut&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+                <property name="text">
+                 <string>MU</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="4">
+               <widget class="QSpinBox" name="mod_klugheit">
+                <property name="minimum">
+                 <number>-50</number>
+                </property>
+                <property name="maximum">
+                 <number>50</number>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="16">
+               <widget class="QSpinBox" name="mod_koerperkraft">
+                <property name="minimum">
+                 <number>-50</number>
+                </property>
+                <property name="maximum">
+                 <number>50</number>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="12">
+               <widget class="QSpinBox" name="mod_gewandtheit">
+                <property name="minimum">
+                 <number>-50</number>
+                </property>
+                <property name="maximum">
+                 <number>50</number>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="10">
+               <widget class="QSpinBox" name="mod_fingerfertigkeit">
+                <property name="minimum">
+                 <number>-50</number>
+                </property>
+                <property name="maximum">
+                 <number>50</number>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0">
+               <widget class="QLabel" name="label">
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QLabel" name="e0">
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="3">
+               <widget class="QLabel" name="e1">
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="5">
+               <widget class="QLabel" name="e2">
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="7">
+               <widget class="QLabel" name="e3">
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="9">
+               <widget class="QLabel" name="e4">
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="11">
+               <widget class="QLabel" name="e5">
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="13">
+               <widget class="QLabel" name="e6">
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="15">
+               <widget class="QLabel" name="e7">
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+        <item row="6" column="2">
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <property name="sizeConstraint">
+           <enum>QLayout::SetMinimumSize</enum>
+          </property>
+          <item>
+           <widget class="QSpinBox" name="mod_funzel">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>136</width>
+              <height>20</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>136</width>
+              <height>20</height>
+             </size>
+            </property>
+            <property name="minimum">
+             <number>-50</number>
+            </property>
+            <property name="maximum">
+             <number>50</number>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_funzel">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>136</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>136</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>dice.png</normaloff>dice.png</iconset>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="7" column="1">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>10</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="0" column="0">
+         <layout class="QHBoxLayout" name="layout_heldLaden">
+          <item>
+           <widget class="QLineEdit" name="txt_heldLaden"/>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_heldLaden">
+            <property name="text">
+             <string>Held laden</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
         <item row="8" column="2" rowspan="2">
          <widget class="QLabel" name="label_result">
           <property name="text">
@@ -2649,35 +2686,19 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="0">
-         <layout class="QHBoxLayout" name="layout_heldLaden">
-          <item>
-           <widget class="QLineEdit" name="txt_heldLaden"/>
-          </item>
-          <item>
-           <widget class="QPushButton" name="btn_heldLaden">
-            <property name="text">
-             <string>Held laden</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item row="7" column="1">
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_fertigkeiten_title">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
           </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Fixed</enum>
+          <property name="text">
+           <string>Fertigkeiten</string>
           </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>10</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
+         </widget>
         </item>
         <item row="5" column="2">
          <widget class="QComboBox" name="comboBox_funzel">
@@ -2695,6 +2716,29 @@
             <width>280</width>
             <height>16777215</height>
            </size>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="2">
+         <widget class="QLabel" name="label_funzel">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Funzel-Zeug</string>
           </property>
          </widget>
         </item>
