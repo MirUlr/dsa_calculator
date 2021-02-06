@@ -8,38 +8,60 @@ from PyQt5 import uic
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import *
 import sys, os
-import held
+from held import Held
+from funzel import Funzel
 from functools import partial
 
-# Held laden
+# Charakter laden
 def load(name):
-    global Held
-    try:
-        ret = held.Held.laden(name(),r'.\\')
-    except ValueError as e: #code to run if error occurs
-        msg = QMessageBox()
-        msg.setWindowTitle("Error")
-        msg.setText("Dieser Held ist hier nicht bekannt.")
-        msg.exec_()
-    else:
-        Held = ret
+    global Charakter
+    try: # Testen, ob als Funzel ladbar
+        ret = Funzel.laden(name(),r'.\\')
+    except KeyError: # nope, keine Funzel
+        try: # Testen, ob als Held ladbar
+            ret = Held.laden(name(),r'.\\')
+        except ValueError: # nope, auch kein Held
+            msg = QMessageBox()
+            msg.setWindowTitle("Error")
+            msg.setText("Dieser Held ist hier nicht bekannt.")
+            msg.exec_()
+        else: # es ist ein Held!
+            Charakter = ret
+            # entsprechende GUI-Teile aktivieren
+            win.tab_fertigkeiten.setEnabled(True)
+            win.box_attribute.setEnabled(True)
+    except ValueError: # unbekannter Dateiname
+            msg = QMessageBox()
+            msg.setWindowTitle("Error")
+            msg.setText("Dieser Held ist hier nicht bekannt.")
+            msg.exec_()
+    else: # es ist eine Funzel!
+        Charakter = ret
+        # entsprechende GUI-Teile aktivieren
         win.tab_fertigkeiten.setEnabled(True)
         win.box_attribute.setEnabled(True)
+        win.label_funzel.setEnabled(True)
+        win.comboBox_funzel.setEnabled(True)
+        win.btn_funzel.setEnabled(True)
+        # Dropdown-Menue der Funzel füllen
+        for key in Charakter._funzelkram["Proben"]:
+            win.comboBox_funzel.addItem(key)
+
 
         # Eigenschaftswerte eintragen
         cnt = 0
-        for key in Held._eigenschaften:
+        for key in Charakter._eigenschaften:
             funcName = 'e%i' % cnt
             method_to_call = getattr(win, funcName)
-            method_to_call.setText("  "+str(Held._eigenschaften[key]))
+            method_to_call.setText("  "+str(Charakter._eigenschaften[key]))
             cnt = cnt+1
 
         # Fertigkeitenwerte eintragen
         cnt = 0
-        for key in Held._fertigkeiten:
+        for key in Charakter._fertigkeiten:
             funcName = 'f%i' % cnt
             method_to_call = getattr(win, funcName)
-            method_to_call.setText(str(Held._fertigkeiten[key]))
+            method_to_call.setText(str(Charakter._fertigkeiten[key]))
             cnt = cnt+1
 
         msg = QMessageBox()
@@ -49,12 +71,12 @@ def load(name):
 
 # Fertigkeiten Funktion
 def do(action, modi):
-    result = Held.absolviere(action, modi())
+    result = Charakter.absolviere(action, modi())
     show(result)
 
 # Eigenschaften Funktion
 def test(action, modi):
-    result = Held.teste(action, modi())
+    result = Charakter.teste(action, modi())
     show(result)
 
 # Würfelergebnis anzeigen
@@ -70,12 +92,12 @@ if __name__ == "__main__":
     # Fenster aus Designer laden
     win = uic.loadUi("MainWindow.ui")
 
-    # Held initialisieren, zum Testen
-    # Held = held.Held.laden("Tore_Bjornson",r'D:\Voovo\Documents\RPG\DSA')
+    # Charakter initialisieren, zum Testen
+    # Charakter = Held.laden("Tore_Bjornson",r'D:\Voovo\Documents\RPG\DSA')
 
     # Button-Logik
     # ========================================================================
-    # Held laden
+    # Charakter laden
     func_btn_heldLaden = partial(load, win.txt_heldLaden.text)
     win.btn_heldLaden.clicked.connect(func_btn_heldLaden)
 
