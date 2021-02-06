@@ -14,9 +14,14 @@ from functools import partial
 # Held laden
 def load(name):
     global Held
-    ret = held.Held.laden(name(),r'.\\')
-
-    if(type(ret) == held.Held):
+    try:
+        ret = held.Held.laden(name(),r'.\\')
+    except ValueError as e: #code to run if error occurs
+        msg = QMessageBox()
+        msg.setWindowTitle("Error")
+        msg.setText("Dieser Held ist hier nicht bekannt.")
+        msg.exec_()
+    else:
         Held = ret
         win.tab_fertigkeiten.setEnabled(True)
         win.box_attribute.setEnabled(True)
@@ -40,11 +45,6 @@ def load(name):
         msg = QMessageBox()
         msg.setWindowTitle("Erfolg")
         msg.setText("Held erfolgreich geladen.\nAuf ins Abenteuer!")
-        msg.exec_()
-    else:
-        msg = QMessageBox()
-        msg.setWindowTitle("Error")
-        msg.setText("Dieser Held ist hier nicht bekannt.")
         msg.exec_()
 
 # Fertigkeiten Funktion
