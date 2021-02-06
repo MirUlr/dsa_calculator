@@ -36,7 +36,7 @@
          <height>832</height>
         </rect>
        </property>
-       <widget class="QTabWidget" name="tab_fertigkeiten">
+       <widget class="QTabWidget" name="QTabWidget">
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -88,7 +88,7 @@
             </widget>
            </item>
            <item row="9" column="1">
-            <widget class="QSpinBox" name="mod_sinnesschaerfe">
+            <widget class="QSpinBox" name="f9">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -98,7 +98,7 @@
             </widget>
            </item>
            <item row="11" column="1">
-            <widget class="QSpinBox" name="mod_taschendiebstahl">
+            <widget class="QSpinBox" name="f11">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -122,7 +122,7 @@
             </widget>
            </item>
            <item row="7" column="1">
-            <widget class="QSpinBox" name="mod_selbstbeherrschung">
+            <widget class="QSpinBox" name="f7">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -132,7 +132,7 @@
             </widget>
            </item>
            <item row="2" column="1">
-            <widget class="QSpinBox" name="mod_klettern">
+            <widget class="QSpinBox" name="f2">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -142,7 +142,7 @@
             </widget>
            </item>
            <item row="6" column="1">
-            <widget class="QSpinBox" name="mod_schwimmen">
+            <widget class="QSpinBox" name="f6">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -152,7 +152,7 @@
             </widget>
            </item>
            <item row="13" column="1">
-            <widget class="QSpinBox" name="mod_zechen">
+            <widget class="QSpinBox" name="f13">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -176,7 +176,7 @@
             </widget>
            </item>
            <item row="8" column="1">
-            <widget class="QSpinBox" name="mod_singen">
+            <widget class="QSpinBox" name="f8">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -186,7 +186,7 @@
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QSpinBox" name="mod_fliegen">
+            <widget class="QSpinBox" name="f0">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -196,7 +196,7 @@
             </widget>
            </item>
            <item row="12" column="1">
-            <widget class="QSpinBox" name="mod_verbergen">
+            <widget class="QSpinBox" name="f12">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -206,7 +206,7 @@
             </widget>
            </item>
            <item row="3" column="1">
-            <widget class="QSpinBox" name="mod_koerperbeherrschung">
+            <widget class="QSpinBox" name="f3">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -216,7 +216,7 @@
             </widget>
            </item>
            <item row="1" column="1">
-            <widget class="QSpinBox" name="mod_gaukeleien">
+            <widget class="QSpinBox" name="f1">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -261,7 +261,7 @@
             </widget>
            </item>
            <item row="5" column="1">
-            <widget class="QSpinBox" name="mod_reiten">
+            <widget class="QSpinBox" name="f5">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -278,7 +278,7 @@
             </widget>
            </item>
            <item row="4" column="1">
-            <widget class="QSpinBox" name="mod_kraftakt">
+            <widget class="QSpinBox" name="f4">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -309,7 +309,7 @@
             </widget>
            </item>
            <item row="10" column="1">
-            <widget class="QSpinBox" name="mod_tanzen">
+            <widget class="QSpinBox" name="f10">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -351,7 +351,7 @@
             <number>10</number>
            </property>
            <item row="7" column="1">
-            <widget class="QSpinBox" name="mod_verkleiden">
+            <widget class="QSpinBox" name="f21">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -368,7 +368,7 @@
             </widget>
            </item>
            <item row="6" column="1">
-            <widget class="QSpinBox" name="mod_ueberreden">
+            <widget class="QSpinBox" name="f20">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -378,7 +378,7 @@
             </widget>
            </item>
            <item row="3" column="1">
-            <widget class="QSpinBox" name="mod_etikette">
+            <widget class="QSpinBox" name="f17">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -395,7 +395,7 @@
             </widget>
            </item>
            <item row="4" column="1">
-            <widget class="QSpinBox" name="mod_gassenwissen">
+            <widget class="QSpinBox" name="f18">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -405,7 +405,7 @@
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QSpinBox" name="mod_bekehren">
+            <widget class="QSpinBox" name="f14">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -429,7 +429,7 @@
             </widget>
            </item>
            <item row="8" column="1">
-            <widget class="QSpinBox" name="mod_willenskraft">
+            <widget class="QSpinBox" name="f22">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -460,7 +460,7 @@
             </widget>
            </item>
            <item row="2" column="1">
-            <widget class="QSpinBox" name="mod_einschuechtern">
+            <widget class="QSpinBox" name="f16">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -484,7 +484,7 @@
             </widget>
            </item>
            <item row="5" column="1">
-            <widget class="QSpinBox" name="mod_menschenkenntnis">
+            <widget class="QSpinBox" name="f19">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -494,7 +494,7 @@
             </widget>
            </item>
            <item row="1" column="1">
-            <widget class="QSpinBox" name="mod_betoeren">
+            <widget class="QSpinBox" name="f15">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -536,7 +536,7 @@
             <number>10</number>
            </property>
            <item row="6" column="1">
-            <widget class="QSpinBox" name="mod_wildnisleben">
+            <widget class="QSpinBox" name="f29">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -588,7 +588,7 @@
             </widget>
            </item>
            <item row="1" column="1">
-            <widget class="QSpinBox" name="mod_fesseln">
+            <widget class="QSpinBox" name="f24">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -605,7 +605,7 @@
             </widget>
            </item>
            <item row="2" column="1">
-            <widget class="QSpinBox" name="mod_angeln">
+            <widget class="QSpinBox" name="f25">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -615,7 +615,7 @@
             </widget>
            </item>
            <item row="3" column="1">
-            <widget class="QSpinBox" name="mod_orientierung">
+            <widget class="QSpinBox" name="f26">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -625,7 +625,7 @@
             </widget>
            </item>
            <item row="4" column="1">
-            <widget class="QSpinBox" name="mod_pflanzenkunde">
+            <widget class="QSpinBox" name="f27">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -635,7 +635,7 @@
             </widget>
            </item>
            <item row="5" column="1">
-            <widget class="QSpinBox" name="mod_tierkunde">
+            <widget class="QSpinBox" name="f28">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -645,7 +645,7 @@
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QSpinBox" name="mod_faehrtensuche">
+            <widget class="QSpinBox" name="f23">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -694,7 +694,7 @@
             </widget>
            </item>
            <item row="6" column="1">
-            <widget class="QSpinBox" name="mod_mechanik">
+            <widget class="QSpinBox" name="f36">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -711,7 +711,7 @@
             </widget>
            </item>
            <item row="11" column="1">
-            <widget class="QSpinBox" name="mod_sternkunde">
+            <widget class="QSpinBox" name="f41">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -721,7 +721,7 @@
             </widget>
            </item>
            <item row="9" column="1">
-            <widget class="QSpinBox" name="mod_sagen">
+            <widget class="QSpinBox" name="f39">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -745,7 +745,7 @@
             </widget>
            </item>
            <item row="10" column="1">
-            <widget class="QSpinBox" name="mod_sphaerenkunde">
+            <widget class="QSpinBox" name="f40">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -755,7 +755,7 @@
             </widget>
            </item>
            <item row="4" column="1">
-            <widget class="QSpinBox" name="mod_kriegskunst">
+            <widget class="QSpinBox" name="f34">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -772,7 +772,7 @@
             </widget>
            </item>
            <item row="8" column="1">
-            <widget class="QSpinBox" name="mod_rechtskunde">
+            <widget class="QSpinBox" name="f38">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -782,7 +782,7 @@
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QSpinBox" name="mod_brettspiel">
+            <widget class="QSpinBox" name="f30">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -792,7 +792,7 @@
             </widget>
            </item>
            <item row="2" column="1">
-            <widget class="QSpinBox" name="mod_geschichtswissen">
+            <widget class="QSpinBox" name="f32">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -809,7 +809,7 @@
             </widget>
            </item>
            <item row="7" column="1">
-            <widget class="QSpinBox" name="mod_rechnen">
+            <widget class="QSpinBox" name="f37">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -819,7 +819,7 @@
             </widget>
            </item>
            <item row="1" column="1">
-            <widget class="QSpinBox" name="mod_geographie">
+            <widget class="QSpinBox" name="f31">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -864,7 +864,7 @@
             </widget>
            </item>
            <item row="5" column="1">
-            <widget class="QSpinBox" name="mod_magiekunde">
+            <widget class="QSpinBox" name="f35">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -874,7 +874,7 @@
             </widget>
            </item>
            <item row="3" column="1">
-            <widget class="QSpinBox" name="mod_kulte">
+            <widget class="QSpinBox" name="f33">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -923,7 +923,7 @@
             <number>10</number>
            </property>
            <item row="15" column="1">
-            <widget class="QSpinBox" name="mod_steinbearbeitung">
+            <widget class="QSpinBox" name="f57">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -933,7 +933,7 @@
             </widget>
            </item>
            <item row="5" column="1">
-            <widget class="QSpinBox" name="mod_heilenKrankheit">
+            <widget class="QSpinBox" name="f47">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -964,7 +964,7 @@
             </widget>
            </item>
            <item row="1" column="1">
-            <widget class="QSpinBox" name="mod_boote">
+            <widget class="QSpinBox" name="f43">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -974,7 +974,7 @@
             </widget>
            </item>
            <item row="12" column="1">
-            <widget class="QSpinBox" name="mod_metallbearbeitung">
+            <widget class="QSpinBox" name="f54">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -998,7 +998,7 @@
             </widget>
            </item>
            <item row="9" column="1">
-            <widget class="QSpinBox" name="mod_lebensmittelbearbeitung">
+            <widget class="QSpinBox" name="f51">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -1022,7 +1022,7 @@
             </widget>
            </item>
            <item row="14" column="1">
-            <widget class="QSpinBox" name="mod_schloesserknacken">
+            <widget class="QSpinBox" name="f56">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -1032,7 +1032,7 @@
             </widget>
            </item>
            <item row="7" column="1">
-            <widget class="QSpinBox" name="mod_heilenWunden">
+            <widget class="QSpinBox" name="f49">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -1063,7 +1063,7 @@
             </widget>
            </item>
            <item row="3" column="1">
-            <widget class="QSpinBox" name="mod_handel">
+            <widget class="QSpinBox" name="f45">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -1080,7 +1080,7 @@
             </widget>
            </item>
            <item row="16" column="1">
-            <widget class="QSpinBox" name="mod_stoffbearbeitung">
+            <widget class="QSpinBox" name="f58">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -1118,7 +1118,7 @@
             </widget>
            </item>
            <item row="13" column="1">
-            <widget class="QSpinBox" name="mod_musizieren">
+            <widget class="QSpinBox" name="f55">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -1135,7 +1135,7 @@
             </widget>
            </item>
            <item row="10" column="1">
-            <widget class="QSpinBox" name="mod_lederbearbeitung">
+            <widget class="QSpinBox" name="f52">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -1152,7 +1152,7 @@
             </widget>
            </item>
            <item row="2" column="1">
-            <widget class="QSpinBox" name="mod_fahrzeuge">
+            <widget class="QSpinBox" name="f44">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -1162,7 +1162,7 @@
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QSpinBox" name="mod_alchemie">
+            <widget class="QSpinBox" name="f42">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -1172,7 +1172,7 @@
             </widget>
            </item>
            <item row="6" column="1">
-            <widget class="QSpinBox" name="mod_heilenSeele">
+            <widget class="QSpinBox" name="f48">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -1182,7 +1182,7 @@
             </widget>
            </item>
            <item row="11" column="1">
-            <widget class="QSpinBox" name="mod_malen">
+            <widget class="QSpinBox" name="f53">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -1192,7 +1192,7 @@
             </widget>
            </item>
            <item row="4" column="1">
-            <widget class="QSpinBox" name="mod_heilenGift">
+            <widget class="QSpinBox" name="f46">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -1202,7 +1202,7 @@
             </widget>
            </item>
            <item row="8" column="1">
-            <widget class="QSpinBox" name="mod_holzbearbeitung">
+            <widget class="QSpinBox" name="f50">
              <property name="minimum">
               <number>-50</number>
              </property>
@@ -1319,7 +1319,7 @@
           </widget>
          </item>
          <item row="1" column="0">
-          <widget class="QSpinBox" name="mod_mut">
+          <widget class="QSpinBox" name="e0">
            <property name="buttonSymbols">
             <enum>QAbstractSpinBox::UpDownArrows</enum>
            </property>
@@ -1335,7 +1335,7 @@
           </widget>
          </item>
          <item row="1" column="4">
-          <widget class="QSpinBox" name="mod_fingerfertigkeit">
+          <widget class="QSpinBox" name="e4">
            <property name="minimum">
             <number>-50</number>
            </property>
@@ -1388,7 +1388,7 @@
           </widget>
          </item>
          <item row="1" column="3">
-          <widget class="QSpinBox" name="mod_charisma">
+          <widget class="QSpinBox" name="e3">
            <property name="minimum">
             <number>-50</number>
            </property>
@@ -1401,7 +1401,7 @@
           </widget>
          </item>
          <item row="1" column="6">
-          <widget class="QSpinBox" name="mod_konstitution">
+          <widget class="QSpinBox" name="e6">
            <property name="minimum">
             <number>-50</number>
            </property>
@@ -1414,7 +1414,7 @@
           </widget>
          </item>
          <item row="1" column="7">
-          <widget class="QSpinBox" name="mod_koerperkraft">
+          <widget class="QSpinBox" name="e7">
            <property name="minimum">
             <number>-50</number>
            </property>
@@ -1447,7 +1447,7 @@
           </widget>
          </item>
          <item row="1" column="5">
-          <widget class="QSpinBox" name="mod_gewandtheit">
+          <widget class="QSpinBox" name="e5">
            <property name="minimum">
             <number>-50</number>
            </property>
@@ -1460,7 +1460,7 @@
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QSpinBox" name="mod_klugheit">
+          <widget class="QSpinBox" name="e1">
            <property name="minimum">
             <number>-50</number>
            </property>
@@ -1513,7 +1513,7 @@
           </widget>
          </item>
          <item row="1" column="2">
-          <widget class="QSpinBox" name="mod_intuition">
+          <widget class="QSpinBox" name="e2">
            <property name="minimum">
             <number>-50</number>
            </property>
@@ -1588,6 +1588,29 @@
         </property>
         <property name="text">
          <string>Held speichern!</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="btn_laden">
+        <property name="geometry">
+         <rect>
+          <x>440</x>
+          <y>20</y>
+          <width>101</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Held Laden</string>
         </property>
        </widget>
       </widget>

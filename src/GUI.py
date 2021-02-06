@@ -2,7 +2,7 @@
 """
 Created on Sat Jan 16 22:06:41 2021
 
-@author: Voovo
+@author: Rabea
 """
 from PyQt5 import uic
 from PyQt5 import QtCore
@@ -36,6 +36,27 @@ def load(name):
             win.mod_funzel.setEnabled(False)
             # clear ComboBox funzel
             win.comboBox_funzel.clear()
+
+            # Eigenschaftswerte eintragen
+            cnt = 0
+            for key in Charakter._eigenschaften:
+                funcName = 'e%i' % cnt
+                method_to_call = getattr(win, funcName)
+                method_to_call.setText("  "+str(Charakter._eigenschaften[key]))
+                cnt = cnt+1
+
+            # Fertigkeitenwerte eintragen
+            cnt = 0
+            for key in Charakter._fertigkeiten:
+                funcName = 'f%i' % cnt
+                method_to_call = getattr(win, funcName)
+                method_to_call.setText(str(Charakter._fertigkeiten[key]))
+                cnt = cnt+1
+
+            msg = QMessageBox()
+            msg.setWindowTitle("Erfolg")
+            msg.setText("Held erfolgreich geladen.\nAuf ins Abenteuer!")
+            msg.exec_()
 
     except ValueError: # unbekannter Dateiname
             msg = QMessageBox()
@@ -77,7 +98,7 @@ def load(name):
 
         msg = QMessageBox()
         msg.setWindowTitle("Erfolg")
-        msg.setText("Held erfolgreich geladen.\nAuf ins Abenteuer!")
+        msg.setText("Funzel erfolgreich geladen.\nAuf ins Abenteuer!")
         msg.exec_()
 
 # Fertigkeiten Funktion
