@@ -2657,6 +2657,22 @@
           </item>
          </layout>
         </item>
+        <item row="7" column="1">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>10</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
         <item row="5" column="2">
          <widget class="QComboBox" name="comboBox_zauber">
           <property name="minimumSize">
@@ -2673,21 +2689,19 @@
           </property>
          </widget>
         </item>
-        <item row="7" column="1">
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+        <item row="0" column="2">
+         <widget class="QCheckBox" name="checkBox_Funzel">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
           </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Fixed</enum>
+          <property name="text">
+           <string>Held ist eine Funzel</string>
           </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>10</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
+         </widget>
         </item>
        </layout>
       </widget>
