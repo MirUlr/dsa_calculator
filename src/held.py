@@ -186,7 +186,7 @@ class Held():
 
     @classmethod
     def laden(cls, charakter,
-              verzeichnis='C:/Users/reMner/Desktop/PnP/DSA'):
+              verzeichnis='C:/Users/49162/Documents/RolePlay/PnP/DSA'):
         """Load character from harddrive and returns corresponding Held object.
 
         Parameters
@@ -196,7 +196,7 @@ class Held():
             used in file naming, the intended name may be used.
         verzeichnis : str, optional
             Specifies directory to load <name>.json from.
-            The default is 'C:/Users/reMner/Desktop/PnP/DSA'.
+            The default is 'C:/Users/49162/Documents/RolePlay/PnP/DSA'.
 
         Raises
         ------
@@ -426,7 +426,7 @@ class Held():
             self.aktualisiere_besondere_befähigungen(
                 weiterhin_zulässig=weiterhin_zulässig)
 
-    def speichern(self, dateipfad='C:/Users/reMner/Desktop/PnP/DSA'):
+    def speichern(self, dateipfad='C:/Users/49162/Documents/RolePlay/PnP/DSA'):
         """Store character describing dictionaries as json on harddrive.
 
         File is written as <name>.json, whereby spaces are removed.
@@ -435,7 +435,7 @@ class Held():
         ----------
         dateipfad : str, optional
             Directory to store the char.
-            The default is 'C:/Users/reMner/Desktop/PnP/DSA'.
+            The default is 'C:/Users/49162/Documents/RolePlay/PnP/DSA'.
 
         Raises
         ------

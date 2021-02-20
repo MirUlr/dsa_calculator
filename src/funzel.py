@@ -229,7 +229,7 @@ class Funzel(Held):
             modification=modifikator)
         return out
 
-    def speichern(self, dateipfad='C:/Users/reMner/Desktop/PnP/DSA'):
+    def speichern(self, dateipfad='C:/Users/49162/Documents/RolePlay/PnP/DSA'):
         """Store character describing dictionaries as json on harddrive.
 
         File is written as <name>.json, whereby spaces are removed.
@@ -238,7 +238,7 @@ class Funzel(Held):
         ----------
         dateipfad : str, optional
             Directory to store the char.
-            The default is 'C:/Users/reMner/Desktop/PnP/DSA'.
+            The default is 'C:/Users/49162/Documents/RolePlay/PnP/DSA'.
 
         Raises
         ------
