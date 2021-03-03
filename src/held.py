@@ -6,8 +6,13 @@ Created on Sat Jan 16 09:27:20 2021
 """
 
 import json
+import pandas as pd
 import pathlib
+import seaborn as sns
 from itertools import product
+from matplotlib import pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+from pylab import cm
 
 import numpy as np
 
@@ -349,6 +354,71 @@ class Held():
         win_rate = hit / cardinality
         return win_rate
 
+    def analyze_success(self, talent, modifier=0):          
+        # estimate objectives for rolling
+        try:
+            goal = np.array(
+                [self._eigenschaften[eig]
+                 for eig in self.FERTIGKEITSPROBEN[talent]])
+            add_cap_19 = np.vectorize(
+                lambda x: min(19, x + modifier)
+                )
+            goal = add_cap_19(goal)
+        except KeyError:
+            raise ValueError('{} ist keine'
+                             ' gültige Fertigkeit.'.format(talent))
+
+        if any(goal < 1):                  # detect impossible tests
+            msg = ('Die Erschwernis von {} '
+                   'macht diese Probe unmöglich.'.format(abs(modifier)))
+            return msg
+
+        # generate table with all possible random events
+        table = self._n_cartesian_three(20, talent)
+        header = list(table.columns)
+        qualities = []
+        
+        # estimate all possible random events
+        for index, row in table.iterrows():
+            _, _, quality_level = self._perform_test(
+                aim=goal,
+                random_event=row.to_numpy(),
+                skill_level=self._fertigkeiten[talent],
+                gifted=(talent in self._begabungen),
+                incompetent=(talent in self._unfähigkeiten))
+            if quality_level == -1:
+                quality_level = 0
+            qualities.append(quality_level)
+        table['#QS'] = qualities
+
+        # start plotting
+        sns.set(style='darkgrid')
+    
+        fig = plt.figure()
+        ax = fig.add_subplot(111, projection='3d')
+        
+        x = table[header[0]]
+        y = table[header[1]]
+        z = table[header[2]]
+        q = table['#QS']
+
+
+        colors = cm.coolwarm(q / max(q))
+        title = ('Verteilung der Erfolge, bei einer Probe von '
+                 '{} auf {} mit Modifikator {}.').format(self.name,
+                                                         talent,
+                                                         modifier)
+
+        ax.set_xlabel(header[0])
+        ax.set_ylabel(header[1])
+        ax.set_zlabel(header[2])
+        ax.set_title('Verteilung der Qualitätsstufen')
+
+        ax.scatter(x, y, z, c=colors)
+        plt.show()
+        
+        
+
     def aktualisiere_besondere_befähigungen(self,
                                             weiterhin_zulässig=[]):
         """Initiate command line dialogue to update gifted and incompetences.
@@ -668,6 +738,38 @@ class Held():
                 final_result = '{}:\tFehlschlag'.format(kind_of_result)
         out += '\n' + final_result
 
+        return out
+
+    def _n_cartesian_three(self, n: int, skill):
+        """Generate DataFrame with n**3 rows, corresponding to attributes.
+
+        Parameters
+        ----------
+        n : int
+            One to n describes the base set for cartesian product.
+        skill : str
+            Designate talent. Must be among keys from self.FERTIGKEITSPROBEN.
+
+        Returns
+        -------
+        out : pandas.DataFrame
+            DESCRIPTION.
+
+        """
+        base = list(range(1, n+1))
+        third = base * (n**2)
+        second = []
+        first = []
+        for e in base:  
+            second += [e]*n
+            first += [e]*(n**2)
+        
+        second = second * n
+        '[1] ' + self.FERTIGKEITSPROBEN[skill][0]
+        out = pd.DataFrame({
+            '[1] ' + self.FERTIGKEITSPROBEN[skill][0]: first,
+            '[2] ' + self.FERTIGKEITSPROBEN[skill][1]: second,
+            '[3] ' + self.FERTIGKEITSPROBEN[skill][2]: third})
         return out
 
     def _perform_test(self, aim, random_event, skill_level=0,
@@ -1000,3 +1102,8 @@ class Held():
         else:
             quality_level = -1
         return quality_level
+
+
+if __name__ == '__main__':
+    bob = Held('Bob', [14]*8, [12]*59)
+    df = bob.analyze_success('Zechen')
