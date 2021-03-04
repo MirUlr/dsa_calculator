@@ -6,8 +6,12 @@ Created on Sat Jan 16 09:27:20 2021
 """
 
 import json
+import multiprocessing
+import pandas as pd
 import pathlib
-from itertools import product
+from matplotlib import pyplot as plt
+
+from pylab import cm
 
 import numpy as np
 
@@ -329,25 +333,107 @@ class Held():
             modification=modifikator)
         return out
 
-    def bestimme_erfolgswahrscheinlichkeit(self, talent):
-        first, second, third = self.FERTIGKEITSPROBEN[talent]
-        objective = np.array([self._eigenschaften[first],
-                              self._eigenschaften[second],
-                              self._eigenschaften[third]
-                              ])
-        prob_space = product(range(1, 21), range(1, 21), range(1, 21))
-        cardinality = 8000          # =20 ** 3
-        hit = 0
-        for event in prob_space:
-            rand = np.array(event)
-            success, no, use = self._perform_test(
-                aim=objective,
-                random_event=rand,
-                skill_level=self._fertigkeiten[talent])
-            if success:
-                hit += 1
-        win_rate = hit / cardinality
-        return win_rate
+    def analyze_success(self, talent, modifier=0):        
+        """Visualize the probability of the statet test with plot and string.
+
+        Parameters
+        ----------
+        talent : str
+            State the talent/skill to be tested.
+        modifier : int, optional
+            Modification set to the test; negative values for a more difficult,
+            positve values for an easier test
+            The default is 0.
+
+
+        Raises
+        ------
+        ValueError
+            Raised when specified talent is not legal, i.e. is not a key in
+            FERTIGKEITSPROBEN.
+
+        Note
+        ----
+        As sideeffect a matplotlib panel is displayed within a further process.
+
+        Returns
+        -------
+        str
+            Formatted describtion of quality level distribution for
+            specified talent/skill.
+
+        """
+        # estimate objectives for rolling
+        try:
+            goal = np.array(
+                [self._eigenschaften[eig]
+                 for eig in self.FERTIGKEITSPROBEN[talent]])
+            add_cap_19 = np.vectorize(
+                lambda x: min(19, x + modifier)
+                )
+            goal = add_cap_19(goal)
+        except KeyError:
+            raise ValueError('{} ist keine'
+                             ' gültige Fertigkeit.'.format(talent))
+
+        if any(goal < 1):                  # detect impossible tests
+            msg = ('Die Erschwernis von {} '
+                   'macht diese Probe unmöglich.'.format(abs(modifier)))
+            return msg
+
+        # generate table with all possible random events
+        table = self._n_cartesian_three(20, talent)
+        header = list(table.columns)
+        qualities = []
+        
+        # estimate all possible random events
+        for index, row in table.iterrows():
+            _, _, quality_level = self._perform_test(
+                aim=goal,
+                random_event=row.to_numpy(),
+                skill_level=self._fertigkeiten[talent],
+                gifted=(talent in self._begabungen),
+                incompetent=(talent in self._unfähigkeiten))
+            if quality_level == -1:
+                quality_level = 0
+            qualities.append(quality_level)
+        table['#QS'] = qualities
+
+        # begin plotting process
+        title='Verteilung der Qualitätsstufen von {}'.format(talent)
+        proc = multiprocessing.Process(target=self._plot_cube_of_success,
+                                       args=(table, title,))
+        proc.start()
+
+        # begin describing probabilities
+        distribution = ('Erfolgsaussichten für ein Probe auf {} mit '
+                        'Modifikator {}:\n\n').format(talent, modifier)
+
+        results = table.groupby('#QS').count().index
+        prob = table.groupby('#QS').count()[header[0]].to_numpy(dtype='float')
+        prob /= sum(prob)
+        
+        # following string formating
+        delimiter = ' | '
+        upper = '     q   ' + delimiter
+        lower = ' P(#QS=q)' + delimiter
+        for i in range(len(results)):
+            if results[i] < 10:
+                upper += ('  ' + str(results[i]) + '  ' + delimiter)
+            else:
+                upper += ('  ' + str(results[i]) + ' ' + delimiter)
+            lower += (
+                '{:5.2f}'.format(np.round(prob[i]*100, 2))
+                + delimiter)
+        # correct last char
+        upper = upper[:-1]
+        lower = lower[:-1]
+        line = '-' * len(upper)
+        
+        distribution += upper + '\n' + line + '\n' + lower + '\n'
+        distribution +=  ' '*len(line[:-3]) + '[in Prozent]'
+
+        return distribution
 
     def aktualisiere_besondere_befähigungen(self,
                                             weiterhin_zulässig=[]):
@@ -670,6 +756,38 @@ class Held():
 
         return out
 
+    def _n_cartesian_three(self, n: int, skill):
+        """Generate DataFrame with n**3 rows, corresponding to attributes.
+
+        Parameters
+        ----------
+        n : int
+            One to n describes the base set for cartesian product.
+        skill : str
+            Designate talent. Must be among keys from self.FERTIGKEITSPROBEN.
+
+        Returns
+        -------
+        out : pandas.DataFrame
+            DESCRIPTION.
+
+        """
+        base = list(range(1, n+1))
+        third = base * (n**2)
+        second = []
+        first = []
+        for e in base:  
+            second += [e]*n
+            first += [e]*(n**2)
+        
+        second = second * n
+        '[1] ' + self.FERTIGKEITSPROBEN[skill][0]
+        out = pd.DataFrame({
+            '[1] ' + self.FERTIGKEITSPROBEN[skill][0]: first,
+            '[2] ' + self.FERTIGKEITSPROBEN[skill][1]: second,
+            '[3] ' + self.FERTIGKEITSPROBEN[skill][2]: third})
+        return out
+
     def _perform_test(self, aim, random_event, skill_level=0,
                       gifted=False, incompetent=False):
         """Evalutae the performance of random event and measure the success.
@@ -886,6 +1004,29 @@ class Held():
         return val
 
     @staticmethod
+    def _plot_cube_of_success(table, title):
+        header = list(table.columns)
+    
+        fig = plt.figure()
+        ax = fig.add_subplot(111, projection='3d')
+        
+        x = table[header[0]]
+        y = table[header[1]]
+        z = table[header[2]]
+        q = table[header[3]]
+
+        colors = cm.Spectral(q / max(q))
+
+        ax.set_xlabel(header[0])
+        ax.set_ylabel(header[1])
+        ax.set_zlabel(header[2])
+        ax.set_title(title)
+
+        ax.scatter(x, y, z, c=colors, s=20, alpha=.5)
+        plt.show()
+
+
+    @staticmethod
     def _tamper_designation(skill):
         """Transform a given string for GUI concerns.
 
@@ -1000,3 +1141,9 @@ class Held():
         else:
             quality_level = -1
         return quality_level
+
+
+if __name__ == '__main__':
+    bob = Held('Bob', [14]*8, [12]*59)
+    df = bob.analyze_success('Zechen')
+    print(df)
