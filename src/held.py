@@ -6,12 +6,11 @@ Created on Sat Jan 16 09:27:20 2021
 """
 
 import json
+import multiprocessing
 import pandas as pd
 import pathlib
-import seaborn as sns
-from itertools import product
 from matplotlib import pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
+
 from pylab import cm
 
 import numpy as np
@@ -334,27 +333,36 @@ class Held():
             modification=modifikator)
         return out
 
-    def bestimme_erfolgswahrscheinlichkeit(self, talent):
-        first, second, third = self.FERTIGKEITSPROBEN[talent]
-        objective = np.array([self._eigenschaften[first],
-                              self._eigenschaften[second],
-                              self._eigenschaften[third]
-                              ])
-        prob_space = product(range(1, 21), range(1, 21), range(1, 21))
-        cardinality = 8000          # =20 ** 3
-        hit = 0
-        for event in prob_space:
-            rand = np.array(event)
-            success, no, use = self._perform_test(
-                aim=objective,
-                random_event=rand,
-                skill_level=self._fertigkeiten[talent])
-            if success:
-                hit += 1
-        win_rate = hit / cardinality
-        return win_rate
+    def analyze_success(self, talent, modifier=0):        
+        """Visualize the probability of the statet test with plot and string.
 
-    def analyze_success(self, talent, modifier=0):          
+        Parameters
+        ----------
+        talent : str
+            State the talent/skill to be tested.
+        modifier : int, optional
+            Modification set to the test; negative values for a more difficult,
+            positve values for an easier test
+            The default is 0.
+
+
+        Raises
+        ------
+        ValueError
+            Raised when specified talent is not legal, i.e. is not a key in
+            FERTIGKEITSPROBEN.
+
+        Note
+        ----
+        As sideeffect a matplotlib panel is displayed within a further process.
+
+        Returns
+        -------
+        str
+            Formatted describtion of quality level distribution for
+            specified talent/skill.
+
+        """
         # estimate objectives for rolling
         try:
             goal = np.array(
@@ -391,33 +399,41 @@ class Held():
             qualities.append(quality_level)
         table['#QS'] = qualities
 
-        # start plotting
-        sns.set(style='darkgrid')
-    
-        fig = plt.figure()
-        ax = fig.add_subplot(111, projection='3d')
+        # begin plotting process
+        title='Verteilung der Qualitätsstufen von {}'.format(talent)
+        proc = multiprocessing.Process(target=self._plot_cube_of_success,
+                                       args=(table, title,))
+        proc.start()
+
+        # begin describing probabilities
+        distribution = ('Erfolgsaussichten für ein Probe auf {} mit '
+                        'Modifikator {}:\n\n').format(talent, modifier)
+
+        results = table.groupby('#QS').count().index
+        prob = table.groupby('#QS').count()[header[0]].to_numpy(dtype='float')
+        prob /= sum(prob)
         
-        x = table[header[0]]
-        y = table[header[1]]
-        z = table[header[2]]
-        q = table['#QS']
-
-
-        colors = cm.coolwarm(q / max(q))
-        title = ('Verteilung der Erfolge, bei einer Probe von '
-                 '{} auf {} mit Modifikator {}.').format(self.name,
-                                                         talent,
-                                                         modifier)
-
-        ax.set_xlabel(header[0])
-        ax.set_ylabel(header[1])
-        ax.set_zlabel(header[2])
-        ax.set_title('Verteilung der Qualitätsstufen')
-
-        ax.scatter(x, y, z, c=colors)
-        plt.show()
+        # following string formating
+        delimiter = ' | '
+        upper = '     q   ' + delimiter
+        lower = ' P(#QS=q)' + delimiter
+        for i in range(len(results)):
+            if results[i] < 10:
+                upper += ('  ' + str(results[i]) + '  ' + delimiter)
+            else:
+                upper += ('  ' + str(results[i]) + ' ' + delimiter)
+            lower += (
+                '{:5.2f}'.format(np.round(prob[i]*100, 2))
+                + delimiter)
+        # correct last char
+        upper = upper[:-1]
+        lower = lower[:-1]
+        line = '-' * len(upper)
         
-        
+        distribution += upper + '\n' + line + '\n' + lower + '\n'
+        distribution +=  ' '*len(line[:-3]) + '[in Prozent]'
+
+        return distribution
 
     def aktualisiere_besondere_befähigungen(self,
                                             weiterhin_zulässig=[]):
@@ -988,6 +1004,29 @@ class Held():
         return val
 
     @staticmethod
+    def _plot_cube_of_success(table, title):
+        header = list(table.columns)
+    
+        fig = plt.figure()
+        ax = fig.add_subplot(111, projection='3d')
+        
+        x = table[header[0]]
+        y = table[header[1]]
+        z = table[header[2]]
+        q = table[header[3]]
+
+        colors = cm.Spectral(q / max(q))
+
+        ax.set_xlabel(header[0])
+        ax.set_ylabel(header[1])
+        ax.set_zlabel(header[2])
+        ax.set_title(title)
+
+        ax.scatter(x, y, z, c=colors, s=20, alpha=.5)
+        plt.show()
+
+
+    @staticmethod
     def _tamper_designation(skill):
         """Transform a given string for GUI concerns.
 
@@ -1107,3 +1146,4 @@ class Held():
 if __name__ == '__main__':
     bob = Held('Bob', [14]*8, [12]*59)
     df = bob.analyze_success('Zechen')
+    print(df)
