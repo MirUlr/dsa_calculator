@@ -10,7 +10,24 @@ from matplotlib import pyplot as plt
 from pylab import cm
 
 
-def plot_cube_of_success(table, title):
+def plot_cube_of_success(table, title=''):
+    """Visualize chances of success with three dimensional matplotlib plot.
+
+    Parameters
+    ----------
+    table : pandas.DataFrame
+        Contain results to display. At least four columns are expected. First
+        theree columns are expected to hold all possible random events by row.
+        the fourth column is used to generate the colormap for all dots.
+    title : str, optional
+        Title to display for the plot.
+        Default is ''.
+
+    Returns
+    -------
+    None.
+
+    """
     header = list(table.columns)
 
     fig = plt.figure()

@@ -7,37 +7,37 @@ Created on Tue Jan 19 21:51:11 2021
 from PyQt5 import uic
 from PyQt5.QtWidgets import *
 import sys, os
-from held import Held
+from hero import Hero
 from functools import partial
 import numpy as np
 from PyQt5 import QtCore
 
 def loadHero():
-    global Charakter
+    global charakter
     try: # Testen, ob als Held ladbar
         name = win.txt_heldName.text()
-        ret = Held.laden(name,r'.\\')
+        ret = Hero.load(name,r'.\\')
     except ValueError: # nicht bekannt
         msg = QMessageBox()
         msg.setWindowTitle("Error")
         msg.setText("Dieser Held ist hier nicht bekannt.")
         msg.exec_()
     else: # es ist ein gültiger Held!
-        Charakter = ret
+        charakter = ret
         # Eigenschaftswerte eintragen
         cnt = 0
-        for key in Charakter._eigenschaften:
+        for key in charakter._eigenschaften:
             funcName = 'e%i' % cnt
             method_to_call = getattr(win, funcName)
-            method_to_call.setValue(Charakter._eigenschaften[key])
+            method_to_call.setValue(charakter._eigenschaften[key])
             cnt = cnt+1
 
         # Fertigkeitenwerte eintragen
         cnt = 0
-        for key in Charakter._fertigkeiten:
+        for key in charakter._fertigkeiten:
             funcName = 'f%i' % cnt
             method_to_call = getattr(win, funcName)
-            method_to_call.setValue(Charakter._fertigkeiten[key])
+            method_to_call.setValue(charakter._fertigkeiten[key])
             cnt = cnt+1
 
         msg = QMessageBox()
@@ -68,11 +68,10 @@ def saveHero():
         val = method_to_call.value()
         f.append(val)
 
+    charakter = Hero(name, e, f)
 
-    Charakter = Held(name, e, f)
-
-    if(type(Charakter) == Held):
-        Charakter.speichern(r'.\\')
+    if(isinstance(charakter, Hero)):
+        charakter.save(r'.\\')
         msg = QMessageBox()
         msg.setWindowTitle("Erfolg")
         msg.setText("Held erfolgreich gespeichert!")

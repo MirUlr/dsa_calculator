@@ -14,7 +14,7 @@ import pandas as pd
 
 import plottery
 
-class Held():
+class Hero():
     """Baseclass for characters from the rpg `Das Shwarze Auge` (DSA).
 
     This class is motivated by the need for automatic evaluation of test,
@@ -69,7 +69,7 @@ class Held():
         or None.
 
     """
-    FERTIGKEITSPROBEN = {
+    SKILL_CHECKS = {
         'Fliegen': ('Mut', 'Intuition', 'Gewandtheit'),
         'Gaukeleien': ('Mut', 'Charisma', 'Fingerfertigkeit'),
         'Klettern': ('Mut', 'Gewandtheit', 'Körperkraft'),
@@ -147,7 +147,7 @@ class Held():
             ['Mut', 'Klugheit', 'Intuition', 'Charisma', 'Fingerfertigkeit',
              'Gewandtheit', 'Konstitution', 'Körperkraft'])
         self._fertigkeiten = dict.fromkeys(
-            list(self.FERTIGKEITSPROBEN.keys()))
+            list(self.SKILL_CHECKS.keys()))
 
         if len(eigenschaftswerte) != len(self._eigenschaften):
             print('==->  Nun Eigenschaften eingeben  <-==')
@@ -187,8 +187,8 @@ class Held():
                 raise TypeError('`begabungen` wird als set oder list erwartet')
 
     @classmethod
-    def laden(cls, charakter,
-              verzeichnis='C:/Users/49162/Documents/RolePlay/PnP/DSA'):
+    def load(cls, charakter,
+             verzeichnis='C:/Users/49162/Documents/RolePlay/PnP/DSA'):
         """Load character from harddrive and returns corresponding Held object.
 
         Parameters
@@ -262,7 +262,7 @@ class Held():
                    gifted_talents)
         return hero
 
-    def absolviere(self, talent, modifikator=-0):
+    def execute(self, talent, modifikator=-0):
         """Perform a test on a certin talent, w.r.t. skikll value and modifier.
 
         Core functionality.
@@ -284,7 +284,7 @@ class Held():
         ------
         ValueError
             Raised when specified talent is not legal, i.e. is not a key in
-            FERTIGKEITSPROBEN.
+            SKILL_CHECKS.
 
         Returns
         -------
@@ -295,7 +295,7 @@ class Held():
         try:
             zielwerte = np.array(
                 [self._eigenschaften[eig]
-                 for eig in self.FERTIGKEITSPROBEN[talent]])
+                 for eig in self.SKILL_CHECKS[talent]])
             add_cap_19 = np.vectorize(
                 lambda x: min(19, x + modifikator)
                 )
@@ -324,7 +324,7 @@ class Held():
             goals=zielwerte,
             random_event=_3w20,
             talent_level=self._fertigkeiten,
-            talent_composition=self.FERTIGKEITSPROBEN,
+            talent_composition=self.SKILL_CHECKS,
             success=gelungen,
             crit=krit,
             quality_level=qualitätsstufen,
@@ -348,7 +348,7 @@ class Held():
         ------
         ValueError
             Raised when specified talent is not legal, i.e. is not a key in
-            FERTIGKEITSPROBEN.
+            SKILL_CHECKS.
 
         Note
         ----
@@ -365,7 +365,7 @@ class Held():
         try:
             goal = np.array(
                 [self._eigenschaften[eig]
-                 for eig in self.FERTIGKEITSPROBEN[talent]])
+                 for eig in self.SKILL_CHECKS[talent]])
             add_cap_19 = np.vectorize(
                 lambda x: min(19, x + modifier)
                 )
@@ -434,8 +434,7 @@ class Held():
 
         return distribution
 
-    def aktualisiere_besondere_befähigungen(self,
-                                            weiterhin_zulässig=[]):
+    def update_special_abilities(self, weiterhin_zulässig=[]):
         """Initiate command line dialogue to update gifted and incompetences.
 
         After confirmation the corresponding sets are updated.
@@ -472,7 +471,7 @@ class Held():
             if len(temp) > 3:
                 raise ValueError('Nicht mehr als 3 Begabungen erlaubt.')
             for t in temp:
-                in_skills = t in self.FERTIGKEITSPROBEN.keys()
+                in_skills = t in self.SKILL_CHECKS.keys()
                 in_further_skills = t in weiterhin_zulässig
                 if not in_skills and not in_further_skills:
                     raise ValueError('{} ist keine zulässige'
@@ -493,7 +492,7 @@ class Held():
             if len(temp) > 2:
                 raise ValueError('Nicht mehr als 2 Unfähigkeiten erlaubt.')
             for t in temp:
-                if t not in self.FERTIGKEITSPROBEN.keys():
+                if t not in self.SKILL_CHECKS.keys():
                     raise ValueError('{} ist keine'
                                      ' zulässige Fertigkeit.'.format(t))
             if temp.isdisjoint(self._begabungen):
@@ -508,10 +507,10 @@ class Held():
 
         # whether more updates shall be happen
         if val == 'j':
-            self.aktualisiere_besondere_befähigungen(
+            self.update_special_abilities(
                 weiterhin_zulässig=weiterhin_zulässig)
 
-    def speichern(self, dateipfad='C:/Users/49162/Documents/RolePlay/PnP/DSA'):
+    def save(self, dateipfad='C:/Users/49162/Documents/RolePlay/PnP/DSA'):
         """Store character describing dictionaries as json on harddrive.
 
         File is written as <name>.json, whereby spaces are removed.
@@ -547,7 +546,7 @@ class Held():
             raise OSError('Mit gültigem Pfad erneut versuchen.'
                           ' Eventuell Schreibrechte überprüfen.')
 
-    def teste(self, eigenschaft, modifikator=0):
+    def test(self, eigenschaft, modifikator=0):
         """Perform an attribute check, meaning a 1D20 roll.
 
         Parameters
@@ -591,7 +590,7 @@ class Held():
 
         return msg
 
-    def zeige_besondere_befähigungen(self):
+    def show_special_abilities(self):
         """Show talents which are marked as gifted or incompetent.
 
         Returns
@@ -615,7 +614,7 @@ class Held():
         out = msg_1 + '\n' + msg_2
         return out
 
-    def zeige_eigenschaften(self):
+    def show_attributes(self):
         """Show attributes and values.
 
         Returns
@@ -763,7 +762,7 @@ class Held():
         n : int
             One to n describes the base set for cartesian product.
         skill : str
-            Designate talent. Must be among keys from self.FERTIGKEITSPROBEN.
+            Designate talent. Must be among keys from self.SKILL_CHECKS.
 
         Returns
         -------
@@ -780,11 +779,11 @@ class Held():
             first += [e]*(n**2)
         
         second = second * n
-        '[1] ' + self.FERTIGKEITSPROBEN[skill][0]
+        '[1] ' + self.SKILL_CHECKS[skill][0]
         out = pd.DataFrame({
-            '[1] ' + self.FERTIGKEITSPROBEN[skill][0]: first,
-            '[2] ' + self.FERTIGKEITSPROBEN[skill][1]: second,
-            '[3] ' + self.FERTIGKEITSPROBEN[skill][2]: third})
+            '[1] ' + self.SKILL_CHECKS[skill][0]: first,
+            '[2] ' + self.SKILL_CHECKS[skill][1]: second,
+            '[3] ' + self.SKILL_CHECKS[skill][2]: third})
         return out
 
     def _perform_test(self, aim, random_event, skill_level=0,
@@ -1120,6 +1119,6 @@ class Held():
 
 
 if __name__ == '__main__':
-    bob = Held('Bob', [14]*8, [12]*59)
+    bob = Hero('Bob', [14]*8, [12]*59)
     df = bob.analyze_success('Zechen')
     print(df)
