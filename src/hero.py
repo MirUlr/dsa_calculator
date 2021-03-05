@@ -7,16 +7,14 @@ Created on Sat Jan 16 09:27:20 2021
 
 import json
 import multiprocessing
-import pandas as pd
 import pathlib
-from matplotlib import pyplot as plt
-
-from pylab import cm
 
 import numpy as np
+import pandas as pd
 
+import plottery
 
-class Held():
+class Hero():
     """Baseclass for characters from the rpg `Das Shwarze Auge` (DSA).
 
     This class is motivated by the need for automatic evaluation of test,
@@ -48,30 +46,30 @@ class Held():
     ----------
     name : str
         Name of the hero.
-    eigenschaftswerte : list, optional
+    attribute_values : list, optional
         List of integer with lenght 8, representing the values for the
         attributes. Are asked in command line dialogue if not specified.
         The default is [].
-    fertigkeitenwerte : list, optional
+    skill_values : list, optional
         List of integer with length 59, representing the values for the
         skills/talents. Are asked in command line dialogue if not
         specified.
         The default is [].
-    unfähigkeiten : list or set or None, optional
+    incompetences : list or set or None, optional
         String representation of incompetent skills/talents.
         The default is None.
-    begabungen : list or set or None, optional
+    gifted : list or set or None, optional
         String representation of gifted skills or spell-likes.
         The default is None.
 
     Raises
     ------
     TypeError
-        Raised when `unfähigkeiten` or `begabungen` are not given as set, list
+        Raised when `incompetences` or `gifted` are not given as set, list
         or None.
 
     """
-    FERTIGKEITSPROBEN = {
+    SKILL_CHECKS = {
         'Fliegen': ('Mut', 'Intuition', 'Gewandtheit'),
         'Gaukeleien': ('Mut', 'Charisma', 'Fingerfertigkeit'),
         'Klettern': ('Mut', 'Gewandtheit', 'Körperkraft'),
@@ -142,63 +140,63 @@ class Held():
                              'Fingerfertigkeit')
         }
 
-    def __init__(self, name, eigenschaftswerte=[], fertigkeitenwerte=[],
-                 unfähigkeiten=None, begabungen=None):
+    def __init__(self, name, attribute_values=[], skill_values=[],
+                 incompetences=None, gifted=None):
         self.name = name
-        self._eigenschaften = dict.fromkeys(
+        self._attributes = dict.fromkeys(
             ['Mut', 'Klugheit', 'Intuition', 'Charisma', 'Fingerfertigkeit',
              'Gewandtheit', 'Konstitution', 'Körperkraft'])
-        self._fertigkeiten = dict.fromkeys(
-            list(self.FERTIGKEITSPROBEN.keys()))
+        self._skills = dict.fromkeys(
+            list(self.SKILL_CHECKS.keys()))
 
-        if len(eigenschaftswerte) != len(self._eigenschaften):
+        if len(attribute_values) != len(self._attributes):
             print('==->  Nun Eigenschaften eingeben  <-==')
-            eigenschaftswerte = self.__ask_for_values(self._eigenschaften,
+            attribute_values = self.__ask_for_values(self._attributes,
                                                       (1, 19))
-        self._eigenschaften = {
-            list(self._eigenschaften.keys())[i]: eigenschaftswerte[i]
-            for i in range(len(eigenschaftswerte))}
+        self._attributes = {
+            list(self._attributes.keys())[i]: attribute_values[i]
+            for i in range(len(attribute_values))}
 
-        if len(fertigkeitenwerte) != len(self._fertigkeiten):
+        if len(skill_values) != len(self._skills):
             print('==->  Nun Fertigkeiten eingeben  <-==')
-            fertigkeitenwerte = self.__ask_for_values(self._fertigkeiten,
+            skill_values = self.__ask_for_values(self._skills,
                                                       (0, 25))
-        self._fertigkeiten = {
-            list(self._fertigkeiten.keys())[i]: fertigkeitenwerte[i]
-            for i in range(len(fertigkeitenwerte))}
+        self._skills = {
+            list(self._skills.keys())[i]: skill_values[i]
+            for i in range(len(skill_values))}
 
-        if unfähigkeiten is None:
-            self._unfähigkeiten = set()
+        if incompetences is None:
+            self._incompetences = set()
         else:
-            if isinstance(unfähigkeiten, set):
-                self._unfähigkeiten = unfähigkeiten
-            elif isinstance(unfähigkeiten, list):
-                self._unfähigkeiten = set(unfähigkeiten)
+            if isinstance(incompetences, set):
+                self._incompetences = incompetences
+            elif isinstance(incompetences, list):
+                self._incompetences = set(incompetences)
             else:
-                raise TypeError('`unfähigkeiten` wird als '
+                raise TypeError('`incompetences` wird als '
                                 'set oder list erwartet')
 
-        if begabungen is None:
-            self._begabungen = set()
+        if gifted is None:
+            self._gifted = set()
         else:
-            if isinstance(begabungen, set):
-                self._begabungen = begabungen
-            elif isinstance(begabungen, list):
-                self._begabungen = set(begabungen)
+            if isinstance(gifted, set):
+                self._gifted = gifted
+            elif isinstance(gifted, list):
+                self._gifted = set(gifted)
             else:
-                raise TypeError('`begabungen` wird als set oder list erwartet')
+                raise TypeError('`gifted` wird als set oder list erwartet')
 
     @classmethod
-    def laden(cls, charakter,
-              verzeichnis='C:/Users/49162/Documents/RolePlay/PnP/DSA'):
+    def load(cls, character,
+             directory='C:/Users/49162/Documents/RolePlay/PnP/DSA'):
         """Load character from harddrive and returns corresponding Held object.
 
         Parameters
         ----------
-        charakter : str
+        character : str
             Name of the character to be loaded. Althogh underscore style is
             used in file naming, the intended name may be used.
-        verzeichnis : str, optional
+        directory : str, optional
             Specifies directory to load <name>.json from.
             The default is 'C:/Users/49162/Documents/RolePlay/PnP/DSA'.
 
@@ -209,16 +207,16 @@ class Held():
 
         Returns
         -------
-        Held
+        Hero
             Initiated hero.
 
         """
-        final_file = pathlib.Path(verzeichnis,
-                                  (charakter + '.json').replace(' ', '_'))
+        final_file = pathlib.Path(directory,
+                                  (character + '.json').replace(' ', '_'))
         if final_file.exists() and final_file.is_file():
             with open(final_file, 'r') as source:
                 data = json.load(source)
-            return cls._from_json(name=charakter.replace('_', ' '),
+            return cls._from_json(name=character.replace('_', ' '),
                                   stats=data)
         else:
             raise ValueError('Keine gültigen Daten gefunden.')
@@ -239,11 +237,11 @@ class Held():
             Contain statistics to instantiate hero with all informations.
             Must provide stats:'Eigenschaften' -> a=[int], with len(a)=8
             and stats:'Fertigkeiten' -> b=[int], with len(b)=59;
-            may contain Values for 'Unfähigkeiten' and 'Begabungen'.
+            may contain Values for 'incompetences' and 'gifted'.
 
         Returns
         -------
-        hero : Held
+        hero : Hero
             Initiated hero.
 
         """
@@ -264,7 +262,7 @@ class Held():
                    gifted_talents)
         return hero
 
-    def absolviere(self, talent, modifikator=-0):
+    def execute(self, talent, modifier=-0):
         """Perform a test on a certin talent, w.r.t. skikll value and modifier.
 
         Core functionality.
@@ -276,17 +274,10 @@ class Held():
         ----------
         talent : str
             State the talent/skill to be tested.
-        modifikator : int, optional
+        modifier : int, optional
             Modification set to the test; negative values for a more difficult,
             positve values for an easier test
             The default is 0.
-
-
-        Raises
-        ------
-        ValueError
-            Raised when specified talent is not legal, i.e. is not a key in
-            FERTIGKEITSPROBEN.
 
         Returns
         -------
@@ -294,43 +285,36 @@ class Held():
             Formatted result of the skill test.
 
         """
-        try:
-            zielwerte = np.array(
-                [self._eigenschaften[eig]
-                 for eig in self.FERTIGKEITSPROBEN[talent]])
-            add_cap_19 = np.vectorize(
-                lambda x: min(19, x + modifikator)
-                )
-            zielwerte = add_cap_19(zielwerte)
-        except KeyError:
-            raise ValueError('{} ist keine'
-                             ' gültige Fertigkeit.'.format(talent))
-
-        if any(zielwerte < 1):                  # unmögliche Proben detektieren
+        # estimate objectives for rolling
+        objective, impossible = self._estimae_objective(
+            talent=talent, modifier=modifier,
+            attribute_source=self.SKILL_CHECKS)
+    
+        if impossible:
             msg = ('Die Erschwernis von {} '
-                   'macht diese Probe unmöglich.'.format(abs(modifikator)))
+                   'macht diese Probe unmöglich.'.format(abs(modifier)))
             return msg
 
         _3w20 = np.random.randint(1, 21, 3)
 
         # Zufallsereignis auswerten
         gelungen, krit, qualitätsstufen = self._perform_test(
-            aim=zielwerte, random_event=_3w20,
-            skill_level=self._fertigkeiten[talent],
-            gifted=(talent in self._begabungen),
-            incompetent=(talent in self._unfähigkeiten))
+            aim=objective, random_event=_3w20,
+            skill_level=self._skills[talent],
+            gifted=(talent in self._gifted),
+            incompetent=(talent in self._incompetences))
 
         # Ausgabe bestimmen
         out = self._format_outcome(
             skill=talent,
-            goals=zielwerte,
+            goals=objective,
             random_event=_3w20,
-            talent_level=self._fertigkeiten,
-            talent_composition=self.FERTIGKEITSPROBEN,
+            talent_level=self._skills,
+            talent_composition=self.SKILL_CHECKS,
             success=gelungen,
             crit=krit,
             quality_level=qualitätsstufen,
-            modification=modifikator)
+            modification=modifier)
         return out
 
     def analyze_success(self, talent, modifier=0):        
@@ -345,13 +329,6 @@ class Held():
             positve values for an easier test
             The default is 0.
 
-
-        Raises
-        ------
-        ValueError
-            Raised when specified talent is not legal, i.e. is not a key in
-            FERTIGKEITSPROBEN.
-
         Note
         ----
         As sideeffect a matplotlib panel is displayed within a further process.
@@ -364,19 +341,11 @@ class Held():
 
         """
         # estimate objectives for rolling
-        try:
-            goal = np.array(
-                [self._eigenschaften[eig]
-                 for eig in self.FERTIGKEITSPROBEN[talent]])
-            add_cap_19 = np.vectorize(
-                lambda x: min(19, x + modifier)
-                )
-            goal = add_cap_19(goal)
-        except KeyError:
-            raise ValueError('{} ist keine'
-                             ' gültige Fertigkeit.'.format(talent))
-
-        if any(goal < 1):                  # detect impossible tests
+        objective, impossible = self._estimae_objective(
+            talent=talent, modifier=modifier,
+            attribute_source=self.SKILL_CHECKS)
+    
+        if impossible:
             msg = ('Die Erschwernis von {} '
                    'macht diese Probe unmöglich.'.format(abs(modifier)))
             return msg
@@ -389,11 +358,11 @@ class Held():
         # estimate all possible random events
         for index, row in table.iterrows():
             _, _, quality_level = self._perform_test(
-                aim=goal,
+                aim=objective,
                 random_event=row.to_numpy(),
-                skill_level=self._fertigkeiten[talent],
-                gifted=(talent in self._begabungen),
-                incompetent=(talent in self._unfähigkeiten))
+                skill_level=self._skills[talent],
+                gifted=(talent in self._gifted),
+                incompetent=(talent in self._incompetences))
             if quality_level == -1:
                 quality_level = 0
             qualities.append(quality_level)
@@ -401,8 +370,9 @@ class Held():
 
         # begin plotting process
         title='Verteilung der Qualitätsstufen von {}'.format(talent)
-        proc = multiprocessing.Process(target=self._plot_cube_of_success,
-                                       args=(table, title,))
+        proc = multiprocessing.Process(
+            target=plottery.plot_cube_of_success,
+            args=(table, title,))
         proc.start()
 
         # begin describing probabilities
@@ -435,15 +405,14 @@ class Held():
 
         return distribution
 
-    def aktualisiere_besondere_befähigungen(self,
-                                            weiterhin_zulässig=[]):
+    def update_special_abilities(self, also_permitted=[]):
         """Initiate command line dialogue to update gifted and incompetences.
 
         After confirmation the corresponding sets are updated.
 
         Parameters
         ----------
-        weiterhin_zulässig : list, optional
+        also_permitted : list, optional
             List of strings representing additional legal skills for gifted
             and incompetences. Enable derived classes to allow spell-likes as
             gifted skills.
@@ -469,17 +438,17 @@ class Held():
         if val == 'j':
             temp = self._show_and_update_set(
                 '{}\'s Begabungen:'.format(self.name),
-                self._begabungen)
+                self._gifted)
             if len(temp) > 3:
                 raise ValueError('Nicht mehr als 3 Begabungen erlaubt.')
             for t in temp:
-                in_skills = t in self.FERTIGKEITSPROBEN.keys()
-                in_further_skills = t in weiterhin_zulässig
+                in_skills = t in self.SKILL_CHECKS.keys()
+                in_further_skills = t in also_permitted
                 if not in_skills and not in_further_skills:
                     raise ValueError('{} ist keine zulässige'
                                      ' Fertigkeit.'.format(t))
-            if temp.isdisjoint(self._unfähigkeiten):
-                self._begabungen = temp
+            if temp.isdisjoint(self._incompetences):
+                self._gifted = temp
             else:
                 raise ValueError('Begabungen und Unfähigkeiten'
                                  ' dürfen sich nicht überlappen.')
@@ -490,15 +459,15 @@ class Held():
         if val == 'j':
             temp = self._show_and_update_set(
                 '{}\'s Unfähigkeiten:'.format(self.name),
-                self._unfähigkeiten)
+                self._incompetences)
             if len(temp) > 2:
                 raise ValueError('Nicht mehr als 2 Unfähigkeiten erlaubt.')
             for t in temp:
-                if t not in self.FERTIGKEITSPROBEN.keys():
+                if t not in self.SKILL_CHECKS.keys():
                     raise ValueError('{} ist keine'
                                      ' zulässige Fertigkeit.'.format(t))
-            if temp.isdisjoint(self._begabungen):
-                self._unfähigkeiten = temp
+            if temp.isdisjoint(self._gifted):
+                self._incompetences = temp
             else:
                 raise ValueError('Begabungen und Unfähigkeiten'
                                  ' dürfen sich nicht überlappen.')
@@ -509,17 +478,17 @@ class Held():
 
         # whether more updates shall be happen
         if val == 'j':
-            self.aktualisiere_besondere_befähigungen(
-                weiterhin_zulässig=weiterhin_zulässig)
+            self.update_special_abilities(
+                also_permitted=also_permitted)
 
-    def speichern(self, dateipfad='C:/Users/49162/Documents/RolePlay/PnP/DSA'):
+    def save(self, directory='C:/Users/49162/Documents/RolePlay/PnP/DSA'):
         """Store character describing dictionaries as json on harddrive.
 
         File is written as <name>.json, whereby spaces are removed.
 
         Parameters
         ----------
-        dateipfad : str, optional
+        directory : str, optional
             Directory to store the char.
             The default is 'C:/Users/49162/Documents/RolePlay/PnP/DSA'.
 
@@ -534,26 +503,26 @@ class Held():
         None.
 
         """
-        dateipfad = pathlib.Path(dateipfad)
-        if dateipfad.exists() and dateipfad.is_dir():
+        directory = pathlib.Path(directory)
+        if directory.exists() and directory.is_dir():
             file = '{}.json'.format(self.name.replace(' ', '_'))
-            data_to_dump = {'Eigenschaften': self._eigenschaften,
-                            'Fertigkeiten': self._fertigkeiten,
-                            'Begabungen': list(self._begabungen),
-                            'Unfähigkeiten': list(self._unfähigkeiten)}
-            with open(pathlib.Path(dateipfad, file),
+            data_to_dump = {'Eigenschaften': self._attributes,
+                            'Fertigkeiten': self._skills,
+                            'Begabungen': list(self._gifted),
+                            'Unfähigkeiten': list(self._incompetences)}
+            with open(pathlib.Path(directory, file),
                       'w') as file:
                 json.dump(data_to_dump, file)
         else:
             raise OSError('Mit gültigem Pfad erneut versuchen.'
                           ' Eventuell Schreibrechte überprüfen.')
 
-    def teste(self, eigenschaft, modifikator=0):
+    def test(self, attribute, modifikator=0):
         """Perform an attribute check, meaning a 1D20 roll.
 
         Parameters
         ----------
-        eigenschaft : str
+        attribute : str
             Attribute to be checked.
         modifikator : int, optional
             Modification set to the test; negative values for a more difficult,
@@ -566,18 +535,18 @@ class Held():
             Formatted result of the attribute check.
 
         """
-        assert eigenschaft in self._eigenschaften.keys(),\
-            '{} ist keine gültige Eigenschaft.'.format(eigenschaft)
+        assert attribute in self._attributes.keys(),\
+            '{} ist keine gültige Eigenschaft.'.format(attribute)
         eigenschaftswert_mod = min(
-            self._eigenschaften[eigenschaft] + modifikator, 19)
+            self._attributes[attribute] + modifikator, 19)
         _1w20 = np.random.randint(1, 21, 1)
 
-        erfolg, kritisch, _ = self._perform_test(
+        suc, _, _ = self._perform_test(
             aim=np.array(eigenschaftswert_mod),
             random_event=_1w20)
 
         msg = '{} testet {} ({})'.format(
-                self.name, eigenschaft, self._eigenschaften[eigenschaft])
+                self.name, attribute, self._attributes[attribute])
         if modifikator == 0:
             msg += ':\n'
         elif modifikator > 0:
@@ -585,14 +554,14 @@ class Held():
         elif modifikator < 0:
             msg += ', erschwert um {}:\n'.format(str(abs(modifikator)))
 
-        if erfolg:
+        if suc:
             msg += '\nGeschafft mit einem Wurf von {}.'.format(*_1w20)
         else:
             msg += '\nNicht geschafft mit einem Wurf von {}.'.format(*_1w20)
 
         return msg
 
-    def zeige_besondere_befähigungen(self):
+    def show_special_abilities(self):
         """Show talents which are marked as gifted or incompetent.
 
         Returns
@@ -604,19 +573,19 @@ class Held():
         msg_1 = '{}\'s Begabungen:'.format(self.name)
         line = '='*len(msg_1)
         msg_1 += '\n{}\n\t'.format(line)
-        for t in self._begabungen:
+        for t in self._gifted:
             msg_1 += '{} '.format(t)
 
         msg_2 = '{}\'s Unfähigkeiten:'.format(self.name)
         line = '='*len(msg_2)
         msg_2 += '\n{}\n\t'.format(line)
-        for u in self._unfähigkeiten:
+        for u in self._incompetences:
             msg_2 += '{} '.format(u)
 
         out = msg_1 + '\n' + msg_2
         return out
 
-    def zeige_eigenschaften(self):
+    def show_attributes(self):
         """Show attributes and values.
 
         Returns
@@ -626,9 +595,9 @@ class Held():
 
         """
         return self._show_pretty_dicts(
-            '{}\'s Eigenschaften:'.format(self.name), self._eigenschaften)
+            '{}\'s Eigenschaften:'.format(self.name), self._attributes)
 
-    def zeige_fertigkeiten(self):
+    def show_skills(self):
         """Show skills and values.
 
         Returns
@@ -638,7 +607,7 @@ class Held():
 
         """
         return self._show_pretty_dicts(
-            '{}\'s Fertigkeiten:'.format(self.name), self._fertigkeiten)
+            '{}\'s Fertigkeiten:'.format(self.name), self._skills)
 
     def get_gifted_skills_gui(self):
         """Getter for gifted skills(`Begabungen`); concerning GUI.
@@ -650,8 +619,8 @@ class Held():
 
         """
         gifted_skills = []
-        for begabung in self._begabungen:
-            gifted_skills.append(self._tamper_designation(begabung))
+        for skill in self._gifted:
+            gifted_skills.append(self._tamper_designation(skill))
         return gifted_skills
 
     def get_incompetent_skills_gui(self):
@@ -664,9 +633,61 @@ class Held():
 
         """
         incompetent_skills = []
-        for unfähigkeit in self._unfähigkeiten:
-            incompetent_skills.append(self._tamper_designation(unfähigkeit))
+        for skill in self._incompetences:
+            incompetent_skills.append(self._tamper_designation(skill))
         return incompetent_skills
+
+    def _estimae_objective(self, talent, modifier, attribute_source):
+        """Derives objective for random event for a test on talent.
+    
+        Each talent correspond to three attributes, which values make up the 
+        objective to roll against (random event). These values may be modified
+        on DM decision, marked by modfier. Each value is lower or equal to 19.
+        If any value is lower than one, the test is considered as impossible.
+    
+        Parameters
+        ----------
+        talent : str
+            skill or spell like to be tested.
+        modifier : int
+            Alleviation (positive Values) or difficulty on objective.
+        attribute_source : dict
+            Source to look up attributes for the test of talent. Therefore
+            `talent` must be among `attribute_source.keys()`.
+
+        Raises
+        ------
+        ValueError
+            Raised when specified talent is not legal, i.e. is not a key in
+            specified `attribute_source`.
+
+        Returns
+        -------
+        objective : numpy.ndarry
+            Estimated objective for test.
+        impossible : bool
+            Iff any objective value is lower than one after considering the
+            modifier.
+
+        """
+        try:
+            objective = np.array(
+                [self._attributes[eig]
+                 for eig in attribute_source[talent]])
+            add_cap_19 = np.vectorize(
+                lambda x: min(19, x + modifier)
+                )
+            objective = add_cap_19(objective)
+        except KeyError:
+            raise ValueError('{} ist keine'
+                             ' gültige Fertigkeit.'.format(talent))
+    
+        if any(objective < 1):                  # detect impossible tests
+            impossible = True
+        else:
+            impossible = False
+    
+        return objective, impossible
 
     def _format_outcome(self, skill: str, goals, random_event,
                         talent_level: dict,
@@ -729,9 +750,9 @@ class Held():
         outcome_rng = 'Würfelergebnis:\n\t{}\n'.format(random_event)
         out += '\n' + outcome_rng
 
-        if skill in self._begabungen:
+        if skill in self._gifted:
             kind_of_result = 'Ergebnis der Begabung'
-        elif skill in self._unfähigkeiten:
+        elif skill in self._incompetences:
             kind_of_result = 'Ergebnis der Unfähigkeit'
         else:
             kind_of_result = 'Ergebnis'
@@ -764,7 +785,7 @@ class Held():
         n : int
             One to n describes the base set for cartesian product.
         skill : str
-            Designate talent. Must be among keys from self.FERTIGKEITSPROBEN.
+            Designate talent. Must be among keys from self.SKILL_CHECKS.
 
         Returns
         -------
@@ -781,11 +802,11 @@ class Held():
             first += [e]*(n**2)
         
         second = second * n
-        '[1] ' + self.FERTIGKEITSPROBEN[skill][0]
+        '[1] ' + self.SKILL_CHECKS[skill][0]
         out = pd.DataFrame({
-            '[1] ' + self.FERTIGKEITSPROBEN[skill][0]: first,
-            '[2] ' + self.FERTIGKEITSPROBEN[skill][1]: second,
-            '[3] ' + self.FERTIGKEITSPROBEN[skill][2]: third})
+            '[1] ' + self.SKILL_CHECKS[skill][0]: first,
+            '[2] ' + self.SKILL_CHECKS[skill][1]: second,
+            '[3] ' + self.SKILL_CHECKS[skill][2]: third})
         return out
 
     def _perform_test(self, aim, random_event, skill_level=0,
@@ -970,9 +991,9 @@ class Held():
                 msg += ('\t'*depth + value)
             else:
                 value = str(dictionary[key])
-                if key in self._unfähigkeiten:
+                if key in self._incompetences:
                     msg += ('\n' + key + incomp + ':\n' + '\t'*depth + value)
-                elif key in self._begabungen:
+                elif key in self._gifted:
                     msg += ('\n' + key + gifted + ':\n' + '\t'*depth + value)
                 else:
                     msg += ('\n' + key + ':\n' + '\t'*depth + value)
@@ -1002,29 +1023,6 @@ class Held():
             if val in legal_response:
                 clean_read = True
         return val
-
-    @staticmethod
-    def _plot_cube_of_success(table, title):
-        header = list(table.columns)
-    
-        fig = plt.figure()
-        ax = fig.add_subplot(111, projection='3d')
-        
-        x = table[header[0]]
-        y = table[header[1]]
-        z = table[header[2]]
-        q = table[header[3]]
-
-        colors = cm.Spectral(q / max(q))
-
-        ax.set_xlabel(header[0])
-        ax.set_ylabel(header[1])
-        ax.set_zlabel(header[2])
-        ax.set_title(title)
-
-        ax.scatter(x, y, z, c=colors, s=20, alpha=.5)
-        plt.show()
-
 
     @staticmethod
     def _tamper_designation(skill):
@@ -1144,6 +1142,6 @@ class Held():
 
 
 if __name__ == '__main__':
-    bob = Held('Bob', [14]*8, [12]*59)
+    bob = Hero('Bob', [14]*8, [12]*59)
     df = bob.analyze_success('Zechen')
     print(df)

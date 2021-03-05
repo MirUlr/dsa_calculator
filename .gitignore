@@ -3,6 +3,8 @@
 src/build/
 src/dist/
 
+*.spec
+
 *.json
 !src/Mary_Sue.json
 src/Tore_Bjornson.json

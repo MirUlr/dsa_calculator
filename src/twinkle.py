@@ -10,17 +10,17 @@ import pathlib
 
 import numpy as np
 
-from held import Held
+from hero import Hero
 
 
-class Funzel(Held):
-    """Derived from Held to handle the usage of spell-likes.
+class Twinkle(Hero):
+    """Derived from Hero to handle the usage of spell-likes.
 
-    For more details see docs of held.Held
+    For more details see docs of hero.Hero
 
     Basic functionality
     -------------------
-    >>> mary = Funzel('Mary Sue', 'Geweihte')
+    >>> mary = Twinkle('Mary Sue', 'Geweihte')
     ==-> Nun Eigenschaften eingeben <-==
         ...
     ==->  Nun Fertigkeiten eingeben  <-==
@@ -29,7 +29,7 @@ class Funzel(Held):
     (j/n) j
     Name des/der Liturgie/Zeremonie: Segen
         ...
-    >>> print(mary.durchführen('Segen'))
+    >>> print(mary.perform('Segen'))
     Mary Sue vollführt Segen (Fertigkeitswert 5).
     Eigenschaften:
         Inuition - Intuition - Klugheit
@@ -43,50 +43,50 @@ class Funzel(Held):
     ----------
     name : str
         Name of the (casting) hero.
-    funzeligkeit : str
-        Catecory of supernaturlity.
-    eigenschaftswerte : list, optional
+    twinkle_variant : str
+        Catecory of supernaturality.
+    attribute_values : list, optional
         List of integer with lenght 8, representing the values for the
         attributes. Are asked in command line dialogue if not specified.
         The default is [].
-    fertigkeitenwerte : list, optional
+    skill_values : list, optional
         List of integer with length 59, representing the values for the
         skills/talents. Are asked in command line dialogue if not
         specified.
         The default is [].
-    unfähigkeiten : list or set or None, optional
+    incompetences : list or set or None, optional
         String representation of incompetent skills/talents.
         The default is None.
-    begabungen : list or set or None, optional
+    gifted : list or set or None, optional
         String representation of gifted skills or spell-likes.
         The default is None.
-    funzel_fertigkeiten : dict, optional
+    twinkle_abilities : dict, optional
         Contain information of known spell-likes. Must provide keys 'Proben'
-        'Fertigkeistwerte'. See __ask_for_funzel_stuff for more details on
-        foramt.
+         and 'Fertigkeistwerte'. See __ask_for_twinkle_stuff for more details
+         on format.
         The default is {}.
 
         """
 
-    def __init__(self, name, funzeligkeit,
-                 eigenschaftswerte=[], fertigkeitenwerte=[],
-                 unfähigkeiten=None, begabungen=None,
-                 funzel_fertigkeiten={}):
-        assert funzeligkeit in ['Geweihter', 'Geweihte',
+    def __init__(self, name, twinkle_variant,
+                 attribute_values=[], skill_values=[],
+                 incompetences=None, gifted=None,
+                 twinkle_abilities={}):
+        assert twinkle_variant in ['Geweihter', 'Geweihte',
                                 'Hexer', 'Hexe', 'Zauberer', 'Zauberin'],\
-            '{} ist keine unterstützte Rolle.'.format(funzeligkeit)
-        super().__init__(name, eigenschaftswerte, fertigkeitenwerte,
-                         unfähigkeiten, begabungen)
-        self.rolle = funzeligkeit
+            '{} ist keine unterstützte Rolle.'.format(twinkle_variant)
+        super().__init__(name, attribute_values, skill_values,
+                         incompetences, gifted)
+        self.profession = twinkle_variant
 
-        if len(funzel_fertigkeiten.keys()) == 0:
-            self._funzelkram = self.__ask_for_funzel_stuff()
+        if len(twinkle_abilities.keys()) == 0:
+            self._twinkle_stuff = self.__ask_for_twinkle_stuff()
         else:
-            self._funzelkram = funzel_fertigkeiten
+            self._twinkle_stuff = twinkle_abilities
 
     @classmethod
     def _from_json(cls, name, stats):
-        """Initate a object of Funzel from given `name` and specified `stats`.
+        """Initate a object of Twinkle from given `name` and specified `stats`.
 
         Since incompetences and gifted skills are optional, `stats` is checked
         for those values, if they are not represented in the dict, they point
@@ -95,7 +95,7 @@ class Funzel(Held):
         Parameters
         ----------
         name : str
-            Used as name for initiated object of type Held.
+            Used as name for initiated object of type Twinkle.
         stats : dict
             Contain statistics to instantiate hero with all informations.
             Must provide stats:'Eigenschaften' -> a=[int], with len(a)=8
@@ -105,7 +105,7 @@ class Funzel(Held):
 
         Returns
         -------
-        hero : Funzel
+        hero : TWinkle
             Initiated hero with spell-like skills.
 
         """
@@ -128,8 +128,7 @@ class Funzel(Held):
                    stats['Funzelfertigkeiten'])
         return hero
 
-    def aktualisiere_besondere_befähigungen(self,
-                                            weiterhin_zulässig=[]):
+    def update_special_abilities(self, also_permitted=[]):
         """Initiate command line dialogue to update gifted and incompetences.
 
         After confirmation the corresponding sets are updated.
@@ -138,7 +137,7 @@ class Funzel(Held):
 
         Parameters
         ----------
-        weiterhin_zulässig : list, optional
+        also_permitted : list, optional
             List of strings representing additional legal skills for gifted
             and incompetences. Enable the permisson of spell-likes for usage
             as gifted skills.
@@ -158,10 +157,10 @@ class Funzel(Held):
         None.
 
         """
-        super().aktualisiere_besondere_befähigungen(
-            weiterhin_zulässig=list(self._funzelkram['Proben'].keys()))
+        super().update_special_abilities(
+            also_permitted=list(self._twinkle_stuff['Proben'].keys()))
 
-    def durchführen(self, fähigkeit: str, modifikator=0):
+    def perform(self, spell_like: str, modifier=0):
         """Perform a test on a certain spell-like w.r.t. skill and attributes.
 
         Core functionality of this class. Extends the possibilty of helds
@@ -170,7 +169,7 @@ class Funzel(Held):
 
         Parameters
         ----------
-        fähigkeit : str
+        spell_like : str
             State the spell-like to be tested.
         modifikator : int, optional
             Modification set to the test; negative values for a more difficult,
@@ -180,9 +179,9 @@ class Funzel(Held):
         Raises
         ------
         KeyError
-            Raised when designated spell-like `fähigkeiten` is not found among
-            the known ones, i.e. key in `self._funzelkram['Proben']` and
-            `self._funzelkram['Fertigkeitswerte']`.
+            Raised when designated spell-like is not found among
+            the known ones, i.e. key in `self._twinkle_stuff['Proben']` and
+            `self._twinkle_stuff['Fertigkeitswerte']`.
 
         Returns
         -------
@@ -190,53 +189,62 @@ class Funzel(Held):
             Formatted result of the skill test.
 
         """
-        try:
-            zielwerte = np.array(
-                [self._eigenschaften[eig]
-                 for eig in self._funzelkram['Proben'][fähigkeit]])
-            add_cap_19 = np.vectorize(
-                lambda x: min(19, x + modifikator)
-                )
-            zielwerte = add_cap_19(zielwerte)
-        except KeyError:
-            raise KeyError('{} ist kein(e) gültige(r) {}.'.format(
-                fähigkeit, self.__funzel_stuff_term(singular=True)))
+        # try:
+        #     zielwerte = np.array(
+        #         [self._attributes[eig]
+        #          for eig in self._twinkle_stuff['Proben'][spell_like]])
+        #     add_cap_19 = np.vectorize(
+        #         lambda x: min(19, x + modifikator)
+        #         )
+        #     zielwerte = add_cap_19(zielwerte)
+        # except KeyError:
+        #     raise KeyError('{} ist kein(e) gültige(r) {}.'.format(
+        #         spell_like, self.__twinkle_stuff_term(singular=True)))
 
-        if any(zielwerte < 1):                  # unmögliche Proben detektieren
+        # if any(zielwerte < 1):                  # unmögliche Proben detektieren
+        #     msg = ('Die Erschwernis von {} '
+        #            'macht diese Probe unmöglich.'.format(abs(modifikator)))
+        #     return msg
+        # estimate objectives for rolling
+        objective, impossible = super()._estimae_objective(
+            talent=spell_like, modifier=modifier,
+            attribute_source=self._twinkle_stuff['Proben'])
+    
+        if impossible:
             msg = ('Die Erschwernis von {} '
-                   'macht diese Probe unmöglich.'.format(abs(modifikator)))
+                   'macht diese Probe unmöglich.'.format(abs(modifier)))
             return msg
 
         _3w20 = np.random.randint(1, 21, 3)
 
         # Zufallsereignis auswerten
         gelungen, krit, qualitätsstufen = self._perform_test(
-            aim=zielwerte, random_event=_3w20,
-            skill_level=self._funzelkram['Fertigkeitswerte'][fähigkeit],
-            gifted=(fähigkeit in self._begabungen))
+            aim=objective, random_event=_3w20,
+            skill_level=self._twinkle_stuff['Fertigkeitswerte'][spell_like],
+            gifted=(spell_like in self._gifted))
 
         # Ausgabe bestimmen
         out = self._format_outcome(
-            skill=fähigkeit,
-            goals=zielwerte,
+            skill=spell_like,
+            goals=objective,
             random_event=_3w20,
-            talent_level=self._funzelkram['Fertigkeitswerte'],
-            talent_composition=self._funzelkram['Proben'],
+            talent_level=self._twinkle_stuff['Fertigkeitswerte'],
+            talent_composition=self._twinkle_stuff['Proben'],
             success=gelungen,
             crit=krit,
             quality_level=qualitätsstufen,
             kind_of_test='vollführt',
-            modification=modifikator)
+            modification=modifier)
         return out
 
-    def speichern(self, dateipfad='C:/Users/49162/Documents/RolePlay/PnP/DSA'):
+    def save(self, directory='C:/Users/49162/Documents/RolePlay/PnP/DSA'):
         """Store character describing dictionaries as json on harddrive.
 
         File is written as <name>.json, whereby spaces are removed.
 
         Parameters
         ----------
-        dateipfad : str, optional
+        directory : str, optional
             Directory to store the char.
             The default is 'C:/Users/49162/Documents/RolePlay/PnP/DSA'.
 
@@ -251,23 +259,23 @@ class Funzel(Held):
         None.
 
         """
-        dateipfad = pathlib.Path(dateipfad)
-        if dateipfad.exists() and dateipfad.is_dir():
+        directory = pathlib.Path(directory)
+        if directory.exists() and directory.is_dir():
             file = '{}.json'.format(self.name.replace(' ', '_'))
-            data_to_dump = {'Profession': self.rolle,
-                            'Eigenschaften': self._eigenschaften,
-                            'Fertigkeiten': self._fertigkeiten,
-                            'Funzelfertigkeiten': self._funzelkram,
-                            'Begabungen': list(self._begabungen),
-                            'Unfähigkeiten': list(self._unfähigkeiten)}
-            with open(pathlib.Path(dateipfad, file),
+            data_to_dump = {'Profession': self.profession,
+                            'Eigenschaften': self._attributes,
+                            'Fertigkeiten': self._skills,
+                            'Funzelfertigkeiten': self._twinkle_stuff,
+                            'Begabungen': list(self._gifted),
+                            'Unfähigkeiten': list(self._incompetences)}
+            with open(pathlib.Path(directory, file),
                       'w') as file:
                 json.dump(data_to_dump, file)
         else:
             raise OSError('Mit gültigem Pfad erneut versuchen.'
                           ' Eventuell Schreibrechte überprüfen.')
 
-    def zeige_übernatürliche_fähigkeiten(self):
+    def show_supernatural_abilities(self):
         """Show spell-likes, whereby values and compositon are separated.
 
         Returns
@@ -276,11 +284,11 @@ class Funzel(Held):
             Formatted representation.
 
         """
-        title = '{}\'s {}:'.format(self.name, self.__funzel_stuff_term(False))
-        return super()._show_pretty_dicts(title, self._funzelkram)
+        title = '{}\'s {}:'.format(self.name, self.__twinkle_stuff_term(False))
+        return super()._show_pretty_dicts(title, self._twinkle_stuff)
 
-    def __ask_for_funzel_stuff(self,
-                               funzel_dict={'Proben': {},
+    def __ask_for_twinkle_stuff(self,
+                               twinkle_dict={'Proben': {},
                                             'Fertigkeitswerte': {}}):
         """Initate command line dialogue to recieve spell likes.
 
@@ -288,9 +296,9 @@ class Funzel(Held):
 
         Parameters
         ----------
-        funzel_dict : dict, optional
+        twinkle_dict : dict, optional
             Dictionary to be extend. The default is the expected empty dict
-            of a funzels spell-likes.
+            of a twinkle spell-likes.
             The default is {'Proben': {}, 'Fertigkeitswerte': {}}.
 
         Returns
@@ -301,20 +309,20 @@ class Funzel(Held):
         """
         response = super()._clean_read(
             text='Sollen weitere {} aufgenommen werden?\n(j/n) '.format(
-                self.__funzel_stuff_term(False)),
+                self.__twinkle_stuff_term(False)),
             legal_response=['j', 'n'])
 
-        if response == 'j':                         # record more funzel stuff
+        if response == 'j':                         # record more twinkle stuff
             # Name des Zaubers oder Wirkung
-            bezeichner = input('Name des/der {}: '.format(
-                self.__funzel_stuff_term(True)))
+            designation = input('Name des/der {}: '.format(
+                self.__twinkle_stuff_term(True)))
             # die drei Eigenschaften für die Probe
-            eig = []
-            while len(eig) < 3:
-                val = input('{}. Eigenschaft für {}: '.format(len(eig)+1,
-                                                              bezeichner))
-                if val in self._eigenschaften.keys():
-                    eig.append(val)
+            att = []
+            while len(att) < 3:
+                val = input('{}. Eigenschaft für {}: '.format(len(att)+1,
+                                                              designation))
+                if val in self._attributes.keys():
+                    att.append(val)
                 else:
                     print('{} ist keine gültige Eigenschaft.'.format(val))
             # Fertigkeitswert des Zaubers / der Wirkung
@@ -322,7 +330,7 @@ class Funzel(Held):
             while not clean_read:
                 try:
                     fertigkeitswert = int(
-                        input('Fertigkeitswert für {}: '.format(bezeichner))
+                        input('Fertigkeitswert für {}: '.format(designation))
                         )
                     if fertigkeitswert in range(0, 26):
                         clean_read = True
@@ -336,25 +344,25 @@ class Funzel(Held):
             while not clean_read:
                 response = input('{} mit Fertigkeitswert {} und Proben auf'
                                  ' {}, {} und {} hinzufügen?\n(j/n) '.format(
-                                     bezeichner, fertigkeitswert, *eig))
+                                     designation, fertigkeitswert, *att))
                 if response in ['j', 'n']:
                     clean_read = True
             if response == 'j':
-                funzel_dict['Proben'][bezeichner] = tuple(eig)
-                funzel_dict['Fertigkeitswerte'][bezeichner] = fertigkeitswert
+                twinkle_dict['Proben'][designation] = tuple(att)
+                twinkle_dict['Fertigkeitswerte'][designation] = fertigkeitswert
 
             # rekursiv nach weitern Zaubern fragen
-            return self.__ask_for_funzel_stuff(funzel_dict)
+            return self.__ask_for_twinkle_stuff(twinkle_dict)
         else:
-            return funzel_dict
+            return twinkle_dict
 
-    def __funzel_stuff_term(self, singular: bool):
-        """Heleper for handling correct grammar and designation of spell-likes.
+    def __twinkle_stuff_term(self, singular: bool):
+        """Helper for handling correct grammar and designation of spell-likes.
 
         Parameters
         ----------
         singular : bool
-            Iff term is expected as sigular; else plural.
+            Iff term is expected as singular; else plural.
 
         Returns
         -------
@@ -362,17 +370,17 @@ class Funzel(Held):
             Correct designation for spell-likes.
 
         """
-        if self.rolle in ['Geweihte', 'Geweihter']:
+        if self.profession in ['Geweihte', 'Geweihter']:
             if singular:
                 term = 'Liturgie/Zeremonie'
             else:
                 term = 'Liturgien & Zeremonien'
-        elif self.rolle in ['Zauberin', 'Zauberer']:
+        elif self.profession in ['Zauberin', 'Zauberer']:
             if singular:
                 term = 'Zauber/Ritual'
             else:
                 term = 'Zauber & Rituale'
-        elif self.rolle in ['Hexe', 'Hexer']:
+        elif self.profession in ['Hexe', 'Hexer']:
             if singular:
                 term = 'Hexerei'
             else:
