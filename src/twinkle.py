@@ -16,7 +16,7 @@ from hero import Hero
 class Twinkle(Hero):
     """Derived from Hero to handle the usage of spell-likes.
 
-    For more details see docs of held.Held
+    For more details see docs of hero.Hero
 
     Basic functionality
     -------------------
@@ -160,7 +160,7 @@ class Twinkle(Hero):
         super().update_special_abilities(
             also_permitted=list(self._twinkle_stuff['Proben'].keys()))
 
-    def perform(self, spell_like: str, modifikator=0):
+    def perform(self, spell_like: str, modifier=0):
         """Perform a test on a certain spell-like w.r.t. skill and attributes.
 
         Core functionality of this class. Extends the possibilty of helds
@@ -189,35 +189,44 @@ class Twinkle(Hero):
             Formatted result of the skill test.
 
         """
-        try:
-            zielwerte = np.array(
-                [self._attributes[eig]
-                 for eig in self._twinkle_stuff['Proben'][spell_like]])
-            add_cap_19 = np.vectorize(
-                lambda x: min(19, x + modifikator)
-                )
-            zielwerte = add_cap_19(zielwerte)
-        except KeyError:
-            raise KeyError('{} ist kein(e) gültige(r) {}.'.format(
-                spell_like, self.__twinkle_stuff_term(singular=True)))
+        # try:
+        #     zielwerte = np.array(
+        #         [self._attributes[eig]
+        #          for eig in self._twinkle_stuff['Proben'][spell_like]])
+        #     add_cap_19 = np.vectorize(
+        #         lambda x: min(19, x + modifikator)
+        #         )
+        #     zielwerte = add_cap_19(zielwerte)
+        # except KeyError:
+        #     raise KeyError('{} ist kein(e) gültige(r) {}.'.format(
+        #         spell_like, self.__twinkle_stuff_term(singular=True)))
 
-        if any(zielwerte < 1):                  # unmögliche Proben detektieren
+        # if any(zielwerte < 1):                  # unmögliche Proben detektieren
+        #     msg = ('Die Erschwernis von {} '
+        #            'macht diese Probe unmöglich.'.format(abs(modifikator)))
+        #     return msg
+        # estimate objectives for rolling
+        objective, impossible = super()._estimae_objective(
+            talent=spell_like, modifier=modifier,
+            attribute_source=self._twinkle_stuff['Proben'])
+    
+        if impossible:
             msg = ('Die Erschwernis von {} '
-                   'macht diese Probe unmöglich.'.format(abs(modifikator)))
+                   'macht diese Probe unmöglich.'.format(abs(modifier)))
             return msg
 
         _3w20 = np.random.randint(1, 21, 3)
 
         # Zufallsereignis auswerten
         gelungen, krit, qualitätsstufen = self._perform_test(
-            aim=zielwerte, random_event=_3w20,
+            aim=objective, random_event=_3w20,
             skill_level=self._twinkle_stuff['Fertigkeitswerte'][spell_like],
             gifted=(spell_like in self._gifted))
 
         # Ausgabe bestimmen
         out = self._format_outcome(
             skill=spell_like,
-            goals=zielwerte,
+            goals=objective,
             random_event=_3w20,
             talent_level=self._twinkle_stuff['Fertigkeitswerte'],
             talent_composition=self._twinkle_stuff['Proben'],
@@ -225,7 +234,7 @@ class Twinkle(Hero):
             crit=krit,
             quality_level=qualitätsstufen,
             kind_of_test='vollführt',
-            modification=modifikator)
+            modification=modifier)
         return out
 
     def save(self, directory='C:/Users/49162/Documents/RolePlay/PnP/DSA'):
@@ -305,15 +314,15 @@ class Twinkle(Hero):
 
         if response == 'j':                         # record more twinkle stuff
             # Name des Zaubers oder Wirkung
-            bezeichner = input('Name des/der {}: '.format(
+            designation = input('Name des/der {}: '.format(
                 self.__twinkle_stuff_term(True)))
             # die drei Eigenschaften für die Probe
-            eig = []
-            while len(eig) < 3:
-                val = input('{}. Eigenschaft für {}: '.format(len(eig)+1,
-                                                              bezeichner))
+            att = []
+            while len(att) < 3:
+                val = input('{}. Eigenschaft für {}: '.format(len(att)+1,
+                                                              designation))
                 if val in self._attributes.keys():
-                    eig.append(val)
+                    att.append(val)
                 else:
                     print('{} ist keine gültige Eigenschaft.'.format(val))
             # Fertigkeitswert des Zaubers / der Wirkung
@@ -321,7 +330,7 @@ class Twinkle(Hero):
             while not clean_read:
                 try:
                     fertigkeitswert = int(
-                        input('Fertigkeitswert für {}: '.format(bezeichner))
+                        input('Fertigkeitswert für {}: '.format(designation))
                         )
                     if fertigkeitswert in range(0, 26):
                         clean_read = True
@@ -335,12 +344,12 @@ class Twinkle(Hero):
             while not clean_read:
                 response = input('{} mit Fertigkeitswert {} und Proben auf'
                                  ' {}, {} und {} hinzufügen?\n(j/n) '.format(
-                                     bezeichner, fertigkeitswert, *eig))
+                                     designation, fertigkeitswert, *att))
                 if response in ['j', 'n']:
                     clean_read = True
             if response == 'j':
-                twinkle_dict['Proben'][bezeichner] = tuple(eig)
-                twinkle_dict['Fertigkeitswerte'][bezeichner] = fertigkeitswert
+                twinkle_dict['Proben'][designation] = tuple(att)
+                twinkle_dict['Fertigkeitswerte'][designation] = fertigkeitswert
 
             # rekursiv nach weitern Zaubern fragen
             return self.__ask_for_twinkle_stuff(twinkle_dict)

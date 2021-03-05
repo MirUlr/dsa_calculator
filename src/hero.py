@@ -188,7 +188,7 @@ class Hero():
 
     @classmethod
     def load(cls, character,
-             verzeichnis='C:/Users/49162/Documents/RolePlay/PnP/DSA'):
+             directory='C:/Users/49162/Documents/RolePlay/PnP/DSA'):
         """Load character from harddrive and returns corresponding Held object.
 
         Parameters
@@ -196,7 +196,7 @@ class Hero():
         character : str
             Name of the character to be loaded. Althogh underscore style is
             used in file naming, the intended name may be used.
-        verzeichnis : str, optional
+        directory : str, optional
             Specifies directory to load <name>.json from.
             The default is 'C:/Users/49162/Documents/RolePlay/PnP/DSA'.
 
@@ -207,11 +207,11 @@ class Hero():
 
         Returns
         -------
-        Held
+        Hero
             Initiated hero.
 
         """
-        final_file = pathlib.Path(verzeichnis,
+        final_file = pathlib.Path(directory,
                                   (character + '.json').replace(' ', '_'))
         if final_file.exists() and final_file.is_file():
             with open(final_file, 'r') as source:
@@ -241,7 +241,7 @@ class Hero():
 
         Returns
         -------
-        hero : Held
+        hero : Hero
             Initiated hero.
 
         """
@@ -262,7 +262,7 @@ class Hero():
                    gifted_talents)
         return hero
 
-    def execute(self, talent, modifikator=-0):
+    def execute(self, talent, modifier=-0):
         """Perform a test on a certin talent, w.r.t. skikll value and modifier.
 
         Core functionality.
@@ -274,17 +274,10 @@ class Hero():
         ----------
         talent : str
             State the talent/skill to be tested.
-        modifikator : int, optional
+        modifier : int, optional
             Modification set to the test; negative values for a more difficult,
             positve values for an easier test
             The default is 0.
-
-
-        Raises
-        ------
-        ValueError
-            Raised when specified talent is not legal, i.e. is not a key in
-            SKILL_CHECKS.
 
         Returns
         -------
@@ -292,28 +285,21 @@ class Hero():
             Formatted result of the skill test.
 
         """
-        try:
-            zielwerte = np.array(
-                [self._attributes[eig]
-                 for eig in self.SKILL_CHECKS[talent]])
-            add_cap_19 = np.vectorize(
-                lambda x: min(19, x + modifikator)
-                )
-            zielwerte = add_cap_19(zielwerte)
-        except KeyError:
-            raise ValueError('{} ist keine'
-                             ' gültige Fertigkeit.'.format(talent))
-
-        if any(zielwerte < 1):                  # unmögliche Proben detektieren
+        # estimate objectives for rolling
+        objective, impossible = self._estimae_objective(
+            talent=talent, modifier=modifier,
+            attribute_source=self.SKILL_CHECKS)
+    
+        if impossible:
             msg = ('Die Erschwernis von {} '
-                   'macht diese Probe unmöglich.'.format(abs(modifikator)))
+                   'macht diese Probe unmöglich.'.format(abs(modifier)))
             return msg
 
         _3w20 = np.random.randint(1, 21, 3)
 
         # Zufallsereignis auswerten
         gelungen, krit, qualitätsstufen = self._perform_test(
-            aim=zielwerte, random_event=_3w20,
+            aim=objective, random_event=_3w20,
             skill_level=self._skills[talent],
             gifted=(talent in self._gifted),
             incompetent=(talent in self._incompetences))
@@ -321,14 +307,14 @@ class Hero():
         # Ausgabe bestimmen
         out = self._format_outcome(
             skill=talent,
-            goals=zielwerte,
+            goals=objective,
             random_event=_3w20,
             talent_level=self._skills,
             talent_composition=self.SKILL_CHECKS,
             success=gelungen,
             crit=krit,
             quality_level=qualitätsstufen,
-            modification=modifikator)
+            modification=modifier)
         return out
 
     def analyze_success(self, talent, modifier=0):        
@@ -343,13 +329,6 @@ class Hero():
             positve values for an easier test
             The default is 0.
 
-
-        Raises
-        ------
-        ValueError
-            Raised when specified talent is not legal, i.e. is not a key in
-            SKILL_CHECKS.
-
         Note
         ----
         As sideeffect a matplotlib panel is displayed within a further process.
@@ -362,19 +341,11 @@ class Hero():
 
         """
         # estimate objectives for rolling
-        try:
-            goal = np.array(
-                [self._attributes[eig]
-                 for eig in self.SKILL_CHECKS[talent]])
-            add_cap_19 = np.vectorize(
-                lambda x: min(19, x + modifier)
-                )
-            goal = add_cap_19(goal)
-        except KeyError:
-            raise ValueError('{} ist keine'
-                             ' gültige Fertigkeit.'.format(talent))
-
-        if any(goal < 1):                  # detect impossible tests
+        objective, impossible = self._estimae_objective(
+            talent=talent, modifier=modifier,
+            attribute_source=self.SKILL_CHECKS)
+    
+        if impossible:
             msg = ('Die Erschwernis von {} '
                    'macht diese Probe unmöglich.'.format(abs(modifier)))
             return msg
@@ -387,7 +358,7 @@ class Hero():
         # estimate all possible random events
         for index, row in table.iterrows():
             _, _, quality_level = self._perform_test(
-                aim=goal,
+                aim=objective,
                 random_event=row.to_numpy(),
                 skill_level=self._skills[talent],
                 gifted=(talent in self._gifted),
@@ -570,7 +541,7 @@ class Hero():
             self._attributes[attribute] + modifikator, 19)
         _1w20 = np.random.randint(1, 21, 1)
 
-        erfolg, kritisch, _ = self._perform_test(
+        suc, _, _ = self._perform_test(
             aim=np.array(eigenschaftswert_mod),
             random_event=_1w20)
 
@@ -583,7 +554,7 @@ class Hero():
         elif modifikator < 0:
             msg += ', erschwert um {}:\n'.format(str(abs(modifikator)))
 
-        if erfolg:
+        if suc:
             msg += '\nGeschafft mit einem Wurf von {}.'.format(*_1w20)
         else:
             msg += '\nNicht geschafft mit einem Wurf von {}.'.format(*_1w20)
@@ -648,8 +619,8 @@ class Hero():
 
         """
         gifted_skills = []
-        for begabung in self._gifted:
-            gifted_skills.append(self._tamper_designation(begabung))
+        for skill in self._gifted:
+            gifted_skills.append(self._tamper_designation(skill))
         return gifted_skills
 
     def get_incompetent_skills_gui(self):
@@ -662,9 +633,61 @@ class Hero():
 
         """
         incompetent_skills = []
-        for unfähigkeit in self._incompetences:
-            incompetent_skills.append(self._tamper_designation(unfähigkeit))
+        for skill in self._incompetences:
+            incompetent_skills.append(self._tamper_designation(skill))
         return incompetent_skills
+
+    def _estimae_objective(self, talent, modifier, attribute_source):
+        """Derives objective for random event for a test on talent.
+    
+        Each talent correspond to three attributes, which values make up the 
+        objective to roll against (random event). These values may be modified
+        on DM decision, marked by modfier. Each value is lower or equal to 19.
+        If any value is lower than one, the test is considered as impossible.
+    
+        Parameters
+        ----------
+        talent : str
+            skill or spell like to be tested.
+        modifier : int
+            Alleviation (positive Values) or difficulty on objective.
+        attribute_source : dict
+            Source to look up attributes for the test of talent. Therefore
+            `talent` must be among `attribute_source.keys()`.
+
+        Raises
+        ------
+        ValueError
+            Raised when specified talent is not legal, i.e. is not a key in
+            specified `attribute_source`.
+
+        Returns
+        -------
+        objective : numpy.ndarry
+            Estimated objective for test.
+        impossible : bool
+            Iff any objective value is lower than one after considering the
+            modifier.
+
+        """
+        try:
+            objective = np.array(
+                [self._attributes[eig]
+                 for eig in attribute_source[talent]])
+            add_cap_19 = np.vectorize(
+                lambda x: min(19, x + modifier)
+                )
+            objective = add_cap_19(objective)
+        except KeyError:
+            raise ValueError('{} ist keine'
+                             ' gültige Fertigkeit.'.format(talent))
+    
+        if any(objective < 1):                  # detect impossible tests
+            impossible = True
+        else:
+            impossible = False
+    
+        return objective, impossible
 
     def _format_outcome(self, skill: str, goals, random_event,
                         talent_level: dict,
