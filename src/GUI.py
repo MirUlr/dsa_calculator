@@ -8,25 +8,25 @@ from PyQt5 import uic
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import *
 import sys, os
-from held import Held
-from funzel import Funzel
+from hero import Hero
+from twinkle import Twinkle
 from functools import partial
 
 # Charakter laden
 def load(name):
-    global Charakter
+    global charakter
     try: # Testen, ob als Funzel ladbar
-        ret = Funzel.laden(name(),r'.\\')
+        ret = Twinkle.load(name(),r'.\\')
     except KeyError: # nope, keine Funzel
         try: # Testen, ob als Held ladbar
-            ret = Held.laden(name(),r'.\\')
+            ret = Hero.load(name(),r'.\\')
         except ValueError: # nope, auch kein Held
             msg = QMessageBox()
             msg.setWindowTitle("Error")
             msg.setText("Dieser Held ist hier nicht bekannt.")
             msg.exec_()
         else: # es ist ein Held!
-            Charakter = ret
+            charakter = ret
             # entsprechende GUI-Teile aktivieren/deaktivieren
             win.tab_fertigkeiten.setEnabled(True)
             win.box_attribute.setEnabled(True)
@@ -39,18 +39,18 @@ def load(name):
 
             # Eigenschaftswerte eintragen
             cnt = 0
-            for key in Charakter._eigenschaften:
+            for key in charakter._eigenschaften:
                 funcName = 'e%i' % cnt
                 method_to_call = getattr(win, funcName)
-                method_to_call.setText("  "+str(Charakter._eigenschaften[key]))
+                method_to_call.setText("  "+str(charakter._eigenschaften[key]))
                 cnt = cnt+1
 
             # Fertigkeitenwerte eintragen
             cnt = 0
-            for key in Charakter._fertigkeiten:
+            for key in charakter._fertigkeiten:
                 funcName = 'f%i' % cnt
                 method_to_call = getattr(win, funcName)
-                method_to_call.setText(str(Charakter._fertigkeiten[key]))
+                method_to_call.setText(str(charakter._fertigkeiten[key]))
                 cnt = cnt+1
 
             msg = QMessageBox()
@@ -64,7 +64,7 @@ def load(name):
             msg.setText("Dieser Held ist hier nicht bekannt.")
             msg.exec_()
     else: # es ist eine Funzel!
-        Charakter = ret
+        charakter = ret
         # clear ComboBox funzel
         win.comboBox_funzel.clear()
         # entsprechende GUI-Teile aktivieren
@@ -76,24 +76,24 @@ def load(name):
         win.mod_funzel.setEnabled(True)
 
         # Dropdown-Menue der Funzel füllen
-        for key in Charakter._funzelkram["Proben"]:
+        for key in charakter._twinkle_stuff["Proben"]:
             win.comboBox_funzel.addItem(key)
 
 
         # Eigenschaftswerte eintragen
         cnt = 0
-        for key in Charakter._eigenschaften:
+        for key in charakter._eigenschaften:
             funcName = 'e%i' % cnt
             method_to_call = getattr(win, funcName)
-            method_to_call.setText("  "+str(Charakter._eigenschaften[key]))
+            method_to_call.setText("  "+str(charakter._eigenschaften[key]))
             cnt = cnt+1
 
         # Fertigkeitenwerte eintragen
         cnt = 0
-        for key in Charakter._fertigkeiten:
+        for key in charakter._fertigkeiten:
             funcName = 'f%i' % cnt
             method_to_call = getattr(win, funcName)
-            method_to_call.setText(str(Charakter._fertigkeiten[key]))
+            method_to_call.setText(str(charakter._fertigkeiten[key]))
             cnt = cnt+1
 
         msg = QMessageBox()
@@ -103,17 +103,17 @@ def load(name):
 
 # Fertigkeiten Funktion
 def do(action, modi):
-    result = Charakter.absolviere(action, modi())
+    result = charakter.execute(action, modi())
     show(result)
 
 # Fertigkeiten Funktion
 def do_funzel(action, modi):
-    result = Charakter.durchführen(action(), modi())
+    result = charakter.perform(action(), modi())
     show(result)
 
 # Eigenschaften Funktion
 def test(action, modi):
-    result = Charakter.teste(action, modi())
+    result = charakter.test(action, modi())
     show(result)
 
 # Würfelergebnis anzeigen
@@ -129,8 +129,8 @@ if __name__ == "__main__":
     # Fenster aus Designer laden
     win = uic.loadUi("MainWindow.ui")
 
-    # Charakter initialisieren, zum Testen
-    # Charakter = Held.laden("Tore_Bjornson",r'D:\Voovo\Documents\RPG\DSA')
+    # charakter initialisieren, zum Testen
+    # charakter = Hero.load("Tore_Bjornson",r'D:\Voovo\Documents\RPG\DSA')
 
     # Button-Logik
     # ========================================================================
