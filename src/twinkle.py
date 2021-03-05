@@ -45,7 +45,7 @@ class Twinkle(Hero):
         Name of the (casting) hero.
     twinkle_variant : str
         Catecory of supernaturality.
-    eigenschaftswerte : list, optional
+    attribute_values : list, optional
         List of integer with lenght 8, representing the values for the
         attributes. Are asked in command line dialogue if not specified.
         The default is [].
@@ -54,10 +54,10 @@ class Twinkle(Hero):
         skills/talents. Are asked in command line dialogue if not
         specified.
         The default is [].
-    unfähigkeiten : list or set or None, optional
+    incompetences : list or set or None, optional
         String representation of incompetent skills/talents.
         The default is None.
-    begabungen : list or set or None, optional
+    gifted : list or set or None, optional
         String representation of gifted skills or spell-likes.
         The default is None.
     twinkle_abilities : dict, optional
@@ -69,15 +69,15 @@ class Twinkle(Hero):
         """
 
     def __init__(self, name, twinkle_variant,
-                 eigenschaftswerte=[], skill_values=[],
-                 unfähigkeiten=None, begabungen=None,
+                 attribute_values=[], skill_values=[],
+                 incompetences=None, gifted=None,
                  twinkle_abilities={}):
         assert twinkle_variant in ['Geweihter', 'Geweihte',
                                 'Hexer', 'Hexe', 'Zauberer', 'Zauberin'],\
             '{} ist keine unterstützte Rolle.'.format(twinkle_variant)
-        super().__init__(name, eigenschaftswerte, skill_values,
-                         unfähigkeiten, begabungen)
-        self.rolle = twinkle_variant
+        super().__init__(name, attribute_values, skill_values,
+                         incompetences, gifted)
+        self.profession = twinkle_variant
 
         if len(twinkle_abilities.keys()) == 0:
             self._twinkle_stuff = self.__ask_for_twinkle_stuff()
@@ -128,7 +128,7 @@ class Twinkle(Hero):
                    stats['Funzelfertigkeiten'])
         return hero
 
-    def update_special_abilities(self, weiterhin_zulässig=[]):
+    def update_special_abilities(self, also_permitted=[]):
         """Initiate command line dialogue to update gifted and incompetences.
 
         After confirmation the corresponding sets are updated.
@@ -137,7 +137,7 @@ class Twinkle(Hero):
 
         Parameters
         ----------
-        weiterhin_zulässig : list, optional
+        also_permitted : list, optional
             List of strings representing additional legal skills for gifted
             and incompetences. Enable the permisson of spell-likes for usage
             as gifted skills.
@@ -158,9 +158,9 @@ class Twinkle(Hero):
 
         """
         super().update_special_abilities(
-            weiterhin_zulässig=list(self._twinkle_stuff['Proben'].keys()))
+            also_permitted=list(self._twinkle_stuff['Proben'].keys()))
 
-    def perform(self, fähigkeit: str, modifikator=0):
+    def perform(self, spell_like: str, modifikator=0):
         """Perform a test on a certain spell-like w.r.t. skill and attributes.
 
         Core functionality of this class. Extends the possibilty of helds
@@ -169,7 +169,7 @@ class Twinkle(Hero):
 
         Parameters
         ----------
-        fähigkeit : str
+        spell_like : str
             State the spell-like to be tested.
         modifikator : int, optional
             Modification set to the test; negative values for a more difficult,
@@ -179,7 +179,7 @@ class Twinkle(Hero):
         Raises
         ------
         KeyError
-            Raised when designated spell-like `fähigkeiten` is not found among
+            Raised when designated spell-like is not found among
             the known ones, i.e. key in `self._twinkle_stuff['Proben']` and
             `self._twinkle_stuff['Fertigkeitswerte']`.
 
@@ -191,15 +191,15 @@ class Twinkle(Hero):
         """
         try:
             zielwerte = np.array(
-                [self._eigenschaften[eig]
-                 for eig in self._twinkle_stuff['Proben'][fähigkeit]])
+                [self._attributes[eig]
+                 for eig in self._twinkle_stuff['Proben'][spell_like]])
             add_cap_19 = np.vectorize(
                 lambda x: min(19, x + modifikator)
                 )
             zielwerte = add_cap_19(zielwerte)
         except KeyError:
             raise KeyError('{} ist kein(e) gültige(r) {}.'.format(
-                fähigkeit, self.__twinkle_stuff_term(singular=True)))
+                spell_like, self.__twinkle_stuff_term(singular=True)))
 
         if any(zielwerte < 1):                  # unmögliche Proben detektieren
             msg = ('Die Erschwernis von {} '
@@ -211,12 +211,12 @@ class Twinkle(Hero):
         # Zufallsereignis auswerten
         gelungen, krit, qualitätsstufen = self._perform_test(
             aim=zielwerte, random_event=_3w20,
-            skill_level=self._twinkle_stuff['Fertigkeitswerte'][fähigkeit],
-            gifted=(fähigkeit in self._begabungen))
+            skill_level=self._twinkle_stuff['Fertigkeitswerte'][spell_like],
+            gifted=(spell_like in self._gifted))
 
         # Ausgabe bestimmen
         out = self._format_outcome(
-            skill=fähigkeit,
+            skill=spell_like,
             goals=zielwerte,
             random_event=_3w20,
             talent_level=self._twinkle_stuff['Fertigkeitswerte'],
@@ -228,14 +228,14 @@ class Twinkle(Hero):
             modification=modifikator)
         return out
 
-    def save(self, dateipfad='C:/Users/49162/Documents/RolePlay/PnP/DSA'):
+    def save(self, directory='C:/Users/49162/Documents/RolePlay/PnP/DSA'):
         """Store character describing dictionaries as json on harddrive.
 
         File is written as <name>.json, whereby spaces are removed.
 
         Parameters
         ----------
-        dateipfad : str, optional
+        directory : str, optional
             Directory to store the char.
             The default is 'C:/Users/49162/Documents/RolePlay/PnP/DSA'.
 
@@ -250,16 +250,16 @@ class Twinkle(Hero):
         None.
 
         """
-        dateipfad = pathlib.Path(dateipfad)
-        if dateipfad.exists() and dateipfad.is_dir():
+        directory = pathlib.Path(directory)
+        if directory.exists() and directory.is_dir():
             file = '{}.json'.format(self.name.replace(' ', '_'))
-            data_to_dump = {'Profession': self.rolle,
-                            'Eigenschaften': self._eigenschaften,
-                            'Fertigkeiten': self._fertigkeiten,
+            data_to_dump = {'Profession': self.profession,
+                            'Eigenschaften': self._attributes,
+                            'Fertigkeiten': self._skills,
                             'Funzelfertigkeiten': self._twinkle_stuff,
-                            'Begabungen': list(self._begabungen),
-                            'Unfähigkeiten': list(self._unfähigkeiten)}
-            with open(pathlib.Path(dateipfad, file),
+                            'Begabungen': list(self._gifted),
+                            'Unfähigkeiten': list(self._incompetences)}
+            with open(pathlib.Path(directory, file),
                       'w') as file:
                 json.dump(data_to_dump, file)
         else:
@@ -312,7 +312,7 @@ class Twinkle(Hero):
             while len(eig) < 3:
                 val = input('{}. Eigenschaft für {}: '.format(len(eig)+1,
                                                               bezeichner))
-                if val in self._eigenschaften.keys():
+                if val in self._attributes.keys():
                     eig.append(val)
                 else:
                     print('{} ist keine gültige Eigenschaft.'.format(val))
@@ -361,17 +361,17 @@ class Twinkle(Hero):
             Correct designation for spell-likes.
 
         """
-        if self.rolle in ['Geweihte', 'Geweihter']:
+        if self.profession in ['Geweihte', 'Geweihter']:
             if singular:
                 term = 'Liturgie/Zeremonie'
             else:
                 term = 'Liturgien & Zeremonien'
-        elif self.rolle in ['Zauberin', 'Zauberer']:
+        elif self.profession in ['Zauberin', 'Zauberer']:
             if singular:
                 term = 'Zauber/Ritual'
             else:
                 term = 'Zauber & Rituale'
-        elif self.rolle in ['Hexe', 'Hexer']:
+        elif self.profession in ['Hexe', 'Hexer']:
             if singular:
                 term = 'Hexerei'
             else:

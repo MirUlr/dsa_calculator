@@ -26,18 +26,18 @@ def loadHero():
         charakter = ret
         # Eigenschaftswerte eintragen
         cnt = 0
-        for key in charakter._eigenschaften:
+        for key in charakter._attributes:
             funcName = 'e%i' % cnt
             method_to_call = getattr(win, funcName)
-            method_to_call.setValue(charakter._eigenschaften[key])
+            method_to_call.setValue(charakter._attributes[key])
             cnt = cnt+1
 
         # Fertigkeitenwerte eintragen
         cnt = 0
-        for key in charakter._fertigkeiten:
+        for key in charakter._skills:
             funcName = 'f%i' % cnt
             method_to_call = getattr(win, funcName)
-            method_to_call.setValue(charakter._fertigkeiten[key])
+            method_to_call.setValue(charakter._skills[key])
             cnt = cnt+1
 
         msg = QMessageBox()
