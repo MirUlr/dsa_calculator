@@ -176,37 +176,14 @@ class Twinkle(Hero):
             positve values for an easier test
             The default is 0.
 
-        Raises
-        ------
-        KeyError
-            Raised when designated spell-like is not found among
-            the known ones, i.e. key in `self._twinkle_stuff['Proben']` and
-            `self._twinkle_stuff['Fertigkeitswerte']`.
-
         Returns
         -------
         str
             Formatted result of the skill test.
 
         """
-        # try:
-        #     zielwerte = np.array(
-        #         [self._attributes[eig]
-        #          for eig in self._twinkle_stuff['Proben'][spell_like]])
-        #     add_cap_19 = np.vectorize(
-        #         lambda x: min(19, x + modifikator)
-        #         )
-        #     zielwerte = add_cap_19(zielwerte)
-        # except KeyError:
-        #     raise KeyError('{} ist kein(e) gültige(r) {}.'.format(
-        #         spell_like, self.__twinkle_stuff_term(singular=True)))
-
-        # if any(zielwerte < 1):                  # unmögliche Proben detektieren
-        #     msg = ('Die Erschwernis von {} '
-        #            'macht diese Probe unmöglich.'.format(abs(modifikator)))
-        #     return msg
         # estimate objectives for rolling
-        objective, impossible = super()._estimae_objective(
+        objective, impossible = self._estimae_objective(
             talent=spell_like, modifier=modifier,
             attribute_source=self._twinkle_stuff['Proben'])
     
@@ -218,7 +195,7 @@ class Twinkle(Hero):
         _3w20 = np.random.randint(1, 21, 3)
 
         # Zufallsereignis auswerten
-        gelungen, krit, qualitätsstufen = self._perform_test(
+        succ, crit, quality_level, _ = self._perform_test(
             aim=objective, random_event=_3w20,
             skill_level=self._twinkle_stuff['Fertigkeitswerte'][spell_like],
             gifted=(spell_like in self._gifted))
@@ -230,9 +207,9 @@ class Twinkle(Hero):
             random_event=_3w20,
             talent_level=self._twinkle_stuff['Fertigkeitswerte'],
             talent_composition=self._twinkle_stuff['Proben'],
-            success=gelungen,
-            crit=krit,
-            quality_level=qualitätsstufen,
+            success=succ,
+            crit=crit,
+            quality_level=(quality_level, quality_level),
             kind_of_test='vollführt',
             modification=modifier)
         return out

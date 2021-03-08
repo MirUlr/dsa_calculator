@@ -298,7 +298,7 @@ class Hero():
         _3w20 = np.random.randint(1, 21, 3)
 
         # Zufallsereignis auswerten
-        gelungen, krit, qualitätsstufen = self._perform_test(
+        suc, crit, quality_level, quality_level_app = self._perform_test(
             aim=objective, random_event=_3w20,
             skill_level=self._skills[talent],
             gifted=(talent in self._gifted),
@@ -311,9 +311,9 @@ class Hero():
             random_event=_3w20,
             talent_level=self._skills,
             talent_composition=self.SKILL_CHECKS,
-            success=gelungen,
-            crit=krit,
-            quality_level=qualitätsstufen,
+            success=suc,
+            crit=crit,
+            quality_level=(quality_level, quality_level_app),
             modification=modifier)
         return out
 
@@ -357,14 +357,12 @@ class Hero():
         
         # estimate all possible random events
         for index, row in table.iterrows():
-            _, _, quality_level = self._perform_test(
+            _, _, quality_level, _ = self._perform_test(
                 aim=objective,
                 random_event=row.to_numpy(),
                 skill_level=self._skills[talent],
                 gifted=(talent in self._gifted),
                 incompetent=(talent in self._incompetences))
-            if quality_level == -1:
-                quality_level = 0
             qualities.append(quality_level)
         table['#QS'] = qualities
 
@@ -541,7 +539,7 @@ class Hero():
             self._attributes[attribute] + modifikator, 19)
         _1w20 = np.random.randint(1, 21, 1)
 
-        suc, _, _ = self._perform_test(
+        suc, _, _, _ = self._perform_test(
             aim=np.array(eigenschaftswert_mod),
             random_event=_1w20)
 
@@ -692,7 +690,7 @@ class Hero():
     def _format_outcome(self, skill: str, goals, random_event,
                         talent_level: dict,
                         talent_composition: dict,
-                        success: bool, crit: bool, quality_level: int,
+                        success: bool, crit: bool, quality_level: (int, int),
                         kind_of_test='absolviert eine Probe auf',
                         modification=0):
         """Summarize the results of a (3D20) roll with all necessary values.
@@ -759,20 +757,24 @@ class Hero():
 
         if success:
             if crit:
-                final_result = ('{}:\tKritischer Erfolg mit {} '
+                final_result = ('{}:\tKritischer Erfolg mit {}({})'
                                 'Qualitätsstufen.\t:-D'.format(
                                     kind_of_result,
-                                    quality_level))
+                                    quality_level[0],
+                                    quality_level[1]))
             else:
                 final_result = ('{}:\tErfolg mit '
-                                '{} Qualitätsstufen.'.format(
+                                '{}({}) Qualitätsstufen.'.format(
                                     kind_of_result,
-                                    quality_level))
+                                    quality_level[0],
+                                    quality_level[1]))
         else:
             if crit:
                 final_result = '{}:\tPatzer\t>:-|'.format(kind_of_result)
             else:
-                final_result = '{}:\tFehlschlag'.format(kind_of_result)
+                final_result = ('{}:\tFehlschlag (bei Anwendungsgebiet '
+                                '{} QS)').format(kind_of_result,
+                                                 quality_level[1])
         out += '\n' + final_result
 
         return out
@@ -814,8 +816,8 @@ class Hero():
         """Evalutae the performance of random event and measure the success.
 
         Core functionality of this class, evaluate the signature content from
-        DA: the 3D20 test. All rolls that surpass the corresponding value in
-        `aim` must be compensted with `skill_level`. If this is possible, the
+        DSA: the 3D20 test. All rolls that surpass the corresponding value in
+        `aim` must be compensated with `skill_level`. If this is possible, the
         test is consierd as success.
         See https://ulisses-regelwiki.de/index.php/GR_Proben.html for more
         information.
@@ -887,6 +889,8 @@ class Hero():
                                       gifted=False)
 
         spare = skill_level - sum(compensation)
+        # concerning `field of application` rule:
+        spare_application = spare + 2
 
         fail_copy = random_event.copy()
         fail_copy[fail_copy != 20] = 0
@@ -904,10 +908,15 @@ class Hero():
             spare = max(spare, 0)
             quality_level = self.__determine_quality_level(spare)
             quality_level *= 2
+            quality_level_application = self.__determine_quality_level(
+                spare_application)
+            quality_level_application *= 2
         else:
             quality_level = self.__determine_quality_level(spare)
+            quality_level_application = self.__determine_quality_level(
+                spare_application)
 
-        return success, critical, quality_level
+        return success, critical, quality_level, quality_level_application
 
     def _show_and_update_set(self, title, group):
         """Initate command line dialogue (german) to update given set.
@@ -1121,7 +1130,7 @@ class Hero():
         Returns
         -------
         quality_level : int
-            Measurement of success. -1 <=> input messed up.
+            Measurement of success. 0 <=> input messed up.
 
         """
         if 0 <= spare_points <= 3:
@@ -1137,11 +1146,5 @@ class Hero():
         elif 16 <= spare_points:
             quality_level = 6
         else:
-            quality_level = -1
+            quality_level = 0
         return quality_level
-
-
-if __name__ == '__main__':
-    bob = Hero('Bob', [14]*8, [12]*59)
-    df = bob.analyze_success('Zechen')
-    print(df)
