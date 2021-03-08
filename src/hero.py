@@ -380,6 +380,7 @@ class Hero():
         results = table.groupby('#QS').count().index
         prob = table.groupby('#QS').count()[header[0]].to_numpy(dtype='float')
         prob /= sum(prob)
+        expected_value = sum(results * prob)
         
         # following string formating
         delimiter = ' | '
@@ -400,6 +401,8 @@ class Hero():
         
         distribution += upper + '\n' + line + '\n' + lower + '\n'
         distribution +=  ' '*len(line[:-3]) + '[in Prozent]'
+        distribution += '\nErwartungswert: {}'.format(
+            round(expected_value, 2))
 
         return distribution
 
