@@ -914,6 +914,9 @@ class Hero():
             quality_level_application = self.__determine_quality_level(
                 spare_application)
             quality_level_application *= 2
+        elif crit_fail:
+            quality_level = 0
+            quality_level_application = 0
         else:
             quality_level = self.__determine_quality_level(spare)
             quality_level_application = self.__determine_quality_level(
