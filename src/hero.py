@@ -150,20 +150,32 @@ class Hero():
             list(self.SKILL_CHECKS.keys()))
 
         if len(attribute_values) != len(self._attributes):
+            # User Interaction
             print('==->  Nun Eigenschaften eingeben  <-==')
             attribute_values = self.__ask_for_values(self._attributes,
-                                                      (1, 19))
-        self._attributes = {
-            list(self._attributes.keys())[i]: attribute_values[i]
-            for i in range(len(attribute_values))}
+                                                      (1, 25))
+
+        if all([1 <= val <= 25 for val in attribute_values]):
+            # check given list of values
+            self._attributes = {
+                list(self._attributes.keys())[i]: attribute_values[i]
+                for i in range(len(attribute_values))}
+        else:
+            raise ValueError('Werte für Eigenschaften müssen'
+                             ' im Bereich von 1 bis 25 liegen.')
 
         if len(skill_values) != len(self._skills):
             print('==->  Nun Fertigkeiten eingeben  <-==')
             skill_values = self.__ask_for_values(self._skills,
                                                       (0, 25))
-        self._skills = {
-            list(self._skills.keys())[i]: skill_values[i]
-            for i in range(len(skill_values))}
+
+        if all([0 <= val <= 25 for val in skill_values]):
+            self._skills = {
+                list(self._skills.keys())[i]: skill_values[i]
+                for i in range(len(skill_values))}
+        else:
+            raise ValueError('Werte für Talente müssen im '
+                             'Bereich von 0 bis 25 liegen.')
 
         if incompetences is None:
             self._incompetences = set()
@@ -173,8 +185,8 @@ class Hero():
             elif isinstance(incompetences, list):
                 self._incompetences = set(incompetences)
             else:
-                raise TypeError('`incompetences` wird als '
-                                'set oder list erwartet')
+                raise TypeError('`incompetences` is expected '
+                                'as set or list.')
 
         if gifted is None:
             self._gifted = set()
@@ -184,7 +196,7 @@ class Hero():
             elif isinstance(gifted, list):
                 self._gifted = set(gifted)
             else:
-                raise TypeError('`gifted` wird als set oder list erwartet')
+                raise TypeError('`gifted` is expected as list.')
 
     @classmethod
     def load(cls, character,
