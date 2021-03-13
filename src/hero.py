@@ -329,13 +329,51 @@ class Hero():
             modification=modifier)
         return out
 
-    def analyze_success(self, talent, modifier=0):        
+    def analyze_talent(self, talent, modifier=0):
+        """Visualize the probability of the statet test with plot and string.
+        
+        Wrapper for `_analyze_success`, specifies the source for the
+        combination of attributes.
+
+        Parameters
+        ----------
+        talent : str
+            State the talent/skill to be tested.
+        modifier : int, optional
+            Modification set to the test; negative values for a more difficult,
+            positve values for an easier test
+            The default is 0.
+
+        Returns
+        -------
+        str
+            Formatted describtion of quality level distribution for
+            specified talent/skill.
+
+        """
+        return  self._analyze_success(talent=talent,
+                                      attribute_source=self.SKILL_CHECKS,
+                                      skill_value_source=self._skills,
+                                      modifier=0)
+
+    def _analyze_success(self, talent,
+                        attribute_source,
+                        skill_value_source,
+                        modifier=0):        
         """Visualize the probability of the statet test with plot and string.
 
         Parameters
         ----------
         talent : str
             State the talent/skill to be tested.
+        attribute_source : dict
+            Look up dictionary to determine attributes for intended analyzing
+            objective. Must contain `talent` as key and 3-string-tuple,
+            representing attributes, as values.
+        skill_value_source : dict
+            Look up dictionary to determine skill level (value) for intended
+            analyzing objective. Must contain `talent` as key and integer as
+            values.
         modifier : int, optional
             Modification set to the test; negative values for a more difficult,
             positve values for an easier test
@@ -372,7 +410,7 @@ class Hero():
             _, _, quality_level, _ = self._perform_test(
                 aim=objective,
                 random_event=row.to_numpy(),
-                skill_level=self._skills[talent],
+                skill_level=skill_value_source[talent],
                 gifted=(talent in self._gifted),
                 incompetent=(talent in self._incompetences))
             qualities.append(quality_level)
