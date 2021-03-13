@@ -5,6 +5,8 @@ src/dist/
 
 *.spec
 
+*.lnk
+
 *.json
 !src/Mary_Sue.json
 src/Tore_Bjornson.json
