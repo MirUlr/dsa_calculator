@@ -128,6 +128,13 @@ class Twinkle(Hero):
                    stats['Funzelfertigkeiten'])
         return hero
 
+    def analyze_spelllike(self, spell, modifier=0):
+        return self._analyze_success(
+            spell,
+            attribute_source=self._twinkle_stuff['Proben'],
+            skill_value_source=self._twinkle_stuff['Fertigkeitswerte'],
+            modifier=modifier)
+
     def update_special_abilities(self, also_permitted=[]):
         """Initiate command line dialogue to update gifted and incompetences.
 

@@ -329,13 +329,51 @@ class Hero():
             modification=modifier)
         return out
 
-    def analyze_success(self, talent, modifier=0):        
+    def analyze_talent(self, talent, modifier=0):
+        """Visualize the probability of the statet test with plot and string.
+        
+        Wrapper for `_analyze_success`, specifies the source for the
+        combination of attributes.
+
+        Parameters
+        ----------
+        talent : str
+            State the talent/skill to be tested.
+        modifier : int, optional
+            Modification set to the test; negative values for a more difficult,
+            positve values for an easier test
+            The default is 0.
+
+        Returns
+        -------
+        str
+            Formatted describtion of quality level distribution for
+            specified talent/skill.
+
+        """
+        return  self._analyze_success(talent=talent,
+                                      attribute_source=self.SKILL_CHECKS,
+                                      skill_value_source=self._skills,
+                                      modifier=0)
+
+    def _analyze_success(self, talent,
+                        attribute_source,
+                        skill_value_source,
+                        modifier=0):        
         """Visualize the probability of the statet test with plot and string.
 
         Parameters
         ----------
         talent : str
             State the talent/skill to be tested.
+        attribute_source : dict
+            Look up dictionary to determine attributes for intended analyzing
+            objective. Must contain `talent` as key and 3-string-tuple,
+            representing attributes, as values.
+        skill_value_source : dict
+            Look up dictionary to determine skill level (value) for intended
+            analyzing objective. Must contain `talent` as key and integer as
+            values.
         modifier : int, optional
             Modification set to the test; negative values for a more difficult,
             positve values for an easier test
@@ -355,7 +393,7 @@ class Hero():
         # estimate objectives for rolling
         objective, impossible = self._estimae_objective(
             talent=talent, modifier=modifier,
-            attribute_source=self.SKILL_CHECKS)
+            attribute_source=attribute_source)
     
         if impossible:
             msg = ('Die Erschwernis von {} '
@@ -363,7 +401,7 @@ class Hero():
             return msg
 
         # generate table with all possible random events
-        table = self._n_cartesian_three(20, talent)
+        table = self._n_cartesian_three(20, talent, attribute_source)
         header = list(table.columns)
         qualities = []
         
@@ -372,7 +410,7 @@ class Hero():
             _, _, quality_level, _ = self._perform_test(
                 aim=objective,
                 random_event=row.to_numpy(),
-                skill_level=self._skills[talent],
+                skill_level=skill_value_source[talent],
                 gifted=(talent in self._gifted),
                 incompetent=(talent in self._incompetences))
             qualities.append(quality_level)
@@ -794,7 +832,9 @@ class Hero():
 
         return out
 
-    def _n_cartesian_three(self, n: int, skill):
+    @staticmethod
+    def _n_cartesian_three(n: int, skill: str,
+                           attribute_source: dict):
         """Generate DataFrame with n**3 rows, corresponding to attributes.
 
         Parameters
@@ -802,7 +842,9 @@ class Hero():
         n : int
             One to n describes the base set for cartesian product.
         skill : str
-            Designate talent. Must be among keys from self.SKILL_CHECKS.
+            Designate talent. Must be among keys from attribute_source.
+        attribute_source : dict
+            Look up dictionary to determine attributes for given skill.
 
         Returns
         -------
@@ -819,11 +861,11 @@ class Hero():
             first += [e]*(n**2)
         
         second = second * n
-        '[1] ' + self.SKILL_CHECKS[skill][0]
+        '[1] ' + attribute_source[skill][0]
         out = pd.DataFrame({
-            '[1] ' + self.SKILL_CHECKS[skill][0]: first,
-            '[2] ' + self.SKILL_CHECKS[skill][1]: second,
-            '[3] ' + self.SKILL_CHECKS[skill][2]: third})
+            '[1] ' + attribute_source[skill][0]: first,
+            '[2] ' + attribute_source[skill][1]: second,
+            '[3] ' + attribute_source[skill][2]: third})
         return out
 
     def _perform_test(self, aim, random_event, skill_level=0,
