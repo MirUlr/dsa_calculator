@@ -868,6 +868,50 @@ class Hero():
             '[3] ' + attribute_source[skill][2]: third})
         return out
 
+    def update_attribute(self, attribute: str, by=1):
+        assert isinstance(by, int),\
+            'Entwicklungsdiffernez muss als ganze Zahl gegeben sein.'
+
+        try:
+            old_val = self._attributes[attribute]
+            new_val = old_val + by
+            if 1 <= new_val <= 25:
+                msg = 'Attribut {} von {} auf {} setzen?\n(j/n) '
+                res = self._clean_read(msg.format(attribute, old_val, new_val),
+                                       legal_response=['j', 'n'])
+                if res == 'j':
+                    self._attributes[attribute] = new_val
+                    print('Wert angepasst.')
+                else:
+                    print('Keine Änderungen vorgenommen.')
+            else:
+                raise ValueError('Entwickelter Wert muss im '
+                                 'Bereich 1 bis 25 liegen.')
+        except KeyError:
+            raise KeyError('{} ist kein gültiges Attribut.'.format(attribute))
+
+    def update_talent(self, talent: str, by=1):
+        assert isinstance(by, int),\
+            'Entwicklungsdiffernez muss als ganze Zahl gegeben sein.'
+
+        try:
+            old_val = self._skills[talent]
+            new_val = old_val + by
+            if 0 <= new_val <= 25:
+                msg = 'Fertigkeitswert von {} von {} auf {} setzen?\n(j/n) '
+                res = self._clean_read(msg.format(talent, old_val, new_val),
+                                       legal_response=['j', 'n'])
+                if res == 'j':
+                    self._skills[talent] = new_val
+                    print('Wert angepasst.')
+                else:
+                    print('Keine Änderungen vorgenommen.')
+            else:
+                raise ValueError('Entwickelter Wert muss im '
+                                 'Bereich 0 bis 25 liegen.')
+        except KeyError:
+            raise KeyError('{} ist kein gültiges Talent.'.format(talent))
+
     def _perform_test(self, aim, random_event, skill_level=0,
                       gifted=False, incompetent=False):
         """Evalutae the performance of random event and measure the success.
