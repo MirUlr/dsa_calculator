@@ -129,6 +129,27 @@ class Twinkle(Hero):
         return hero
 
     def analyze_spelllike(self, spell, modifier=0):
+        """Visualize the probability of spell-like with plot and string.
+
+        Wrapper for `Hero._analyze_success`, specifies the source for the
+        combination of attributes.
+
+        Parameters
+        ----------
+        spell : str
+            State the spell-like to be analyzed.
+        modifier : int, optional
+            Modification set to the test; negative values for a more difficult,
+            positve values for an easier test
+            The default is 0.
+
+        Returns
+        -------
+        str
+            Formatted describtion of quality level distribution for specified
+            spell-like.
+
+        """
         return self._analyze_success(
             spell,
             attribute_source=self._twinkle_stuff['Proben'],
@@ -166,6 +187,94 @@ class Twinkle(Hero):
         """
         super().update_special_abilities(
             also_permitted=list(self._twinkle_stuff['Proben'].keys()))
+
+    def delete_spelllike(self, spell):
+        """Remove given spell-like from twinkles list of abilities.
+
+        Parameters
+        ----------
+        spell : str
+            Spell-like to remove. Must be key in `self._twinkle_stuff[..]`.
+
+        Raises
+        ------
+        KeyError
+            Iff argument `spell` is not a known spell-like.
+
+        Returns
+        -------
+        None.
+
+        """
+        try:
+            check = self._twinkle_stuff['Proben'][spell]
+            value = self._twinkle_stuff['Fertigkeitswerte'][spell]
+        except KeyError:
+            raise KeyError('{} ist kein/e bekannte/r/s {}.'.format(
+                spell, self.__twinkle_stuff_term(singular=True)))
+
+        msg = ('Löschen von {} mit Proben auf {} und'
+               ' Fertigkeitswert {}?\n(j/n) ')
+        response = self._clean_read(
+                text=msg.format(spell,check,value),     
+                legal_response=['j', 'n'])
+        if response == 'j':
+            self._twinkle_stuff['Proben'].pop(spell)
+            self._twinkle_stuff['Fertigkeitswerte'].pop(spell)
+            print('{} wurde gelöscht.'.format(spell))
+        else:
+            print('Keine Werte gelöscht.')
+
+    def add_spelllike(self):
+        """Initiate command line dialog to add new spell-like; may see init."""
+        self._twinkle_stuff = self.__ask_for_twinkle_stuff(
+            twinkle_dict=self._twinkle_stuff)
+
+    def update_spelllike(self, spell: str, by=1):
+        """Update value for specified spell-like by given integer.
+
+        Parameters
+        ----------
+        spell : str
+            Talent/skill to update. Must be among the keys of
+            `self._twinkle_stuff['Fertigkeitswerte']`.
+        by : int, optional
+            Value for additive manipulation.
+            The default is 1.
+
+        Raises
+        ------
+        ValueError
+            Iff updated skill value would violent legal limits.
+        KeyError
+            Iff argument `spell` is not among the spell-likes.
+
+        Returns
+        -------
+        None.
+
+        """
+        assert isinstance(by, int),\
+            'Entwicklungsdiffernez muss als ganze Zahl gegeben sein.'
+
+        try:
+            old_val = self._twinkle_stuff['Fertigkeitswerte'][spell]
+            new_val = old_val + by
+            if 0 <= new_val <= 25:
+                msg = 'Fertigkeitswert von {} von {} auf {} setzen?\n(j/n) '
+                res = self._clean_read(msg.format(spell, old_val, new_val),
+                                       legal_response=['j', 'n'])
+                if res == 'j':
+                    self._twinkle_stuff['Fertigkeitswerte'][spell] = new_val
+                    print('Wert angepasst.')
+                else:
+                    print('Keine Änderungen vorgenommen.')
+            else:
+                raise ValueError('Entwickelter Wert muss im '
+                                 'Bereich 0 bis 25 liegen.')
+        except KeyError:
+            raise KeyError('{} ist kein/e gültige/r/s {}.'.format(
+                spell, self.__twinkle_stuff_term(singular=True)))
 
     def perform(self, spell_like: str, modifier=0):
         """Perform a test on a certain spell-like w.r.t. skill and attributes.
