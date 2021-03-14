@@ -330,7 +330,7 @@ class Hero():
         return out
 
     def analyze_talent(self, talent, modifier=0):
-        """Visualize the probability of the statet test with plot and string.
+        """Visualize the probability of the stated test with plot and string.
         
         Wrapper for `_analyze_success`, specifies the source for the
         combination of attributes.
@@ -659,6 +659,94 @@ class Hero():
         """
         return self._show_pretty_dicts(
             '{}\'s Fertigkeiten:'.format(self.name), self._skills)
+
+    def update_attribute(self, attribute: str, by=1):
+        """Update attribute value by given integer.
+
+        Parameters
+        ----------
+        attribute : str
+            Attribute to update.
+        by : int, optional
+            Value for additive manipulation.
+            The default is 1.
+
+        Raises
+        ------
+        ValueError
+            Iff updated attribute value would violent legal limits.
+        KeyError
+            Iff argument `attribute` is not among the attributes.
+
+        Returns
+        -------
+        None.
+
+        """
+        assert isinstance(by, int),\
+            'Entwicklungsdiffernez muss als ganze Zahl gegeben sein.'
+
+        try:
+            old_val = self._attributes[attribute]
+            new_val = old_val + by
+            if 1 <= new_val <= 25:
+                msg = 'Attribut {} von {} auf {} setzen?\n(j/n) '
+                res = self._clean_read(msg.format(attribute, old_val, new_val),
+                                       legal_response=['j', 'n'])
+                if res == 'j':
+                    self._attributes[attribute] = new_val
+                    print('Wert angepasst.')
+                else:
+                    print('Keine Änderungen vorgenommen.')
+            else:
+                raise ValueError('Entwickelter Wert muss im '
+                                 'Bereich 1 bis 25 liegen.')
+        except KeyError:
+            raise KeyError('{} ist kein gültiges Attribut.'.format(attribute))
+
+    def update_talent(self, talent: str, by=1):
+        """Update talent value by given integer.
+
+        Parameters
+        ----------
+        talent : str
+            Talent/skill to update.
+        by : int, optional
+            Value for additive manipulation.
+            The default is 1.
+
+        Raises
+        ------
+        ValueError
+            Iff updated skill value would violent legal limits.
+        KeyError
+            Iff argument `talent` is not among the talents/skills.
+
+        Returns
+        -------
+        None.
+
+        """
+        assert isinstance(by, int),\
+            'Entwicklungsdiffernez muss als ganze Zahl gegeben sein.'
+
+        try:
+            old_val = self._skills[talent]
+            new_val = old_val + by
+            if 0 <= new_val <= 25:
+                msg = 'Fertigkeitswert von {} von {} auf {} setzen?\n(j/n) '
+                res = self._clean_read(msg.format(talent, old_val, new_val),
+                                       legal_response=['j', 'n'])
+                if res == 'j':
+                    self._skills[talent] = new_val
+                    print('Wert angepasst.')
+                else:
+                    print('Keine Änderungen vorgenommen.')
+            else:
+                raise ValueError('Entwickelter Wert muss im '
+                                 'Bereich 0 bis 25 liegen.')
+        except KeyError:
+            raise KeyError('{} ist kein gültiges Talent.'.format(talent))
 
     def get_gifted_skills_gui(self):
         """Getter for gifted skills(`Begabungen`); concerning GUI.
