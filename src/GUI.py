@@ -15,6 +15,13 @@ from functools import partial
 # Charakter laden
 def load(name):
     global charakter
+
+    # reset button background
+    for skill in Hero.get_all_skills_gui():
+        funcName = "btn_%s" % skill
+        method_to_call = getattr(win, funcName)
+        method_to_call.setStyleSheet("QPushButton { background-color: #ffffff }")
+
     try: # Testen, ob als Funzel ladbar
         ret = Twinkle.load(name(),r'.\\')
     except KeyError: # nope, keine Funzel

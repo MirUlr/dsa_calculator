@@ -1228,6 +1228,8 @@ class Hero():
                          'Heilkunde Krankheiten': 'heilenKrankheit',
                          'Heilkunde Seele': 'heilenSeele',
                          'Heilkunde Wunden': 'heilenWunden',
+                         'Fährtensuchen': 'faehrtensuche',
+                         'Alchimie': 'alchemie',
                          'Malen & Zeichen': 'malen'}
         if skill in special_cases.keys():
             out = special_cases[skill]
