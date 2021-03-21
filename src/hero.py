@@ -748,6 +748,22 @@ class Hero():
         except KeyError:
             raise KeyError('{} ist kein gültiges Talent.'.format(talent))
 
+    def get_all_skills_gui(self):
+        """Getter for skills; concerning GUI.
+
+        Returns
+        -------
+        skill_set : list
+            List of strings representing all skills.
+
+        """
+        skill_set = []
+
+        for skill in self.SKILL_CHECKS.key():
+            skill_set.append(self._tamper_designation(skill))
+        return skill_set
+
+
     def get_gifted_skills_gui(self):
         """Getter for gifted skills(`Begabungen`); concerning GUI.
 
