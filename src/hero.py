@@ -532,7 +532,7 @@ class Hero():
             self.update_special_abilities(
                 also_permitted=also_permitted)
 
-    def save(self, directory='C:/Users/49162/Documents/RolePlay/PnP/DSA'):
+    def save(self, directory='.\\'):
         """Store character describing dictionaries as json on harddrive.
 
         File is written as <name>.json, whereby spaces are removed.
