@@ -914,14 +914,14 @@ class Hero():
 
         if success:
             if crit:
-                final_result = ('{}:\nKritischer Erfolg mit {}({})'
+                final_result = ('{}:\nKritischer Erfolg mit {} ({})'
                                 'Qualitätsstufen.\t:-D'.format(
                                     kind_of_result,
                                     quality_level[0],
                                     quality_level[1]))
             else:
                 final_result = ('{}:\nErfolg mit '
-                                '{}({}) Qualitätsstufen.'.format(
+                                '{} ({}) Qualitätsstufen.'.format(
                                     kind_of_result,
                                     quality_level[0],
                                     quality_level[1]))
@@ -929,9 +929,8 @@ class Hero():
             if crit:
                 final_result = '{}:\nPatzer\t>:-|'.format(kind_of_result)
             else:
-                final_result = ('{}:\nFehlschlag (bei Anwendungsgebiet '
-                                '{} QS)').format(kind_of_result,
-                                                 quality_level[1])
+                final_result = ('{}:\nFehlschlag ({} QS)').format(
+                    kind_of_result, quality_level[1])
         out += '\n' + final_result
 
         return out
