@@ -88,6 +88,7 @@ if __name__ == "__main__":
 
     win.btn_speichern.clicked.connect(saveHero)
     win.btn_laden.clicked.connect(loadHero)
+    win.txt_heldName.returnPressed.connect(loadHero)
 
     # Fenster anzeigen
     win.show()
