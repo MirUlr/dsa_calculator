@@ -200,7 +200,7 @@ class Hero():
 
     @classmethod
     def load(cls, character,
-             directory='C:/Users/49162/Documents/RolePlay/PnP/DSA'):
+             directory='.\\'):
         """Load character from harddrive and returns corresponding Held object.
 
         Parameters
@@ -301,7 +301,7 @@ class Hero():
         objective, impossible = self._estimae_objective(
             talent=talent, modifier=modifier,
             attribute_source=self.SKILL_CHECKS)
-    
+
         if impossible:
             msg = ('Die Erschwernis von {} '
                    'macht diese Probe unmöglich.'.format(abs(modifier)))
@@ -331,7 +331,7 @@ class Hero():
 
     def analyze_talent(self, talent, modifier=0):
         """Visualize the probability of the stated test with plot and string.
-        
+
         Wrapper for `_analyze_success`, specifies the source for the
         combination of attributes.
 
@@ -359,7 +359,7 @@ class Hero():
     def _analyze_success(self, talent,
                         attribute_source,
                         skill_value_source,
-                        modifier=0):        
+                        modifier=0):
         """Visualize the probability of the statet test with plot and string.
 
         Parameters
@@ -394,7 +394,7 @@ class Hero():
         objective, impossible = self._estimae_objective(
             talent=talent, modifier=modifier,
             attribute_source=attribute_source)
-    
+
         if impossible:
             msg = ('Die Erschwernis von {} '
                    'macht diese Probe unmöglich.'.format(abs(modifier)))
@@ -404,7 +404,7 @@ class Hero():
         table = self._n_cartesian_three(20, talent, attribute_source)
         header = list(table.columns)
         qualities = []
-        
+
         # estimate all possible random events
         for index, row in table.iterrows():
             _, _, quality_level, _ = self._perform_test(
@@ -431,7 +431,7 @@ class Hero():
         prob = table.groupby('#QS').count()[header[0]].to_numpy(dtype='float')
         prob /= sum(prob)
         expected_value = sum(results * prob)
-        
+
         # following string formating
         delimiter = ' | '
         upper = '     q   ' + delimiter
@@ -448,7 +448,7 @@ class Hero():
         upper = upper[:-1]
         lower = lower[:-1]
         line = '-' * len(upper)
-        
+
         distribution += upper + '\n' + line + '\n' + lower + '\n'
         distribution +=  ' '*len(line[:-3]) + '[in Prozent]'
         distribution += '\nErwartungswert: {}'.format(
@@ -778,12 +778,12 @@ class Hero():
 
     def _estimae_objective(self, talent, modifier, attribute_source):
         """Derives objective for random event for a test on talent.
-    
-        Each talent correspond to three attributes, which values make up the 
+
+        Each talent correspond to three attributes, which values make up the
         objective to roll against (random event). These values may be modified
         on DM decision, marked by modfier. Each value is lower or equal to 19.
         If any value is lower than one, the test is considered as impossible.
-    
+
         Parameters
         ----------
         talent : str
@@ -820,12 +820,12 @@ class Hero():
         except KeyError:
             raise ValueError('{} ist keine'
                              ' gültige Fertigkeit.'.format(talent))
-    
+
         if any(objective < 1):                  # detect impossible tests
             impossible = True
         else:
             impossible = False
-    
+
         return objective, impossible
 
     def _format_outcome(self, skill: str, goals, random_event,
@@ -944,10 +944,10 @@ class Hero():
         third = base * (n**2)
         second = []
         first = []
-        for e in base:  
+        for e in base:
             second += [e]*n
             first += [e]*(n**2)
-        
+
         second = second * n
         '[1] ' + attribute_source[skill][0]
         out = pd.DataFrame({
