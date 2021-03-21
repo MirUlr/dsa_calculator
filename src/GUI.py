@@ -137,6 +137,7 @@ if __name__ == "__main__":
     # Charakter laden
     func_btn_heldLaden = partial(load, win.txt_heldLaden.text)
     win.btn_heldLaden.clicked.connect(func_btn_heldLaden)
+    win.txt_heldLaden.returnPressed.connect(func_btn_heldLaden)
 
     # ========================================================================
     # Eigenschaften
