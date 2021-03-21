@@ -898,22 +898,22 @@ class Hero():
 
         if success:
             if crit:
-                final_result = ('{}:\tKritischer Erfolg mit {}({})'
+                final_result = ('{}:\nKritischer Erfolg mit {}({})'
                                 'Qualitätsstufen.\t:-D'.format(
                                     kind_of_result,
                                     quality_level[0],
                                     quality_level[1]))
             else:
-                final_result = ('{}:\tErfolg mit '
+                final_result = ('{}:\nErfolg mit '
                                 '{}({}) Qualitätsstufen.'.format(
                                     kind_of_result,
                                     quality_level[0],
                                     quality_level[1]))
         else:
             if crit:
-                final_result = '{}:\tPatzer\t>:-|'.format(kind_of_result)
+                final_result = '{}:\nPatzer\t>:-|'.format(kind_of_result)
             else:
-                final_result = ('{}:\tFehlschlag (bei Anwendungsgebiet '
+                final_result = ('{}:\nFehlschlag (bei Anwendungsgebiet '
                                 '{} QS)').format(kind_of_result,
                                                  quality_level[1])
         out += '\n' + final_result
@@ -1187,7 +1187,7 @@ class Hero():
 
         In general the given string is changed to lower cases and umlauts are
         replaced. If the given `skill` corresponds to one of the formulated
-        special cases, then the spechial transformation is applied.
+        special cases, then the special transformation is applied.
 
         Parameters
         ----------
@@ -1208,7 +1208,7 @@ class Hero():
                          'Sagen & Legenden': 'sagen',
                          'Boote & Schiffe': 'boote',
                          'Heilkunde Gift': 'heilenGift',
-                         'Heilkunde Krankheiten': 'heilenKrankhei',
+                         'Heilkunde Krankheiten': 'heilenKrankheit',
                          'Heilkunde Seele': 'heilenSeele',
                          'Heilkunde Wunden': 'heilenWunden',
                          'Malen & Zeichen': 'malen'}

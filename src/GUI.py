@@ -53,6 +53,19 @@ def load(name):
                 method_to_call.setText(str(charakter._skills[key]))
                 cnt = cnt+1
 
+            # Unfähigkeiten markieren
+            for skill in charakter.get_incompetent_skills_gui():
+                funcName = "btn_%s" % skill
+                method_to_call = getattr(win, funcName)
+                method_to_call.setStyleSheet("QPushButton { background-color: #ffa6a6 }")
+
+            # Begabungen markieren
+            for skill in charakter.get_gifted_skills_gui():
+                funcName = "btn_%s" % skill
+                method_to_call = getattr(win, funcName)
+                method_to_call.setStyleSheet("QPushButton { background-color: #d3ffce }")
+
+
             msg = QMessageBox()
             msg.setWindowTitle("Erfolg")
             msg.setText("Held erfolgreich geladen.\nAuf ins Abenteuer!")
@@ -95,6 +108,18 @@ def load(name):
             method_to_call = getattr(win, funcName)
             method_to_call.setText(str(charakter._skills[key]))
             cnt = cnt+1
+
+        # Unfähigkeiten markieren
+        for skill in charakter.get_incompetent_skills_gui():
+            funcName = "btn_%s" % skill
+            method_to_call = getattr(win, funcName)
+            method_to_call.setStyleSheet("QPushButton { background-color: #ffa6a6 }")
+
+        # Begabungen markieren
+        for skill in charakter.get_gifted_skills_gui():
+            funcName = "btn_%s" % skill
+            method_to_call = getattr(win, funcName)
+            method_to_call.setStyleSheet("QPushButton { background-color: #d3ffce }")
 
         msg = QMessageBox()
         msg.setWindowTitle("Erfolg")
