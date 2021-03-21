@@ -748,7 +748,9 @@ class Hero():
         except KeyError:
             raise KeyError('{} ist kein gültiges Talent.'.format(talent))
 
-    def get_all_skills_gui(self):
+
+    @classmethod
+    def get_all_skills_gui(cls):
         """Getter for skills; concerning GUI.
 
         Returns
@@ -759,8 +761,8 @@ class Hero():
         """
         skill_set = []
 
-        for skill in self.SKILL_CHECKS.key():
-            skill_set.append(self._tamper_designation(skill))
+        for skill in cls.SKILL_CHECKS.keys():
+            skill_set.append(cls._tamper_designation(skill))
         return skill_set
 
 
