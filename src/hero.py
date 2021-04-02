@@ -454,6 +454,20 @@ class Hero():
         distribution += '\nErwartungswert: {}'.format(
             round(expected_value, 2))
 
+        # phrase non-determenistic warning if analyzed talent is a special one
+        if talent in self._gifted or talent in self._incompetences:
+            if talent in self._gifted:
+                speciality = 'Begabung'
+            else:
+                speciality = 'Unfähigkeit'
+            warning = '\n Achtung! Das Talent {} ist eine {}'.format(
+                talent, speciality)
+            warning += (', daher unterliegt die Wahrscheinlichkeitsverteilung'
+                        ' gewissen (vernachlässigbaren) Schwankungen. Durch '
+                        'diesen Nichtdeterminismus begründet sich auch das '
+                        'besondere Erscheinungsbild der Visualisierung.')
+
+            distribution += warning
         return distribution
 
     def update_special_abilities(self, also_permitted=[]):
@@ -1315,3 +1329,4 @@ class Hero():
         else:
             quality_level = 0
         return quality_level
+ 
