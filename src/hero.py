@@ -14,6 +14,7 @@ import pandas as pd
 
 import plottery
 
+
 class Hero():
     """Baseclass for characters from the rpg `Das Shwarze Auge` (DSA).
 
@@ -152,8 +153,7 @@ class Hero():
         if len(attribute_values) != len(self._attributes):
             # User Interaction
             print('==->  Nun Eigenschaften eingeben  <-==')
-            attribute_values = self.__ask_for_values(self._attributes,
-                                                      (1, 25))
+            attribute_values = self.__ask_for_values(self._attributes, (1, 25))
 
         if all([1 <= val <= 25 for val in attribute_values]):
             # check given list of values
@@ -166,8 +166,7 @@ class Hero():
 
         if len(skill_values) != len(self._skills):
             print('==->  Nun Fertigkeiten eingeben  <-==')
-            skill_values = self.__ask_for_values(self._skills,
-                                                      (0, 25))
+            skill_values = self.__ask_for_values(self._skills, (0, 25))
 
         if all([0 <= val <= 25 for val in skill_values]):
             self._skills = {
@@ -303,8 +302,8 @@ class Hero():
             attribute_source=self.SKILL_CHECKS)
 
         if impossible:
-            msg = ('Die Erschwernis von {} '
-                   'macht diese Probe unmöglich.'.format(abs(modifier)))
+            msg = (f'Die Erschwernis von {abs(modifier)} '
+                   'macht diese Probe unmöglich.')
             return msg
 
         _3w20 = np.random.randint(1, 21, 3)
@@ -354,12 +353,12 @@ class Hero():
         return self._analyze_success(talent=talent,
                                      attribute_source=self.SKILL_CHECKS,
                                      skill_value_source=self._skills,
-                                     modifier=0)
+                                     modifier=modifier)
 
     def _analyze_success(self, talent,
-                        attribute_source,
-                        skill_value_source,
-                        modifier=0):
+                         attribute_source,
+                         skill_value_source,
+                         modifier=0):
         """Visualize the probability of the statet test with plot and string.
 
         Parameters
@@ -396,8 +395,8 @@ class Hero():
             attribute_source=attribute_source)
 
         if impossible:
-            msg = ('Die Erschwernis von {} '
-                   'macht diese Probe unmöglich.'.format(abs(modifier)))
+            msg = (f'Die Erschwernis von {abs(modifier)} '
+                   'macht diese Probe unmöglich.')
             return msg
 
         # generate table with all possible random events
@@ -417,15 +416,15 @@ class Hero():
         table['#QS'] = qualities
 
         # begin plotting process
-        title='Verteilung der Qualitätsstufen von {}'.format(talent)
+        title = f'Verteilung der Qualitätsstufen von {talent}'
         proc = multiprocessing.Process(
             target=plottery.plot_cube_of_success,
             args=(table, title,))
         proc.start()
 
         # begin describing probabilities
-        distribution = ('Erfolgsaussichten für ein Probe auf {} mit '
-                        'Modifikator {}:\n\n').format(talent, modifier)
+        distribution = (f'Erfolgsaussichten für ein Probe auf {talent} mit '
+                        'Modifikator {modifier}:\n\n')
 
         results = table.groupby('#QS').count().index
         prob = table.groupby('#QS').count()[header[0]].to_numpy(dtype='float')
@@ -450,9 +449,8 @@ class Hero():
         line = '-' * len(upper)
 
         distribution += upper + '\n' + line + '\n' + lower + '\n'
-        distribution +=  ' '*len(line[:-3]) + '[in Prozent]'
-        distribution += '\nErwartungswert: {}'.format(
-            round(expected_value, 2))
+        distribution += ' '*len(line[:-3]) + '[in Prozent]'
+        distribution += f'\nErwartungswert: {expected_value:.2f}'
 
         # phrase non-determenistic warning if analyzed talent is a special one
         if talent in self._gifted or talent in self._incompetences:
@@ -460,8 +458,7 @@ class Hero():
                 speciality = 'Begabung'
             else:
                 speciality = 'Unfähigkeit'
-            warning = '\n Achtung! Das Talent {} ist eine {}'.format(
-                talent, speciality)
+            warning = f'\n Achtung! Das Talent {talent} ist eine {speciality}'
             warning += (', daher unterliegt die Wahrscheinlichkeitsverteilung'
                         ' gewissen (vernachlässigbaren) Schwankungen. Durch '
                         'diesen Nichtdeterminismus begründet sich auch das '
@@ -502,7 +499,7 @@ class Hero():
                                legal_response=['j', 'n'])
         if val == 'j':
             temp = self._show_and_update_set(
-                '{}\'s Begabungen:'.format(self.name),
+                f'{self.name}\'s Begabungen:',
                 self._gifted)
             if len(temp) > 3:
                 raise ValueError('Nicht mehr als 3 Begabungen erlaubt.')
@@ -510,8 +507,7 @@ class Hero():
                 in_skills = t in self.SKILL_CHECKS.keys()
                 in_further_skills = t in also_permitted
                 if not in_skills and not in_further_skills:
-                    raise ValueError('{} ist keine zulässige'
-                                     ' Fertigkeit.'.format(t))
+                    raise ValueError(f'{t} ist keine zulässige Fertigkeit.')
             if temp.isdisjoint(self._incompetences):
                 self._gifted = temp
             else:
@@ -523,14 +519,13 @@ class Hero():
                                legal_response=['j', 'n'])
         if val == 'j':
             temp = self._show_and_update_set(
-                '{}\'s Unfähigkeiten:'.format(self.name),
+                f'{self.name}\'s Unfähigkeiten:',
                 self._incompetences)
             if len(temp) > 2:
                 raise ValueError('Nicht mehr als 2 Unfähigkeiten erlaubt.')
             for t in temp:
                 if t not in self.SKILL_CHECKS.keys():
-                    raise ValueError('{} ist keine'
-                                     ' zulässige Fertigkeit.'.format(t))
+                    raise ValueError('{t} ist keine zulässige Fertigkeit.')
             if temp.isdisjoint(self._gifted):
                 self._incompetences = temp
             else:
@@ -610,14 +605,14 @@ class Hero():
             aim=np.array(eigenschaftswert_mod),
             random_event=_1w20)
 
-        msg = '{} testet {} ({})'.format(
-                self.name, attribute, self._attributes[attribute])
+        msg = f'{self.name} testet {attribute} ({self._attributes[attribute]})'
+
         if modifikator == 0:
             msg += ':\n'
         elif modifikator > 0:
-            msg += ', erleichtert um {}:\n'.format(str(abs(modifikator)))
+            msg += f', erleichtert um {abs(modifikator)}:\n'
         elif modifikator < 0:
-            msg += ', erschwert um {}:\n'.format(str(abs(modifikator)))
+            msg += f', erschwert um {abs(modifikator)}:\n'
 
         if suc:
             msg += '\nGeschafft mit einem Wurf von {}.'.format(*_1w20)
@@ -635,17 +630,17 @@ class Hero():
             Formatted representation.
 
         """
-        msg_1 = '{}\'s Begabungen:'.format(self.name)
+        msg_1 = f'{self.name}\'s Begabungen:'
         line = '='*len(msg_1)
-        msg_1 += '\n{}\n\t'.format(line)
+        msg_1 += f'\n{line}\n\t'
         for t in self._gifted:
-            msg_1 += '{} '.format(t)
+            msg_1 += f'{t} '
 
-        msg_2 = '{}\'s Unfähigkeiten:'.format(self.name)
+        msg_2 = f'{self.name}\'s Unfähigkeiten:'
         line = '='*len(msg_2)
-        msg_2 += '\n{}\n\t'.format(line)
+        msg_2 += f'\n{line}\n\t'
         for u in self._incompetences:
-            msg_2 += '{} '.format(u)
+            msg_2 += f'{u} '
 
         out = msg_1 + '\n' + msg_2
         return out
@@ -660,7 +655,7 @@ class Hero():
 
         """
         return self._show_pretty_dicts(
-            '{}\'s Eigenschaften:'.format(self.name), self._attributes)
+            f'{self.name}\'s Eigenschaften:', self._attributes)
 
     def show_skills(self):
         """Show skills and values.
@@ -672,7 +667,7 @@ class Hero():
 
         """
         return self._show_pretty_dicts(
-            '{}\'s Fertigkeiten:'.format(self.name), self._skills)
+            f'{self.name}\'s Fertigkeiten:', self._skills)
 
     def update_attribute(self, attribute: str, by=1):
         """Update attribute value by given integer.
@@ -704,9 +699,9 @@ class Hero():
             old_val = self._attributes[attribute]
             new_val = old_val + by
             if 1 <= new_val <= 25:
-                msg = 'Attribut {} von {} auf {} setzen?\n(j/n) '
-                res = self._clean_read(msg.format(attribute, old_val, new_val),
-                                       legal_response=['j', 'n'])
+                msg = (f'Attribut {attribute} von {old_val} auf {new_val} '
+                       'setzen?\n(j/n) ')
+                res = self._clean_read(msg, legal_response=['j', 'n'])
                 if res == 'j':
                     self._attributes[attribute] = new_val
                     print('Wert angepasst.')
@@ -716,7 +711,7 @@ class Hero():
                 raise ValueError('Entwickelter Wert muss im '
                                  'Bereich 1 bis 25 liegen.')
         except KeyError:
-            raise KeyError('{} ist kein gültiges Attribut.'.format(attribute))
+            raise KeyError(f'{attribute} ist kein gültiges Attribut.')
 
     def update_talent(self, talent: str, by=1):
         """Update talent value by given integer.
@@ -748,9 +743,10 @@ class Hero():
             old_val = self._skills[talent]
             new_val = old_val + by
             if 0 <= new_val <= 25:
-                msg = 'Fertigkeitswert von {} von {} auf {} setzen?\n(j/n) '
-                res = self._clean_read(msg.format(talent, old_val, new_val),
-                                       legal_response=['j', 'n'])
+                msg = \
+                    (f'Fertigkeitswert von {talent} von {old_val} auf '
+                     f'{new_val} setzen?\n(j/n) ')
+                res = self._clean_read(msg, legal_response=['j', 'n'])
                 if res == 'j':
                     self._skills[talent] = new_val
                     print('Wert angepasst.')
@@ -760,8 +756,7 @@ class Hero():
                 raise ValueError('Entwickelter Wert muss im '
                                  'Bereich 0 bis 25 liegen.')
         except KeyError:
-            raise KeyError('{} ist kein gültiges Talent.'.format(talent))
-
+            raise KeyError(f'{talent} ist kein gültiges Talent.')
 
     @classmethod
     def get_all_skills_gui(cls):
@@ -778,7 +773,6 @@ class Hero():
         for skill in cls.SKILL_CHECKS.keys():
             skill_set.append(cls._tamper_designation(skill))
         return skill_set
-
 
     def get_gifted_skills_gui(self):
         """Getter for gifted skills(`Begabungen`); concerning GUI.
@@ -1329,4 +1323,3 @@ class Hero():
         else:
             quality_level = 0
         return quality_level
- 
