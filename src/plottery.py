@@ -32,7 +32,7 @@ def plot_cube_of_success(table, title=''):
 
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
-        
+
     x = table[header[0]]
     y = table[header[1]]
     z = table[header[2]]

@@ -73,7 +73,7 @@ class Twinkle(Hero):
                  incompetences=None, gifted=None,
                  twinkle_abilities={}):
         assert twinkle_variant in ['Geweihter', 'Geweihte',
-                                'Hexer', 'Hexe', 'Zauberer', 'Zauberin'],\
+                                   'Hexer', 'Hexe', 'Zauberer', 'Zauberin'],\
             '{} ist keine unterstützte Rolle.'.format(twinkle_variant)
         super().__init__(name, attribute_values, skill_values,
                          incompetences, gifted)
@@ -216,7 +216,7 @@ class Twinkle(Hero):
         msg = ('Löschen von {} mit Proben auf {} und'
                ' Fertigkeitswert {}?\n(j/n) ')
         response = self._clean_read(
-                text=msg.format(spell,check,value),     
+                text=msg.format(spell, check, value),
                 legal_response=['j', 'n'])
         if response == 'j':
             self._twinkle_stuff['Proben'].pop(spell)
@@ -302,7 +302,7 @@ class Twinkle(Hero):
         objective, impossible = self._estimae_objective(
             talent=spell_like, modifier=modifier,
             attribute_source=self._twinkle_stuff['Proben'])
-    
+
         if impossible:
             msg = ('Die Erschwernis von {} '
                    'macht diese Probe unmöglich.'.format(abs(modifier)))
@@ -381,8 +381,8 @@ class Twinkle(Hero):
         return super()._show_pretty_dicts(title, self._twinkle_stuff)
 
     def __ask_for_twinkle_stuff(self,
-                               twinkle_dict={'Proben': {},
-                                            'Fertigkeitswerte': {}}):
+                                twinkle_dict={'Proben': {},
+                                              'Fertigkeitswerte': {}}):
         """Initate command line dialogue to recieve spell likes.
 
         Basic funtionality is described in class docstring.

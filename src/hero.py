@@ -14,6 +14,7 @@ import pandas as pd
 
 import plottery
 
+
 class Hero():
     """Baseclass for characters from the rpg `Das Shwarze Auge` (DSA).
 
@@ -152,8 +153,7 @@ class Hero():
         if len(attribute_values) != len(self._attributes):
             # User Interaction
             print('==->  Nun Eigenschaften eingeben  <-==')
-            attribute_values = self.__ask_for_values(self._attributes,
-                                                      (1, 25))
+            attribute_values = self.__ask_for_values(self._attributes, (1, 25))
 
         if all([1 <= val <= 25 for val in attribute_values]):
             # check given list of values
@@ -166,8 +166,7 @@ class Hero():
 
         if len(skill_values) != len(self._skills):
             print('==->  Nun Fertigkeiten eingeben  <-==')
-            skill_values = self.__ask_for_values(self._skills,
-                                                      (0, 25))
+            skill_values = self.__ask_for_values(self._skills, (0, 25))
 
         if all([0 <= val <= 25 for val in skill_values]):
             self._skills = {
@@ -357,9 +356,9 @@ class Hero():
                                      modifier=0)
 
     def _analyze_success(self, talent,
-                        attribute_source,
-                        skill_value_source,
-                        modifier=0):
+                         attribute_source,
+                         skill_value_source,
+                         modifier=0):
         """Visualize the probability of the statet test with plot and string.
 
         Parameters
@@ -417,7 +416,7 @@ class Hero():
         table['#QS'] = qualities
 
         # begin plotting process
-        title='Verteilung der Qualitätsstufen von {}'.format(talent)
+        title = 'Verteilung der Qualitätsstufen von {}'.format(talent)
         proc = multiprocessing.Process(
             target=plottery.plot_cube_of_success,
             args=(table, title,))
@@ -450,7 +449,7 @@ class Hero():
         line = '-' * len(upper)
 
         distribution += upper + '\n' + line + '\n' + lower + '\n'
-        distribution +=  ' '*len(line[:-3]) + '[in Prozent]'
+        distribution += ' '*len(line[:-3]) + '[in Prozent]'
         distribution += '\nErwartungswert: {}'.format(
             round(expected_value, 2))
 
@@ -762,7 +761,6 @@ class Hero():
         except KeyError:
             raise KeyError('{} ist kein gültiges Talent.'.format(talent))
 
-
     @classmethod
     def get_all_skills_gui(cls):
         """Getter for skills; concerning GUI.
@@ -778,7 +776,6 @@ class Hero():
         for skill in cls.SKILL_CHECKS.keys():
             skill_set.append(cls._tamper_designation(skill))
         return skill_set
-
 
     def get_gifted_skills_gui(self):
         """Getter for gifted skills(`Begabungen`); concerning GUI.
@@ -1329,4 +1326,3 @@ class Hero():
         else:
             quality_level = 0
         return quality_level
- 
