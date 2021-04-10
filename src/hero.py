@@ -353,7 +353,7 @@ class Hero():
         return self._analyze_success(talent=talent,
                                      attribute_source=self.SKILL_CHECKS,
                                      skill_value_source=self._skills,
-                                     modifier=0)
+                                     modifier=modifier)
 
     def _analyze_success(self, talent,
                          attribute_source,
