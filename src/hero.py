@@ -424,7 +424,7 @@ class Hero():
 
         # begin describing probabilities
         distribution = (f'Erfolgsaussichten für ein Probe auf {talent} mit '
-                        'Modifikator {modifier}:\n\n')
+                        f'Modifikator {modifier}:\n\n')
 
         results = table.groupby('#QS').count().index
         prob = table.groupby('#QS').count()[header[0]].to_numpy(dtype='float')
