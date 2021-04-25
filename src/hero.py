@@ -12,8 +12,6 @@ import pathlib
 import numpy as np
 import pandas as pd
 
-import plottery
-
 
 class Hero():
     """Baseclass for characters from the rpg `Das Shwarze Auge` (DSA).
@@ -414,13 +412,6 @@ class Hero():
                 incompetent=(talent in self._incompetences))
             qualities.append(quality_level)
         table['#QS'] = qualities
-
-        # begin plotting process
-        title = f'Verteilung der Qualitätsstufen von {talent}'
-        proc = multiprocessing.Process(
-            target=plottery.plot_cube_of_success,
-            args=(table, title,))
-        proc.start()
 
         # begin describing probabilities
         distribution = (f'Erfolgsaussichten für ein Probe auf {talent} mit '
