@@ -199,8 +199,8 @@ class Hero():
 
     @classmethod
     def load(cls, character,
-             directory='.\\'):
-        """Load character from harddrive and returns corresponding Held object.
+             directory=pathlib.Path.cwd()):
+        """Load character from harddrive and returns corresponding Hero object.
 
         Parameters
         ----------
@@ -209,7 +209,7 @@ class Hero():
             used in file naming, the intended name may be used.
         directory : str, optional
             Specifies directory to load <name>.json from.
-            The default is 'C:/Users/49162/Documents/RolePlay/PnP/DSA'.
+            The default is pathlib.Path.cwd(), i.e. current work directory.
 
         Raises
         ------
@@ -541,7 +541,7 @@ class Hero():
             self.update_special_abilities(
                 also_permitted=also_permitted)
 
-    def save(self, directory='.\\'):
+    def save(self, directory=pathlib.Path.cwd()):
         """Store character describing dictionaries as json on harddrive.
 
         File is written as <name>.json, whereby spaces are removed.
@@ -550,7 +550,8 @@ class Hero():
         ----------
         directory : str, optional
             Directory to store the char.
-            The default is 'C:/Users/49162/Documents/RolePlay/PnP/DSA'.
+            The default is directory=pathlib.Path.cwd(), i.e. current work
+            directory.
 
         Raises
         ------
