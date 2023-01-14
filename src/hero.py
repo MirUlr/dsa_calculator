@@ -197,6 +197,10 @@ class Hero():
             else:
                 raise TypeError('`gifted` is expected as list.')
 
+    @property
+    def attributes(self):
+        return self._attributes
+
     @classmethod
     def load(cls, character,
              directory=pathlib.Path.cwd()):
